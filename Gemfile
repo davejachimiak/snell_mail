@@ -4,8 +4,9 @@ gem 'rails', '3.2.1'
 gem 'sqlite3'
 group :test, :development do
   gem 'minitest'
-  gem 'minitest-capybara'
+  gem 'capybara'
   gem 'turn', '~> 0.9.5'
+  gem 'factory_girl'
 end
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

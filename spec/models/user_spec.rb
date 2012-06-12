@@ -97,12 +97,20 @@ describe "User" do
 
     it "returns true if email and password match a user in the db" do
       user = Factory(:user)
-      User.create!(:name     => user.name,
-                   :email    => user.email,
-                   :password => user.password,
-                   :admin    => user.admin)
-      it = User.authenticate("#{user.email}", "#{user.password}")
+	  it = User.authenticate(user.email, user.password)
       it.must_equal true
     end
+	
+	it "returns false if email doesn't exist in db" do
+	  user = Factory(:user)
+	  it = User.authenticate('d.jachimia@neu.edu', user.password)
+	  it.wont_equal true
+	end
+	
+	it "returns false if password doesn't match email's user" do
+	  user = Factory(:user)
+	  it = User.authenticate(user.email, 'passwor')
+	  it.wont_equal true
+	end
   end
 end

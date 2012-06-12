@@ -12,7 +12,8 @@ class User < ActiveRecord::Base
   class << self
     def authenticate(email, password)
       user = find_by_email(email)
-      user.encrypted_password == Digest::SHA2.digest("#{password}#{user.salt}")
+      user.encrypted_password == 
+	    Digest::SHA2.digest("#{password}#{user.salt}") if user
     end
   end
 

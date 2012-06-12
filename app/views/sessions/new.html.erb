@@ -7,3 +7,6 @@
   
   <%= f.submit 'Sign in' %>
 <% end %>
+<% flash.each do |key, value| %>
+  <p><%= key %>: <%= value %></p>
+<% end %>

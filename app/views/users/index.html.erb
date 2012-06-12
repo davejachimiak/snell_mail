@@ -2,5 +2,7 @@
 <% @users.each do |u| %>
   <ul>
     <li><%= u.name %></li>
+    <li><%= u.email %></li>
+    <li><%= link_to 'delete',(u) %>
   </ul>
 <% end %> 

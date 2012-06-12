@@ -1,6 +1,20 @@
 SnellMail::Application.routes.draw do
+  get "users/index"
+
+  get "users/new"
+
+  get "users/create"
+
+  get "users/edit"
+
+  get "users/update"
+
+  get "users/destroy"
+
   root :to => 'sessions#new'
   resources :sessions, :only => [:new, :create, :destroy]
+  resources :notifications, :only => [:index, :new, :create]
+  resources :users
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

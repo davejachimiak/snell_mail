@@ -12,9 +12,12 @@ class User < ActiveRecord::Base
   class << self
     def authenticate(email, password)
       user = find_by_email(email)
-      user.encrypted_password == 
-	    Digest::SHA2.digest("#{password}#{user.salt}") if user
-    end
+      user && valid_user?(user, password) ? user : nil
+	end
+	
+	def valid_user?(user, password)
+	  user.encrypted_password == Digest::SHA2.digest("#{password}#{user.salt}")
+	end
   end
 
   def encrypt_password

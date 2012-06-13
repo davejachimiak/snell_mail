@@ -95,10 +95,10 @@ describe "User" do
       it.must_respond_to :authenticate
     end
 
-    it "returns true if email and password match a user in the db" do
+    it "returns user hash if email and password match a user in the db" do
       user = Factory(:user)
 	  it = User.authenticate(user.email, user.password)
-      it.must_equal true
+      it.must_equal User.find_by_email(user.email)
     end
 	
 	it "returns false if email doesn't exist in db" do

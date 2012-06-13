@@ -1,4 +1,6 @@
 class NotificationsController < ApplicationController
+  before_filter :authenticate
+  
   def index
   end
 
@@ -7,4 +9,5 @@ class NotificationsController < ApplicationController
 
   def create
   end
+  
 end

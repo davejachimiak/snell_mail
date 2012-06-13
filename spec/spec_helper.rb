@@ -4,13 +4,13 @@ require "minitest/autorun"
 require "capybara/rails"
 require "active_support/testing/setup_and_teardown"
 require "factory_girl"
-
 Factory.find_definitions
 
 class IntegrationTest < MiniTest::Spec
   include Rails.application.routes.url_helpers
   include Capybara::DSL
-  register_spec_type(/integration$/, self)
+  include ShowMeTheCookies
+  register_spec_type(/(Helper|integration)$/, self)
 end
 
 class HelperTest < MiniTest::Spec

@@ -19,16 +19,16 @@ describe "user integration" do
   
   it "redirects to sign in page if bad email and password combo" do
     Factory(:user)
-	visit '/'
-	fill_in 'Email', :with => 'd.jachimik@neu.edu'
+    visit '/'
+    fill_in 'Email', :with => 'd.jachimik@neu.edu'
     fill_in 'Password', :with => 'passord'
     click_button 'Sign in'
-	page.current_path.must_equal '/'
-	page.text.must_include 'bad email and password combintion. try again.'
+    page.current_path.must_equal '/'
+    page.text.must_include 'bad email and password combintion. try again.'
   end
   
   it "doesn't show header if you aren't signed in" do
     visit '/'
-	page.text.wont_include 'Users'
+    page.text.wont_include 'Users'
   end
 end

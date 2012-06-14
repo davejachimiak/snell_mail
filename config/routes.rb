@@ -7,6 +7,7 @@ SnellMail::Application.routes.draw do
   resources :users
   resources :cohabitants
   
+  match '/signout', :to => 'sessions#destroy'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

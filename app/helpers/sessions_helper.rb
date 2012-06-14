@@ -4,6 +4,10 @@ module SessionsHelper
   end
 
   def signed_in?
-	session[:user_token] ? true : false
+    session[:user_token] ? true : false
+  end
+
+  def admin?
+    User.find(session[:user_token]).admin?
   end
 end

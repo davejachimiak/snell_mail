@@ -1,10 +1,10 @@
 <%= form_for(:session, :url => sessions_path) do |f| %>
-  <%= f.label :email %><br />
+  <%= f.label :email %>
   <%= f.text_field :email %>
-  
-  <%= f.label :password %><br />
+  <br>
+  <%= f.label :password %>
   <%= f.password_field :password %>
-  
+  <br>
   <%= f.submit 'Sign in' %>
 <% end %>
 <% flash.each do |key, value| %>

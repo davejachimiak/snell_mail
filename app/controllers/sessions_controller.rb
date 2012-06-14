@@ -8,8 +8,8 @@ class SessionsController < ApplicationController
     user = User.authenticate(params[:session][:email],
                              params[:session][:password])
     if user
-	  redirect_to :controller => 'notifications', :action => 'new'
-      session[:user_token] = user.salt
+      redirect_to :controller => 'notifications', :action => 'new'
+      session[:user_token] = user.id
     else
       flash[:error] = 'bad email and password combintion. try again.'
       redirect_to '/'
@@ -17,5 +17,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    reset_session
+    redirect_to :root
   end
 end

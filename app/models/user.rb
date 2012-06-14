@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   validates :email,    :format => { :with => VALID_EMAIL_REGEX }
   validates :password, :length => { :minimum => 7 }
   
-  before_save :encrypt_password
+  before_create :encrypt_password
 
   class << self
     def authenticate(email, password)

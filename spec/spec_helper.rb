@@ -3,14 +3,12 @@ require File.expand_path("../../config/environment", __FILE__)
 require "minitest/autorun"
 require "capybara/rails"
 require "active_support/testing/setup_and_teardown"
-require "factory_girl"
-Factory.find_definitions
+require "factory_girl_rails"
 
 class IntegrationTest < MiniTest::Spec
   include Rails.application.routes.url_helpers
   include Capybara::DSL
-  include ShowMeTheCookies
-  register_spec_type(/(Helper|integration)$/, self)
+  register_spec_type(/integration$/, self)
 end
 
 class HelperTest < MiniTest::Spec

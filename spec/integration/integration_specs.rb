@@ -1,12 +1,14 @@
 require 'spec_helper'
 
 describe "user integration" do
-  before do
+  FactoryGirl.create(:user)
+  FactoryGirl.create(:non_admin)
+  
+  after do
     reset_session!
   end
 
-  it "redirects to user index after creation of user" do
-    Factory(:user)
+  it "redirects to user index after admin creates user" do
     visit '/'
     fill_in 'Email', :with => 'd.jachimiak@neu.edu'
     fill_in 'Password', :with => 'password'
@@ -22,7 +24,6 @@ describe "user integration" do
   end
   
   it "redirects to sign in page if bad email and password combo" do
-    Factory(:user)
     visit '/'
     fill_in 'Email', :with => 'd.jachimik@neu.edu'
     fill_in 'Password', :with => 'passord'
@@ -49,7 +50,6 @@ describe "user integration" do
   end
   
   it "allows user to sign out" do
-    Factory(:user)
     visit '/'
     fill_in 'Email', :with => 'd.jachimiak@neu.edu'
     fill_in 'Password', :with => 'password'
@@ -62,23 +62,34 @@ describe "user integration" do
   end
 
   it "allows only admin users to resource users or cohabitants" do
-    Factory(:user, :admin => false)
     visit '/'
-    fill_in 'Email', :with => 'd.jachimiak@neu.edu'
+    fill_in 'Email', :with => 'new.student@neu.edu'
     fill_in 'Password', :with => 'password'
     click_button 'Sign in'
-    page.text.must_include 'true'
     page.text.wont_include 'Cohabitants'
     page.text.wont_include 'Users'
     visit '/cohabitants'
     page.current_path.must_equal '/notifications'
     page.text.must_include 'Only admin users can go to there.'
     visit '/users'
-    page.current_path.must_equal 'notifications'
+    page.current_path.must_equal '/notifications'
     page.text.must_include 'Only admin users can go to there.'
   end
 
-  it "does not allow admin users to destroy themselves"
+  it "allows admin users to other's but doesn't not allow admin users to destroy themselves" do
+    Capybara.current_driver = :selenium
+    visit '/'
+    fill_in 'Email', :with => 'd.jachimiak@neu.edu'
+    fill_in 'Password', :with => 'password'
+    click_button 'Sign in'
+	click_link 'Users'
+	click_link 'Delete New Student'
+    page.driver.browser.switch_to.alert.accept
+	page.current_path.must_equal '/users'
+    page.text.wont_include 'New Student'
+    page.body.wont_include 'Delete Dave Jachimiak'
+	Capybara.use_default_driver
+  end
 
   it "allows admin users to create other and switch users to admin users"
 end

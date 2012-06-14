@@ -6,7 +6,7 @@ group :test, :development do
   gem 'minitest'
   gem 'capybara'
   gem 'turn', '~> 0.9.5'
-  gem 'factory_girl'
+  gem 'factory_girl_rails', '~> 3.0', :require => false
   gem 'show_me_the_cookies'
 end
 group :assets do

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "user integration" do
-  after do
+  before do
     reset_session!
   end
 
@@ -67,6 +67,7 @@ describe "user integration" do
     fill_in 'Email', :with => 'd.jachimiak@neu.edu'
     fill_in 'Password', :with => 'password'
     click_button 'Sign in'
+    page.text.must_include 'true'
     page.text.wont_include 'Cohabitants'
     page.text.wont_include 'Users'
     visit '/cohabitants'

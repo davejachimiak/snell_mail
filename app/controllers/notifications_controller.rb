@@ -5,6 +5,7 @@ class NotificationsController < ApplicationController
   end
 
   def new
+    @user = User.find(session[:user_token])
   end
 
   def create

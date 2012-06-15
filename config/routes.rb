@@ -6,7 +6,8 @@ SnellMail::Application.routes.draw do
   resources :notifications, :only => [:index, :new, :create]
   resources :users
   resources :cohabitants
-  
+ 
+  match '/change_password', :to => 'users#change_password' 
   match '/signout', :to => 'sessions#destroy'
   # The priority is based upon order of creation:
   # first created -> highest priority.

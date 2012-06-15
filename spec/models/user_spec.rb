@@ -21,7 +21,7 @@ describe "User" do
   
   describe "validators" do
     before do
-      @it = Factory(:user)
+      @it = FactoryGirl.build(:user)
     end
 
     after do
@@ -56,21 +56,22 @@ describe "User" do
   end
 
   describe "#encrypt_password" do
+    before do
+      @it = FactoryGirl.build(:user)
+      @it.encrypt_password
+    end
+    
     it "is responsive to User object" do
       it = User.new
       it.must_respond_to :encrypt_password
     end
 
     it "saves the user's salt" do
-      it = Factory(:user)
-      it.encrypt_password
-      it.salt.wont_be_nil
+      @it.salt.wont_be_nil
     end
 
     it "saves the encrypted password with salt" do
-      it = Factory(:user)
-      it.encrypt_password
-      it.encrypted_password.must_equal Digest::SHA2.digest("#{it.password}#{it.salt}")
+      @it.encrypted_password.must_equal Digest::SHA2.digest("#{@it.password}#{@it.salt}")
     end
   end
 
@@ -83,34 +84,34 @@ describe "User" do
     end
     
     it "makes an SHA2 hash of the current time and password" do
-      time = Time.now
       @it.password = 'password'
       @it.make_salt.must_equal Digest::SHA2.digest("#{@it.password}#{Time.now}")
     end
   end
 
   describe "#authenticate" do
+    before do
+      @user = FactoryGirl.create(:user)
+    end
+    
     it "is responsive to User object" do
       it = User
       it.must_respond_to :authenticate
     end
 
     it "returns user hash if email and password match a user in the db" do
-      user = Factory(:user)
-	  it = User.authenticate(user.email, user.password)
-      it.must_equal User.find_by_email(user.email)
+      it = User.authenticate(@user.email, @user.password)
+      it.must_equal User.find_by_email(@user.email)
     end
 	
-	it "returns false if email doesn't exist in db" do
-	  user = Factory(:user)
-	  it = User.authenticate('d.jachimia@neu.edu', user.password)
-	  it.wont_equal true
-	end
+    it "returns false if email doesn't exist in db" do
+      it = User.authenticate('d.jachimia@neu.edu', @user.password)
+      it.wont_equal true
+    end
 	
-	it "returns false if password doesn't match email's user" do
-	  user = Factory(:user)
-	  it = User.authenticate(user.email, 'passwor')
-	  it.wont_equal true
-	end
+    it "returns false if password doesn't match email's user" do
+      it = User.authenticate(@user.email, 'passwor')
+      it.wont_equal true
+    end
   end
 end

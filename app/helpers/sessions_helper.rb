@@ -1,4 +1,9 @@
 module SessionsHelper
+  def current_user
+    id = session[:user_token]
+    User.find(id)
+  end
+  
   def signed_in?
     session[:user_token] ? true : false
   end

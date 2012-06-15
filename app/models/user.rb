@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
   validates :name,     :format => { :with => VALID_NAME_REGEX }
   validates :email,    :format => { :with => VALID_EMAIL_REGEX }
-  validates :password, :length => { :minimum => 7 }
+  validates :password, :length => { :minimum => 7 }, :allow_nil => true
   
   before_create :encrypt_password
 
@@ -13,11 +13,11 @@ class User < ActiveRecord::Base
     def authenticate(email, password)
       user = find_by_email(email)
       user && valid_user?(user, password) ? user : nil
-	end
+    end
 	
-	def valid_user?(user, password)
-	  user.encrypted_password == Digest::SHA2.digest("#{password}#{user.salt}")
-	end
+    def valid_user?(user, password)
+      user.encrypted_password == Digest::SHA2.digest("#{password}#{user.salt}")
+    end
   end
 
   def encrypt_password

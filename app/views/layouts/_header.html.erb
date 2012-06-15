@@ -1,6 +1,8 @@
 <header style="display:inline">
 <% if admin? %>
   <%= link_to 'Users', users_path %>
+<% else %>
+  <%= link_to 'Change password', :controller => 'users', :action => 'change_password', :user => current_user %>
 <% end %>
   <%= link_to 'Sign out', signout_path %>
 </header>

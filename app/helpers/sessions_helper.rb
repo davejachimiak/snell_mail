@@ -18,6 +18,6 @@ module SessionsHelper
   
   def authenticate_admin
     redirect_to '/notifications', 
-	  :notice => 'Only admin users can go to there.' if !admin?
+      :notice => 'Only admin users can go to there.' if !admin?
   end
 end

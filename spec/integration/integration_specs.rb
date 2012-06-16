@@ -75,7 +75,20 @@ describe "integration" do
       fill_in 'Email', :with => 'new.student@neu.edu'
       fill_in 'Password', :with => 'passwordpassword'
       page.current_path.must_equal '/notifications'
+      click_link 'Sign out'
+      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'Password', :with => 'password'
+      click_link 'Users'
+      click_link 'Edit Dave Jachimiak'
+      click_link 'Change password'
+      fill_in 'Old password', :with => 'password'
+      fill_in 'New password', :with => 'passwordpassword'
+      fill_in 'New password again', :with => 'passwordpassword'
+      click_button 'Change password'
+      page.current_path.must_equal '/users'
+      page.text.must_include 'new password saved!'
       User.find_by_email('new.student@neu.edu').update_attributes(:password => 'password')
+      User.find_by_email('d.jachimiak@neu.edu').update_attributes(:password => 'password')
     end
   end
 

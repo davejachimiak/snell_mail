@@ -2,4 +2,4 @@
 
 This app notifies NEU Snell Library's cohabitants that they have snail mail.
 
-### Warning!: WIP/NSFW
+=== Warning!: WIP/NSFW

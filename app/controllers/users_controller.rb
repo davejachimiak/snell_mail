@@ -26,26 +26,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    old_password = params[:user][:old_password]
-    if old_password 
-      if Digest::SHA2.digest("#{old_password}#{current_user.salt}") == current_user.encrypted_password
-        if params[:user][:password_confirmation] == params[:user][:password]
-          if @user.update_attributes(params[:user])
-            if !admin?
-              redirect_to new_notification_path, :notice => 'new password saved!'
-            elsif current_user.id == @user.id && admin? && @user.password?
-              redirect_to users_path, :notice => 'new password saved!'
-            end
-          else
-            redirect_to session[:redirect_back], :notice => "your new password needs to be over 6 characters"
-          end
-        else
-          redirect_to session[:redirect_back], :notice => "your new password and confirmation didn't match"
-        end
-      else
-        redirect_to session[:redirect_back], :notice => "your old password didn't match your existing one"
-      end
-    elsif @user.update_attributes(params[:user])
+    if @user.update_attributes(params[:user])
       redirect_to users_path, :notice => "#{@user.name} updated"
     end
   end

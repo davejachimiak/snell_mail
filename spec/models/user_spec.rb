@@ -114,18 +114,4 @@ describe "User" do
       it.wont_equal true
     end
   end
-
-  describe "#password_confirmation" do
-    it "is responsive on User instance" do
-      it = User.new
-      it.must_respond_to :password_confirmation
-    end
-  end
-
-  describe "#old_password" do
-    it "is responsive on User instance" do
-      it = User.new
-      it.must_respond_to :old_password
-    end
-  end
 end

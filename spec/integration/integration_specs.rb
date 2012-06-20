@@ -158,6 +158,7 @@ describe "integration" do
       fill_in 'Name', :with => 'Happy Bobappy'
       fill_in 'Email', :with => 'happy.bobappy@example.com'
       fill_in 'Password', :with => 'password'
+	  fill_in 'Password confirmation', :with => 'password'
       click_button 'Create'
       page.text.must_include 'Happy Bobappy'
       page.text.must_include 'happy.bobappy@example.com'

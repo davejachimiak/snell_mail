@@ -3,12 +3,25 @@ require_relative '../../app/models/user.rb'
 
 describe "User" do
   describe "new object" do
+    before do
+	  @it = User.new
+    end
+	
     it "attributes should be nil" do
-      it = User.new
-      it.name.must_be_nil
-      it.email.must_be_nil
-      it.encrypted_password.must_be_nil
-      it.admin.must_be_nil
+      @it.name.must_be_nil
+      @it.email.must_be_nil
+      @it.password_digest.must_be_nil
+      @it.admin.must_be_nil
+    end
+	
+	it "saves with password_digest if everything validates" do
+      @it.name                  = 'Dave Jachimiak'
+      @it.email                 = 'd.jachimiak@neu.edu'
+	  @it.password              = 'password'
+	  @it.password_confirmation = 'password'
+	  
+	  @it.save.must_equal true
+	  @it.password_digest.wont_be_nil
     end
   end
   
@@ -52,66 +65,6 @@ describe "User" do
       it "must be more than 6 characters" do
         @it.password = 'joord'
       end
-    end
-  end
-
-  describe "#encrypt_password" do
-    before do
-      @it = FactoryGirl.build(:user)
-      @it.encrypt_password
-    end
-    
-    it "is responsive to User object" do
-      it = User.new
-      it.must_respond_to :encrypt_password
-    end
-
-    it "saves the user's salt" do
-      @it.salt.wont_be_nil
-    end
-
-    it "saves the encrypted password with salt" do
-      @it.encrypted_password.must_equal Digest::SHA2.digest("#{@it.password}#{@it.salt}")
-    end
-  end
-
-  describe "#make_salt" do
-    before do
-      @it = User.new
-    end
-    it "is responsive to User object" do
-      @it.must_respond_to :make_salt
-    end
-    
-    it "makes an SHA2 hash of the current time and password" do
-      @it.password = 'password'
-      @it.make_salt.must_equal Digest::SHA2.digest("#{@it.password}#{Time.now}")
-    end
-  end
-
-  describe "#authenticate" do
-    before do
-      @user = FactoryGirl.create(:user)
-    end
-    
-    it "is responsive to User object" do
-      it = User
-      it.must_respond_to :authenticate
-    end
-
-    it "returns user hash if email and password match a user in the db" do
-      it = User.authenticate(@user.email, @user.password)
-      it.must_equal User.find_by_email(@user.email)
-    end
-	
-    it "returns false if email doesn't exist in db" do
-      it = User.authenticate('d.jachimia@neu.edu', @user.password)
-      it.wont_equal true
-    end
-	
-    it "returns false if password doesn't match email's user" do
-      it = User.authenticate(@user.email, 'passwor')
-      it.wont_equal true
     end
   end
 end

@@ -5,9 +5,9 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.authenticate(params[:session][:email],
-                             params[:session][:password])
-    if user
+    user = User.find_by_email(params[:session][:email])
+	
+    if user && user.authenticate(params[:session][:password])
       redirect_to :controller => 'notifications', :action => 'new'
       session[:user_token] = user.id
     else

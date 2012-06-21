@@ -1,8 +1,19 @@
 class UsersController < ApplicationController
   before_filter :authenticate
-  before_filter :authenticate_admin, :except => ['change_password','update']
+  before_filter :authenticate_admin, :except => ['password','update']
   before_filter :user_is_params_id, :only => ['edit', 'update', 'destroy']
 
+  def password
+    if params[:id].to_i == current_user.id
+      @user = User.find(params[:id])
+	  @request_url = request.referer
+      session[:redirect_back] = request.referer
+    else
+      flash[:notify] = 'idiot'
+      redirect_to request.referer
+    end
+  end
+  
   def index
     @users = User.all
   end
@@ -12,24 +23,16 @@ class UsersController < ApplicationController
   end
 
   def create
-    if User.create(params[:user])
-      redirect_to users_path
+    @user = User.new(params[:user])
+    if @user.save
+      redirect_to users_path, :notice => "#{@user.name} created"
     else
-      redirect_to request.referer, :notify => 'Something went wrong. Try again'
+      flash[:notice] = 'Something went wrong. Try again'
+      redirect_to request.referer
     end
   end
 
   def edit
-  end
-
-  def change_password
-    #if params[:user_id] == current_user.id
-      debugger
-      @user = User.find(params[:user_id])
-      session[:redirect_back] = request.referer
-    #else
-    #  redirect_to request.referer, :notify => 'idiot'
-    #end
   end
 
   def update
@@ -58,13 +61,15 @@ private
   def change_password
     if @user.authenticate(@old_password)
       if @user.update_attributes(params[:user])
-        redirect_to session[:redirect_back], :notify => 'new password saved!'
+        flash[:notice] = 'new password saved!'
+        redirect_to session[:redirect_back]
       else
-        redirect_to "/change_password?user_id=#{@user.id}", :notify => "password confirmation " +
-                                                                         "doesn't match"
+        flash[:notice] = "password confirmation doesn't match"
+        redirect_to request.referer
       end
     else
-      redirect_to "/change_password?user_id=#{@user.id}"
+      flash[:notice] = "Old password didn't match existing one"
+      redirect_to request.referer
     end
   end
 end

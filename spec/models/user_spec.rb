@@ -4,7 +4,7 @@ require_relative '../../app/models/user.rb'
 describe "User" do
   describe "new object" do
     before do
-	  @it = User.new
+      @it = User.new
     end
 	
     it "attributes should be nil" do
@@ -14,14 +14,14 @@ describe "User" do
       @it.admin.must_be_nil
     end
 	
-	it "saves with password_digest if everything validates" do
+    it "saves with password_digest if everything validates" do
       @it.name                  = 'Dave Jachimiak'
       @it.email                 = 'd.jachimiak@neu.edu'
-	  @it.password              = 'password'
-	  @it.password_confirmation = 'password'
+      @it.password              = 'password'
+      @it.password_confirmation = 'password'
 	  
-	  @it.save.must_equal true
-	  @it.password_digest.wont_be_nil
+      @it.save.must_equal true
+      @it.password_digest.wont_be_nil
     end
   end
   

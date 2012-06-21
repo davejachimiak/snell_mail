@@ -24,6 +24,7 @@ class UsersController < ApplicationController
 
   def change_password
     #if params[:user_id] == current_user.id
+      debugger
       @user = User.find(params[:user_id])
       session[:redirect_back] = request.referer
     #else

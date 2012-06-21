@@ -10,3 +10,5 @@
 
   <%= f.submit 'Save' %> 
 <% end %>
+
+<%= link_to 'Change password', password_path(current_user) if @user == current_user %>

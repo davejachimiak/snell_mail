@@ -40,7 +40,18 @@ describe "integration" do
     after do
       reset_session!
     end
-  
+    
+    it "does not allow a user to change another's password" do
+      visit '/'
+      fill_in 'Email', :with => 'new.student@neu.edu'
+      fill_in 'Password', :with => 'password'
+      click_button 'Sign in'
+      another_users_id = User.find_by_email('d.jachimiak@neu.edu').id
+      visit "/users/#{another_users_id}/password"
+      page.current_path.must_equal '/notifications/new'
+      page.text.must_include 'idiot'
+    end
+
     it "allows only admin users to resource users or cohabitants" do
       visit '/'
       fill_in 'Email', :with => 'new.student@neu.edu'
@@ -89,7 +100,7 @@ describe "integration" do
       fill_in 'New password again', :with => 'passwordpassword'
       click_button 'Change password'
       id = User.find_by_email('d.jachimiak@neu.edu').id
-      page.current_path.must_equal "/users/'#{id}'"
+      page.current_path.must_equal "/users/#{id}/edit"
       page.text.must_include 'new password saved!'
       User.find_by_email('new.student@neu.edu').update_attributes(:password => 'password',
                                                                   :password_confirmation => 'password')

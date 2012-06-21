@@ -3,7 +3,7 @@ FactoryGirl.define do
     name     'Dave Jachimiak'
     email    'd.jachimiak@neu.edu'
     password 'password'
-	password_confirmation 'password'
+    password_confirmation 'password'
     admin    true
   end
 
@@ -11,7 +11,7 @@ FactoryGirl.define do
     name     'New Student'
     email    'new.student@neu.edu'
     password 'password'
-	password_confirmation 'password'
+    password_confirmation 'password'
     admin    false
   end
 end

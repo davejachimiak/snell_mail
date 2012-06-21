@@ -66,6 +66,7 @@ describe "integration" do
       fill_in 'New password', :with => 'passwordpassword'
       fill_in 'New password again', :with => 'passwordpassword'
       click_button 'Change password'
+      page.current_path.must_equal '/notifications'
       page.text.must_include 'new password saved!'
       click_link 'Sign out'
       fill_in 'Email', :with => 'new.student@neu.edu'
@@ -85,10 +86,13 @@ describe "integration" do
       fill_in 'New password', :with => 'passwordpassword'
       fill_in 'New password again', :with => 'passwordpassword'
       click_button 'Change password'
-      page.current_path.must_equal '/users'
+      id = User.find_by_email('d.jachimiak@neu.edu').id
+      page.current_path.must_equal "/users/'#{id}'"
       page.text.must_include 'new password saved!'
-      User.find_by_email('new.student@neu.edu').update_attributes(:password => 'password')
-      User.find_by_email('d.jachimiak@neu.edu').update_attributes(:password => 'password')
+      User.find_by_email('new.student@neu.edu').update_attributes(:password => 'password',
+                                                                  :password_confirmation => 'password')
+      User.find_by_email('d.jachimiak@neu.edu').update_attributes(:password => 'password',
+                                                                  :password_confirmation => 'password')
     end
   end
 
@@ -114,6 +118,7 @@ describe "integration" do
       fill_in 'Name', :with => 'New Student'
       fill_in 'Email', :with => 'new.student@neu.edu'
       fill_in 'Password', :with => 'password'
+      fill_in 'Password confirmation', :with => 'password'
       click_button 'Create'
       click_link 'Sign out'
       Capybara.current_driver = :rack_test
@@ -158,7 +163,7 @@ describe "integration" do
       fill_in 'Name', :with => 'Happy Bobappy'
       fill_in 'Email', :with => 'happy.bobappy@example.com'
       fill_in 'Password', :with => 'password'
-	  fill_in 'Password confirmation', :with => 'password'
+      fill_in 'Password confirmation', :with => 'password'
       click_button 'Create'
       page.text.must_include 'Happy Bobappy'
       page.text.must_include 'happy.bobappy@example.com'

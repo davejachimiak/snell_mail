@@ -37,15 +37,18 @@ describe "integration" do
   end
 
   describe "non-admin sign-in integration" do
+    before do
+      visit '/'
+      fill_in 'Email', :with => 'new.student@neu.edu'
+      fill_in 'Password', :with => 'password'
+      click_button 'Sign in'
+    end
+
     after do
       reset_session!
     end
     
     it "does not allow a user to change another's password" do
-      visit '/'
-      fill_in 'Email', :with => 'new.student@neu.edu'
-      fill_in 'Password', :with => 'password'
-      click_button 'Sign in'
       another_users_id = User.find_by_email('d.jachimiak@neu.edu').id
       visit "/users/#{another_users_id}/password"
       page.current_path.must_equal '/notifications/new'
@@ -53,10 +56,6 @@ describe "integration" do
     end
 
     it "allows only admin users to resource users or cohabitants" do
-      visit '/'
-      fill_in 'Email', :with => 'new.student@neu.edu'
-      fill_in 'Password', :with => 'password'
-      click_button 'Sign in'
       page.text.wont_include 'Cohabitants'
       page.text.wont_include 'Users'
       visit '/cohabitants'
@@ -68,10 +67,6 @@ describe "integration" do
     end
     
     it "allows any user to change their password" do
-      visit '/'
-      fill_in 'Email', :with => 'new.student@neu.edu'
-      fill_in 'Password', :with => 'password'
-      click_button 'Sign in'
       click_link 'Change password'
       fill_in 'Old password', :with => 'password'
       fill_in 'New password', :with => 'passwordpassword'

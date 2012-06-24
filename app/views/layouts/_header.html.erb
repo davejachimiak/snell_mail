@@ -1,6 +1,7 @@
 <header style="display:inline">
 <% if admin? %>
   <%= link_to 'Users', users_path %>
+  <%= link_to 'Cohabitants', cohabitants_path %>
 <% else %>
   <%= link_to 'Change password', password_path(current_user) %>
 <% end %>

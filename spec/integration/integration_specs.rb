@@ -177,4 +177,62 @@ describe "integration" do
       page.text.must_include 'happy.bobappy@example.com'
     end
   end
+
+  describe "valid cohabitants integration" do
+    after do
+      reset_session!
+    end
+
+    it "should allow admin users to create and edit cohabitants" do
+      visit '/'
+      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'Password', :with => 'password'
+      click_button 'Sign in'
+      click_link 'Cohabitants'
+      click_link 'New cohabitant'
+      fill_in 'Department', :with => 'EdTech'
+      fill_in 'Location', :with => '242SL'
+      fill_in 'Contact name', :with => 'Cool Lady'
+      fill_in 'Contact email', :with => 'cool.lady@neu.edu'
+      click_button 'Create'
+      page.current_path.must_equal '/cohabitants'
+      page.text.must_include 'EdTech'
+      page.text.must_include '242SL'
+      page.text.must_include 'Cool Lady'
+      page.text.must_include 'cool.lady@neu.edu'
+      click_link 'Edit EdTech'
+      fill_in 'Location', :with => '259SL'
+      fill_in 'Contact name', :with => 'Cool Dude'
+      fill_in 'Contact email', :with => 'cool.dude@neu.edu'
+      click_button 'Edit'
+      page.current_path.must_equal '/cohabitants'
+      page.text.wont_include 'cool.lady@neu.edu'
+      page.text.must_include 'cool.dude@neu.edu'
+      Cohabitant.find_by_contact_email('cool.dude@neu.edu').destroy
+    end
+
+    it "allows admin users to destroy cohabitants" do
+      Capybara.current_driver = :selenium
+      visit '/'
+      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'Password', :with => 'password'
+      click_button 'Sign in'
+      click_link 'Cohabitants'
+      click_link 'New cohabitant'
+      fill_in 'Department', :with => 'EdTech'
+      fill_in 'Location', :with => '242SL'
+      fill_in 'Contact name', :with => 'Cool Lady'
+      fill_in 'Contact email', :with => 'cool.lady@neu.edu'
+      click_button 'Create'
+      click_link 'Delete EdTech'
+      page.driver.browser.switch_to.alert.accept
+      page.current_path.must_equal '/cohabitants'
+      page.text.wont_include 'Cool Lady'
+      Capybara.current_driver = :rack_test
+    end
+  end
+
+  describe "invalid cohabitant attributes don't save integration" do
+    
+  end
 end

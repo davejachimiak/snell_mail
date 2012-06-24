@@ -1,2 +1,15 @@
-<h1>Cohabitants#new</h1>
-<p>Find me in app/views/cohabitants/new.html.erb</p>
+<%= form_for @cohabitant do |f| %>
+  <%= f.label :department %>
+  <%= f.text_field :department %>
+
+  <%= f.label :location %>
+  <%= f.text_field :location %>
+
+  <%= f.label :contact_name %>
+  <%= f.text_field :contact_name %>
+
+  <%= f.label :contact_email %>
+  <%= f.text_field :contact_email %>
+
+  <%= f.submit 'Create' %>
+<% end %>

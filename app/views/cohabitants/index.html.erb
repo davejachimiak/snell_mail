@@ -1,2 +1,12 @@
-<h1>Cohabitants#index</h1>
-<p>Find me in app/views/cohabitants/index.html.erb</p>
+<%= link_to 'New cohabitant', new_cohabitant_path %>
+<% @cohabitants.each do |c| %>
+  <ul>
+    <li><%= c.department %></li>
+    <li><%= c.location %></li>
+    <li><%= c.contact_name %></li>
+    <li><%= c.contact_email %></li>
+    <li><%= link_to 'edit', edit_cohabitant_path(c), :title => "Edit #{c.department}" %>
+    <li><%= link_to "delete", c, :method => :delete, :confirm => "Are you sure?",
+                                 :title => "Delete #{c.department}" %></li>
+  </ul>
+<% end %>

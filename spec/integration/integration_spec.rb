@@ -238,21 +238,25 @@ describe "integration" do
     end
 
     it "won't save new cohabitant" do
-      visit '/'
+      check_inclusion = Proc.new { |string| page.text.must_include string }
+      inclusion_strings = ["department can't be blank", "location can't be blank",
+	   "contact name can't be blank", "contact email can't be blank"]
+	  
+	  visit '/'
       fill_in 'Email', :with => 'd.jachimiak@neu.edu'
       fill_in 'Password', :with => 'password'
       click_button 'Sign in'
       click_link 'Cohabitants'
       click_link 'New cohabitant'
-      fill_in 'Location', :with => '242SL'
-      fill_in 'Contact name', :with => 'Cool Lady'
-      fill_in 'Contact email', :with => 'cool.lady@neu.edu'
-      page.current_path.must_equal '/cohabitants/new'
-      page.text.must_include 'You must include a department name.'
+	  click_button 'Create'
+      page.current_path.must_equal '/cohabitants'
+      inclusion_strings.each { |string| check_inclusion.call(string) }
+	  fill_in 'Department', :with => 'Cool Factory'
       fill_in 'Location', :with => '242SL'
       fill_in 'Contact name', :with => 'Cool Lady'
       fill_in 'Contact email', :with => 'cool.ladyneu.edu'
-      page.text.must_include 'Email address must be valid.'
+      click_button 'Create'
+      page.text.must_include 'contact email is invalid'
     end  
   end
 end

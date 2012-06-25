@@ -14,4 +14,11 @@ FactoryGirl.define do
     password_confirmation 'password'
     admin    false
   end
+  
+  factory :cohabitant do
+    department    'Cool Factory'
+    location      'Penthouse'
+    contact_name  'Very Cool Guy'
+    contact_email 'cool.guy@neu.edu'
+  end
 end

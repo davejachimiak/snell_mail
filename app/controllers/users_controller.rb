@@ -5,7 +5,6 @@ class UsersController < ApplicationController
 
   def password
     if params[:id].to_i == current_user.id
-      @request_url = request.referer
       session[:redirect_back] = request.referer
     else
       flash[:notice] = "you're an idiot"
@@ -27,7 +26,7 @@ class UsersController < ApplicationController
       redirect_to users_path, :notice => "#{@user.name} created"
     else
       flash[:notice] = 'Something went wrong. Try again'
-      redirect_to request.referer
+      render 'new'
     end
   end
 

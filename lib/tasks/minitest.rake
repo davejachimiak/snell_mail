@@ -7,7 +7,7 @@ end
 
 Rake::TestTask.new(:integration => "db:test:prepare") do |t|
   t.libs << "spec"
-  t.pattern = "spec/integration/integration_specs.rb"
+  t.pattern = "spec/integration/integration_spec.rb"
 end
 
 Rake::TestTask.new(:test_user_model => "db:test:prepare") do |t|
@@ -15,9 +15,9 @@ Rake::TestTask.new(:test_user_model => "db:test:prepare") do |t|
   t.pattern = "spec/models/user_spec.rb"
 end
 
-Rake::TestTask.new(:test_sessions_helper => "db:test:prepare") do |t|
+Rake::TestTask.new(:test_cohabitant_model => "db:test:prepare") do |t|
   t.libs << "spec"
-  t.pattern = "spec/helpers/sessions_helper_spec.rb"
+  t.pattern = "spec/models/cohabitant_spec.rb"
 end
 
 task :default => :test

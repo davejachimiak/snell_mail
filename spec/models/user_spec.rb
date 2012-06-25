@@ -33,17 +33,17 @@ describe "User" do
   end
   
   describe "validators" do
-    before do
-      @it = FactoryGirl.build(:user)
-    end
-
-    after do
-      @it.save.wont_equal true
-    end
-    
     describe "name" do
+	  before do
+        @it = FactoryGirl.build(:user)
+      end
+
+      after do
+        @it.save.wont_equal true
+      end
+	  
       it "rejects a name under two characters" do
-	@it.name = 'f'
+	    @it.name = 'f'
       end
 
       it "rejects a name with no spaces" do
@@ -53,6 +53,14 @@ describe "User" do
       it "rejects a name with more than three spaces" do
         @it.name = 'Dave poop fest mcggee'
       end
+    end
+	
+	before do
+      @it = FactoryGirl.build(:user)
+    end
+
+    after do
+      @it.save.wont_equal true
     end
 
     describe "email" do

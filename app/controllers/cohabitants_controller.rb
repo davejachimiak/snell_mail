@@ -14,9 +14,10 @@ class CohabitantsController < ApplicationController
   def create
     @cohabitant = Cohabitant.new(params[:cohabitant])
     if @cohabitant.save
-      redirect_to cohabitants_path, :notify => 'New cohabitant successfully created.'
+      redirect_to cohabitants_path, :notify => 'New cohabitant successfully ' +
+                                               'created.'
     else
-      redirect_to new_cohabitant_path
+      render 'new'
     end
   end
 

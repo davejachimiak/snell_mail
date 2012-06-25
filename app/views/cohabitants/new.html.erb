@@ -13,3 +13,9 @@
 
   <%= f.submit 'Create' %>
 <% end %>
+
+<% if @cohabitant.errors.any? %>
+  <% @cohabitant.errors.full_messages.each do |m| %>
+    <p><%= m.downcase %></p>
+  <% end %>
+<% end %>

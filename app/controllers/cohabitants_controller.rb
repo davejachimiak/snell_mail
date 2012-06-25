@@ -1,7 +1,7 @@
 class CohabitantsController < ApplicationController
   before_filter :authenticate
   before_filter :authenticate_admin
-  before_filter :cohabitant_is_params_id
+  before_filter :set_cohabitant, :only => [:edit, :update, :destroy]
 
   def index
     @cohabitants = Cohabitant.all
@@ -15,12 +15,14 @@ class CohabitantsController < ApplicationController
     @cohabitant = Cohabitant.new(params[:cohabitant])
     if @cohabitant.save
       redirect_to cohabitants_path, :notify => 'New cohabitant successfully created.'
+    else
+      redirect_to new_cohabitant_path
     end
   end
 
   def update
     if @cohabitant.update_attributes(params[:cohabitant])
-      redirect_to cohabitants_path, :notice => "#{cohabitant.department} updated."
+      redirect_to cohabitants_path, :notice => "#{@cohabitant.department} updated."
     else
       redirect_to request.referer, :notice => "Something went wrong. Try again."
     end
@@ -33,7 +35,7 @@ class CohabitantsController < ApplicationController
 
   private
 
-  def cohabitant_is_params_id
+  def set_cohabitant
     @cohabitant = Cohabitant.find(params[:id])
   end
 end

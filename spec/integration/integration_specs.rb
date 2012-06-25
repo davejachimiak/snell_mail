@@ -232,7 +232,27 @@ describe "integration" do
     end
   end
 
-  describe "invalid cohabitant attributes don't save integration" do
-    
+  describe "invalid cohabitant attributes integration" do
+    after do
+      reset_session!
+    end
+
+    it "won't save new cohabitant" do
+      visit '/'
+      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'Password', :with => 'password'
+      click_button 'Sign in'
+      click_link 'Cohabitants'
+      click_link 'New cohabitant'
+      fill_in 'Location', :with => '242SL'
+      fill_in 'Contact name', :with => 'Cool Lady'
+      fill_in 'Contact email', :with => 'cool.lady@neu.edu'
+      page.current_path.must_equal '/cohabitants/new'
+      page.text.must_include 'You must include a department name.'
+      fill_in 'Location', :with => '242SL'
+      fill_in 'Contact name', :with => 'Cool Lady'
+      fill_in 'Contact email', :with => 'cool.ladyneu.edu'
+      page.text.must_include 'Email address must be valid.'
+    end  
   end
 end

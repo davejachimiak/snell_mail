@@ -242,21 +242,52 @@ describe "integration" do
       inclusion_strings = ["department can't be blank", "location can't be blank",
 	   "contact name can't be blank", "contact email can't be blank"]
 	  
-	  visit '/'
+      visit '/'
       fill_in 'Email', :with => 'd.jachimiak@neu.edu'
       fill_in 'Password', :with => 'password'
       click_button 'Sign in'
       click_link 'Cohabitants'
       click_link 'New cohabitant'
-	  click_button 'Create'
+      click_button 'Create'
       page.current_path.must_equal '/cohabitants'
       inclusion_strings.each { |string| check_inclusion.call(string) }
-	  fill_in 'Department', :with => 'Cool Factory'
+      fill_in 'Department', :with => 'Cool Factory'
       fill_in 'Location', :with => '242SL'
       fill_in 'Contact name', :with => 'Cool Lady'
       fill_in 'Contact email', :with => 'cool.ladyneu.edu'
       click_button 'Create'
       page.text.must_include 'contact email is invalid'
     end  
+  end
+
+  describe "valid notification integrations" do
+    before do
+      FactoryGirl.create(:cohabitant)
+      FactoryGirl.create(:cohabitant_2)
+      FactoryGirl.create(:cohabitant_3)
+      FactoryGirl.create(:cohabitant_4)
+    end
+    
+    after do 
+      reset_session!
+    end
+
+    it "should notify cohabitants that they have mail and redirect to notifications after notification" do
+      time = Time.now
+      visit '/'
+      fill_in 'Email', :with => 'new.student@neu.edu'
+      fill_in 'Password', :with => 'password'
+      click_button 'Sign in'
+      page.text.must_include "New notification for #{time.strftime("%A, %B %e, %Y")}"
+      page.text.must_include "Check each cohabitant that has mail in their bin."
+      check 'Cool Factory'
+      check 'Jargon House'
+      check 'Drugs'
+      check 'Fun Section'
+      click_button 'Notify!'
+      page.current_path.must_equal '/notifications'
+      page.text.must_include 'Cool Factory, Jargon House, Drugs, and Fun Section were just notified ' +
+                             'that they have mail in their bins today. Thanks'
+    end
   end
 end

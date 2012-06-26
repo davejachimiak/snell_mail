@@ -21,4 +21,25 @@ FactoryGirl.define do
     contact_name  'Very Cool Guy'
     contact_email 'cool.guy@neu.edu'
   end
+
+  factory :cohabitant_2, class: Cohabitant do
+    department    'Jargon House'
+    location      'Dungeon'
+    contact_name  'Neck Beard'
+    contact_email 'neck.beard@neu.edu'
+  end
+  
+  factory :cohabitant_3, class: Cohabitant do
+    department    'Drugs'
+    location      '878SL'
+    contact_name  'Crack'
+    contact_email 'coke.crack@neu.edu'
+  
+  end
+  factory :cohabitant_4, class: Cohabitant do
+    department    'Fun Section'
+    location      'New Section'
+    contact_name  'Super Cool Lady'
+    contact_email 'cool.lady@neu.edu'
+  end
 end

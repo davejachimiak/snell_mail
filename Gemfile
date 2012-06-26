@@ -7,7 +7,7 @@ group :test, :development do
   gem 'capybara'
   gem 'turn', '~> 0.9.5'
   gem 'factory_girl_rails', '~> 3.0', :require => false
-  gem 'show_me_the_cookies'
+  gem 'faker'
 end
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

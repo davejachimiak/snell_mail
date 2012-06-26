@@ -1,2 +1,9 @@
 <h3>New notification for <%= Time.now.strftime("%A, %B %e, %Y") %></h3>
 <h4>Check each cohabitant that has mail in their bin.</h4>
+<%= form_for @notification do |f| %>
+  <% @cohabitants.each do |c| %>
+    <%= f.label c.department %>
+	<%= f.check_box c.department %>
+  <% end %>
+  <%= f.submit 'Notify!' %>
+<% end %>

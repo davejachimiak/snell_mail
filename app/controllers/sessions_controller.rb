@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-
   def new
     redirect_to :controller => 'notifications', :action => 'new' if signed_in?
   end
@@ -12,7 +11,7 @@ class SessionsController < ApplicationController
       session[:user_token] = user.id
     else
       flash[:error] = 'bad email and password combintion. try again.'
-      redirect_to '/'
+      redirect_to :root
     end
   end
 

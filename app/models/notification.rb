@@ -1,6 +1,4 @@
 class Notification < ActiveRecord::Base
   belongs_to :user
-  belongs_to :cohabitant
-  
-  serialize :cohabitant_id
+  has_and_belongs_to_many :cohabitant
 end

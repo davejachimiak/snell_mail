@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120626191440) do
+ActiveRecord::Schema.define(:version => 20120630160431) do
 
   create_table "cohabitants", :force => true do |t|
     t.string   "department"
@@ -22,11 +22,15 @@ ActiveRecord::Schema.define(:version => 20120626191440) do
     t.datetime "updated_at",    :null => false
   end
 
+  create_table "cohabitants_notifications", :id => false, :force => true do |t|
+    t.string "cohabitant_id",   :null => false
+    t.string "notification_id", :null => false
+  end
+
   create_table "notifications", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "cohabitant_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

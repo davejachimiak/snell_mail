@@ -2,13 +2,4 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  activerecord:
-    attributes:
-      notification:
-        cohabitants: "Cohabitants"
-    errors:
-      models:
-        user:
-          attributes:
-            email:
-              blank: "...you have to choose one to notify"
+  hello: "Hello world"

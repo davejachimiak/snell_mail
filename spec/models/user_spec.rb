@@ -55,7 +55,7 @@ describe "User" do
       end
     end
 	
-	before do
+    before do
       @it = FactoryGirl.build(:user)
     end
 
@@ -76,3 +76,4 @@ describe "User" do
     end
   end
 end
+

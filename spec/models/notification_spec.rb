@@ -15,8 +15,8 @@ describe "Notification" do
 	    @notification.save.must_equal true
     end
 	
-	  it "#cohabitants returns array" do
-	    @notification.cohabitants.must_be_instance_of Array
+    it "#cohabitants returns array" do
+      @notification.cohabitants.must_be_instance_of Array
     end
     
     it "#user returns instance of User" do
@@ -45,3 +45,4 @@ describe "Notification" do
     end
   end
 end
+

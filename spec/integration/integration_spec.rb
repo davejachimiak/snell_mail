@@ -240,7 +240,7 @@ describe "integration" do
     it "won't save new cohabitant" do
       check_inclusion = Proc.new { |string| page.text.must_include string }
       inclusion_strings = ["department can't be blank", "location can't be blank",
-	   "contact name can't be blank", "contact email can't be blank"]
+        "contact name can't be blank", "contact email can't be blank"]
 	  
       visit '/'
       fill_in 'Email', :with => 'd.jachimiak@neu.edu'
@@ -266,8 +266,8 @@ describe "integration" do
       FactoryGirl.create(:cohabitant_2)
       FactoryGirl.create(:cohabitant_3)
       FactoryGirl.create(:cohabitant_4)
-	    @time = Time.now
-	    visit '/'
+      @time = Time.now
+      visit '/'
       fill_in 'Email', :with => 'new.student@neu.edu'
       fill_in 'Password', :with => 'password'
       click_button 'Sign in'
@@ -294,14 +294,14 @@ describe "integration" do
     it "should singularize confirmation notice for single cohabitant notifications" do
       check 'Fun Section'
       click_button 'Notify!'
-	    page.text.must_include 'Fun Section was'
+      page.text.must_include 'Fun Section was'
     end
 	
     it "shouldn't save notification if no cohabitants are present" do
       click_button 'Notify!'
       page.current_path.must_equal '/notifications'
       page.text.must_include "Check each cohabitant that has mail in their bin."
-      page.text.must_include 'You must notify at least one cohabitant.'
+      page.text.must_include 'cohabitants must be chosen'
     end
   end
 end

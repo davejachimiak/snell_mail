@@ -260,34 +260,48 @@ describe "integration" do
     end  
   end
 
-  describe "valid notification integrations" do
+  describe "notification integration" do
     before do
       FactoryGirl.create(:cohabitant)
       FactoryGirl.create(:cohabitant_2)
       FactoryGirl.create(:cohabitant_3)
       FactoryGirl.create(:cohabitant_4)
+	    @time = Time.now
+	    visit '/'
+      fill_in 'Email', :with => 'new.student@neu.edu'
+      fill_in 'Password', :with => 'password'
+      click_button 'Sign in'
     end
     
     after do 
       reset_session!
+      Cohabitant.all.each { |c| c.destroy }
     end
 
     it "should notify cohabitants that they have mail and redirect to notifications after notification" do
-      time = Time.now
-      visit '/'
-      fill_in 'Email', :with => 'new.student@neu.edu'
-      fill_in 'Password', :with => 'password'
-      click_button 'Sign in'
-      page.text.must_include "New notification for #{time.strftime("%A, %B %e, %Y")}"
+      page.text.must_include "New notification for #{@time.strftime("%A, %B %e, %Y")}"
       page.text.must_include "Check each cohabitant that has mail in their bin."
       check 'Cool Factory'
       check 'Jargon House'
-      check 'Drugs'
+      check 'Face Surgery'
       check 'Fun Section'
       click_button 'Notify!'
       page.current_path.must_equal '/notifications'
-      page.text.must_include 'Cool Factory, Jargon House, Drugs, and Fun Section were just notified ' +
-                             'that they have mail in their bins today. Thanks'
+      page.text.must_include 'Cool Factory, Jargon House, Face Surgery, and Fun Section were just notified ' +
+                             'that they have mail in their bins today. Thanks.'
+    end
+	
+    it "should singularize confirmation notice for single cohabitant notifications" do
+      check 'Fun Section'
+      click_button 'Notify!'
+	    page.text.must_include 'Fun Section was'
+    end
+	
+    it "shouldn't save notification if no cohabitants are present" do
+      click_button 'Notify!'
+      page.current_path.must_equal '/notifications'
+      page.text.must_include "Check each cohabitant that has mail in their bin."
+      page.text.must_include 'You must notify at least one cohabitant.'
     end
   end
 end

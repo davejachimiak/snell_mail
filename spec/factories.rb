@@ -30,12 +30,13 @@ FactoryGirl.define do
   end
   
   factory :cohabitant_3, class: Cohabitant do
-    department    'Drugs'
+    department    'Face Surgery'
     location      '878SL'
     contact_name  'Crack'
-    contact_email 'coke.crack@neu.edu'
+    contact_email 'good.nose@neu.edu'
   
   end
+  
   factory :cohabitant_4, class: Cohabitant do
     department    'Fun Section'
     location      'New Section'

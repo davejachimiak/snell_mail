@@ -20,4 +20,9 @@ Rake::TestTask.new(:test_cohabitant_model => "db:test:prepare") do |t|
   t.pattern = "spec/models/cohabitant_spec.rb"
 end
 
+Rake::TestTask.new(:test_notification_model => "db:test:prepare") do |t|
+  t.libs << "spec"
+  t.pattern = "spec/models/notification_spec.rb"
+end
+
 task :default => :test

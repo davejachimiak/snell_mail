@@ -146,7 +146,9 @@ describe "integration" do
       page.current_path.must_equal '/users'
       page.text.must_include 'old.student@neu.edu'
       page.text.must_include 'Old Student'
-      FactoryGirl.create(:non_admin)
+      User.find_by_name('Old Student').
+        update_attributes(:name => 'New Student',
+                          :email => 'new.student@neu.edu')
     end
   
     it "allows user to sign out" do
@@ -229,6 +231,27 @@ describe "integration" do
       page.current_path.must_equal '/cohabitants'
       page.text.wont_include 'Cool Lady'
       Capybara.current_driver = :rack_test
+    end
+    
+    it "shows all notifications for a given cohabitant" do
+      cohabitant = FactoryGirl.create(:cohabitant)
+      cohabitant_4 = FactoryGirl.create(:cohabitant_4)
+      FactoryGirl.create(:notify_c1, 
+        :user => User.find_by_name('d.jachimiak@neu.edu'),
+        :cohabitants => [cohabitant] )
+      FactoryGirl.create(:notify_c1_and_c4,
+        :user => User.find_by_email('new.student@neu.edu'),
+        :cohabitants => [cohabitant, cohabitant_4] )
+      visit '/'
+      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'Password', :with => 'password'
+      click_button 'Sign in'
+      click_link 'Cohabitants'
+      click_link 'Cool Factory'
+      page.text.must_include "#{Time.now.strftime('%A, %B %e %Y')} by Dave" +   
+        " Jachimiak"
+      page.text.must_include "#{Time.now.strftime('%A, %B %e %Y')} by New" +
+        " Student"
     end
   end
 

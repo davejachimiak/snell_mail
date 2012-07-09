@@ -2,7 +2,7 @@
 <% if !@cohabitants.empty? %>
   <% @cohabitants.each do |c| %>
     <ul>
-      <li><%= c.department %></li>
+      <li><%= link_to c.department, c %></li>
       <li><%= c.location %></li>
       <li><%= c.contact_name %></li>
       <li><%= c.contact_email %></li>

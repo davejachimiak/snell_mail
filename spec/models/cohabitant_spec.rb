@@ -24,6 +24,25 @@ describe "Cohabitant" do
     end
   end
   
+  describe "notifications association" do
+    before do
+      @it = FactoryGirl.create(:cohabitant)
+      
+      FactoryGirl.create(:notify_c1, 
+        :user => FactoryGirl.create(:user),
+        :cohabitants => [@it])
+      FactoryGirl.create(:notify_c1_and_c4, 
+        :user => FactoryGirl.create(:non_admin),
+        :cohabitants => [@it, FactoryGirl.create(:cohabitant_4)])
+    end
+    
+    it "has many notifications" do
+      @it.notifications.count.must_equal 2
+      @it.notifications[0].user.name.must_equal 'Dave Jachimiak'
+      @it.notifications[1].user.name.must_equal 'New Student'
+    end
+  end
+  
   describe "validators" do
     before do
       @it = FactoryGirl.build(:cohabitant)

@@ -43,4 +43,10 @@ FactoryGirl.define do
     contact_name  'Super Cool Lady'
     contact_email 'cool.lady@neu.edu'
   end
+  
+  factory :notify_c1, class: Notification do
+  end
+  
+  factory :notify_c1_and_c4, class: Notification do
+  end
 end

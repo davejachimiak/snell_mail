@@ -1,0 +1,3 @@
+<% @cohabitant.notifications.each do |n| %>
+  <p>Notified on <%= n.created_at.strftime('%A, %B %e %Y') %> by <%= n.user.name %></p>
+<% end %>

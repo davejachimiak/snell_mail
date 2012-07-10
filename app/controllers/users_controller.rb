@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_filter :authenticate
-  before_filter :authenticate_admin, :except => [:password, :update]
-  before_filter :set_user, :only => [:show, :edit, :password, :update, :destroy]
+  before_filter :authenticate_admin, except: [:password, :update]
+  before_filter :set_user, only: [:show, :edit, :password, :update, :destroy]
 
   def password
     if params[:id].to_i == current_user.id
@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
-      redirect_to users_path, :notice => "#{@user.name} created"
+      redirect_to users_path, notice: "#{@user.name} created"
     else
       flash[:notice] = 'Something went wrong. Try again'
       render 'new'
@@ -34,9 +34,9 @@ class UsersController < ApplicationController
     if changing_password?
       change_password
     elsif @user.update_attributes(params[:user])
-      redirect_to users_path, :notice => "#{@user.name} updated"
+      redirect_to users_path, notice: "#{@user.name} updated"
     else
-      redirect_to edit_user_path @user, :notice => "Something went wrong. Try again."
+      redirect_to edit_user_path @user, notice: "Something went wrong. Try again."
     end
   end
 

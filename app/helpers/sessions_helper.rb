@@ -13,11 +13,11 @@ module SessionsHelper
   end
   
   def authenticate
-    redirect_to '/', :notice => 'please sign in to go to there.' if !signed_in?
+    redirect_to '/', notice: 'please sign in to go to there.' if !signed_in?
   end
   
   def authenticate_admin
-    redirect_to '/notifications', 
-      :notice => 'Only admin users can go to there.' if !admin?
+    redirect_to '/notifications',
+      notice: 'Only admin users can go to there.' if !admin?
   end
 end

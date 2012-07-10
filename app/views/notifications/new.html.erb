@@ -1,7 +1,7 @@
 <h3>New notification for <%= Time.now.strftime("%A, %B %e, %Y") %></h3>
 <h4>Check each cohabitant that has mail in their bin.</h4>
 <%= form_for @notification do |f| %>
-  <%= f.hidden_field :user_id, :value => current_user.id%>
+  <%= f.hidden_field :user_id, value: current_user.id%>
   <% @cohabitants.each do |c| %>
     <%= label_tag c.department %>
     <%= check_box_tag 'notification[cohabitant_ids][]', c.id, false, :id => c.department %>

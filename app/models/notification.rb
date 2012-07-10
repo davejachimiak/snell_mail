@@ -1,5 +1,5 @@
 class Notification < ActiveRecord::Base
-  validates_presence_of :cohabitants, :message => "must be chosen"
+  validates_presence_of :cohabitants, message: "must be chosen"
   validates_presence_of :user
 
   belongs_to :user

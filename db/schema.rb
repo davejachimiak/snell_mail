@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120630160431) do
+ActiveRecord::Schema.define(:version => 20120710193436) do
 
   create_table "cohabitants", :force => true do |t|
     t.string   "department"
@@ -27,11 +27,16 @@ ActiveRecord::Schema.define(:version => 20120630160431) do
     t.string "notification_id", :null => false
   end
 
+  add_index "cohabitants_notifications", ["cohabitant_id"], :name => "index_cohabitants_notifications_on_cohabitant_id"
+  add_index "cohabitants_notifications", ["notification_id"], :name => "index_cohabitants_notifications_on_notification_id"
+
   create_table "notifications", :force => true do |t|
     t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "name"

@@ -18,7 +18,7 @@ class NotificationsController < ApplicationController
   def create
     @notification = Notification.new(params[:notification])
     if @notification.save
-      redirect_to notifications_path, :notice => notification_created_notice
+      redirect_to notifications_path, notice: notification_created_notice
     else
       @cohabitants = Cohabitant.all
       render 'new'

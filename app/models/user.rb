@@ -6,9 +6,9 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  validates :name,     :format => { :with => VALID_NAME_REGEX }
-  validates :email,    :format => { :with => VALID_EMAIL_REGEX }
-  validates :password, :length => { :minimum => 7 }, :allow_nil => true
+  validates :name,     format: { with: VALID_NAME_REGEX }
+  validates :email,    format: { with: VALID_EMAIL_REGEX }
+  validates :password, length: { minimum: 7 }, allow_nil: true
 
   has_many :notifications
 end

@@ -3,9 +3,9 @@
   <ul>
     <li><%= link_to u.name, u %></li>
     <li><%= u.email %></li>
-    <li><%= link_to "edit", edit_user_path(u), :title => "Edit #{u.name}" %></li>
-    <li><%= link_to "delete", u, :method => :delete, :confirm => "Are you sure?",
-                                 :title => "Delete #{u.name}" if u != current_user %>
+    <li><%= link_to "edit", edit_user_path(u), title: "Edit #{u.name}" %></li>
+    <li><%= link_to "delete", u, method: :delete, confirm: "Are you sure?",
+                                 title: "Delete #{u.name}" if u != current_user %>
     </li>
   </ul>
 <% end %>

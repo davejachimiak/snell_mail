@@ -11,7 +11,7 @@ class UsersController < ApplicationController
       redirect_to '/notifications/new'
     end
   end
-  
+
   def index
     @users = User.all
   end
@@ -59,7 +59,7 @@ private
     if @user.authenticate(@old_password) && @user.update_attributes(params[:user])
       flash[:notice] = 'new password saved!'
       redirect_to session[:redirect_back]
-    elsif @user.authenticate(@old_password) 
+    elsif @user.authenticate(@old_password)
       flash[:notice] = "Password confirmation doesn't match"
       redirect_to request.referer
     else

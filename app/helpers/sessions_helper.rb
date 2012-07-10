@@ -3,7 +3,7 @@ module SessionsHelper
     id = session[:user_token]
     User.find(id)
   end
-  
+
   def signed_in?
     session[:user_token] ? true : false
   end

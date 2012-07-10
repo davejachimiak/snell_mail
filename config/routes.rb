@@ -1,15 +1,14 @@
 SnellMail::Application.routes.draw do
 
   root :to => 'sessions#new'
- 
+
   match "/users/:id/password" => "users#password",
     :as => :password
-  
+
   resources :sessions, :only => [:new, :create, :destroy]
   resources :notifications, :only => [:index, :show, :new, :create]
   resources :users
   resources :cohabitants
- 
 
   match '/signout', :to => 'sessions#destroy'
 

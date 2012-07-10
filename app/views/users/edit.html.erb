@@ -4,11 +4,11 @@
 
   <%= f.label :email %>
   <%= f.text_field :email %>
-  
+
   <%= f.label :admin %>
   <%= f.check_box :admin %>
 
-  <%= f.submit 'Save' %> 
+  <%= f.submit 'Save' %>
 <% end %>
 
 <%= link_to 'Change password', password_path(current_user) if @user == current_user %>

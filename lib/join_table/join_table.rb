@@ -35,7 +35,7 @@ class JoinTable
   end
 
   def build_migrations
-    file = File.new("db/migrate/" + Time.now.to_s.gsub('-', '').gsub(' ', '').gsub(':', '')[0..-5] + 
+    file = File.new("db/migrate/" + Time.now.to_s.gsub('-', '').gsub(' ', '').gsub(':', '')[0..-5] +
                     "_create_#{column_names[0]}_#{column_names[1]}.rb", 'w+')
     file.write("class Create#{column_names[0].capitalize}#{column_names[1].capitalize} < ActiveRecord::Migration\n" + 
                "  def change\n" +

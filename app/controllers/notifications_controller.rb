@@ -24,16 +24,16 @@ class NotificationsController < ApplicationController
       render 'new'
     end
   end
-  
+
   private
-  
+
   def notification_created_notice
     cohabitants = @notification.cohabitants
     if cohabitants.count > 1
       depts_arr = cohabitants.map do |c|
         c == cohabitants.last ? "and #{c.department} were " : "#{c.department}, "
       end
-	  
+
       depts = depts_arr.join
     else
       depts = cohabitants[0].department + ' was '

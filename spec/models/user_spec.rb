@@ -34,7 +34,7 @@ describe "User" do
   
   describe "validators" do
     describe "name" do
-	  before do
+      before do
         @it = FactoryGirl.build(:user)
       end
 
@@ -43,7 +43,7 @@ describe "User" do
       end
 	  
       it "rejects a name under two characters" do
-	    @it.name = 'f'
+	@it.name = 'f'
       end
 
       it "rejects a name with no spaces" do
@@ -73,6 +73,24 @@ describe "User" do
       it "must be more than 6 characters" do
         @it.password = 'joord'
       end
+    end
+  end
+  
+  describe "notifications association" do
+    it "has many notifications" do
+      cohabitant = FactoryGirl.create(:cohabitant)
+      user = FactoryGirl.create(:non_admin)
+
+      notification_1 = FactoryGirl.create(:notify_c1, 
+        :user => user,
+        :cohabitants => [cohabitant])
+      notification_2 = FactoryGirl.create(:notify_c1_and_c4,
+        :user => user,
+        :cohabitants => [cohabitant, FactoryGirl.create(:cohabitant_4)])
+
+      user.notifications.count.must_equal 2
+      user.notifications[0].created_at.must_equal notification_1.created_at
+      user.notifications[1].created_at.must_equal notification_2.created_at
     end
   end
 end

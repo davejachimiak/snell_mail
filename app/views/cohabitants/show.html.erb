@@ -1,3 +1,7 @@
-<% @cohabitant.notifications.each do |n| %>
-  <p>Notified on <%= n.created_at.strftime('%A, %B %e %Y') %> by <%= n.user.name %></p>
+<% if @cohabitant.notifications.empty? %>
+  <p><%= @cohabitant.department %> has never been notified.</p>
+<% else %>
+  <% @cohabitant.notifications.each do |n| %>
+    <p>Notified on <%= link_to n.created_at.strftime('%A, %B %e %Y'), n %> by <%= link_to n.user.name, n.user %></p>
+  <% end %>
 <% end %>

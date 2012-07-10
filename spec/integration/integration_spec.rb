@@ -108,7 +108,7 @@ describe "integration" do
     after do
       reset_session!
     end
-  
+
     it "allows admin users to destroy other's but doesn't not allow admin users to destroy themselves" do
       Capybara.current_driver = :selenium
       visit '/'
@@ -147,8 +147,9 @@ describe "integration" do
       page.text.must_include 'old.student@neu.edu'
       page.text.must_include 'Old Student'
       User.find_by_name('Old Student').
-        update_attributes(:name => 'New Student',
-                          :email => 'new.student@neu.edu')
+        update_attributes(:name  => 'New Student',
+                          :email => 'new.student@neu.edu',
+                          :admin => false)
     end
   
     it "allows user to sign out" do
@@ -177,6 +178,28 @@ describe "integration" do
       click_button 'Create'
       page.text.must_include 'Happy Bobappy'
       page.text.must_include 'happy.bobappy@example.com'
+    end
+
+    it "show all notifications for a given user" do
+      cohabitant = FactoryGirl.create(:cohabitant)
+      
+      notification_1 = FactoryGirl.create(:notify_c1, 
+        :user => User.find_by_email('new.student@neu.edu'),
+        :cohabitants => [cohabitant])
+      notification_2 = FactoryGirl.create(:notify_c1_and_c4,
+        :user => User.find_by_email('new.student@neu.edu'),
+        :cohabitants => [cohabitant, FactoryGirl.create(:cohabitant_4)])
+
+      visit '/'
+      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'Password', :with => 'password'
+      click_button 'Sign in'
+      click_link 'Users'
+      click_link 'New Student'
+      page.text.must_include notification_1.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P')
+      page.text.must_include notification_2.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P')
+      Notification.all.each { |n| n.destroy }
+      Cohabitant.all.each { |c| c.destroy }
     end
   end
 
@@ -237,7 +260,7 @@ describe "integration" do
       cohabitant = FactoryGirl.create(:cohabitant)
       cohabitant_4 = FactoryGirl.create(:cohabitant_4)
       FactoryGirl.create(:notify_c1, 
-        :user => User.find_by_name('d.jachimiak@neu.edu'),
+        :user => User.find_by_email('d.jachimiak@neu.edu'),
         :cohabitants => [cohabitant] )
       FactoryGirl.create(:notify_c1_and_c4,
         :user => User.find_by_email('new.student@neu.edu'),
@@ -248,10 +271,24 @@ describe "integration" do
       click_button 'Sign in'
       click_link 'Cohabitants'
       click_link 'Cool Factory'
-      page.text.must_include "#{Time.now.strftime('%A, %B %e %Y')} by Dave" +   
+      page.text.must_include "#{Time.zone.now.strftime('%A, %B %e %Y')} by Dave" +   
         " Jachimiak"
-      page.text.must_include "#{Time.now.strftime('%A, %B %e %Y')} by New" +
+      page.text.must_include "#{Time.zone.now.strftime('%A, %B %e %Y')} by New" +
         " Student"
+      Cohabitant.all.each { |c| c.destroy }
+      Notification.all.each { |n| n.destroy }
+    end
+
+    it "gives a friendly message if a cohabitant has no notifications" do
+      cohabitant = FactoryGirl.create(:cohabitant)
+      visit '/'
+      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'Password', :with => 'password'
+      click_button 'Sign in'
+      click_link 'Cohabitants'
+      click_link 'Cool Factory'
+      page.text.must_include 'Cool Factory has never been notified.'
+      Cohabitant.all.each { |c| c.destroy }
     end
   end
 
@@ -285,10 +322,10 @@ describe "integration" do
 
   describe "notification integration" do
     before do
-      FactoryGirl.create(:cohabitant)
-      FactoryGirl.create(:cohabitant_2)
-      FactoryGirl.create(:cohabitant_3)
-      FactoryGirl.create(:cohabitant_4)
+      @cohabitant   = FactoryGirl.create(:cohabitant)
+      @cohabitant_2 = FactoryGirl.create(:cohabitant_2)
+      @cohabitant_3 = FactoryGirl.create(:cohabitant_3)
+      @cohabitant_4 = FactoryGirl.create(:cohabitant_4)
       @time = Time.now
       visit '/'
       fill_in 'Email', :with => 'new.student@neu.edu'
@@ -297,8 +334,8 @@ describe "integration" do
     end
     
     after do 
-      reset_session!
       Cohabitant.all.each { |c| c.destroy }
+      reset_session!
     end
 
     it "should notify cohabitants that they have mail and redirect to notifications after notification" do
@@ -312,12 +349,14 @@ describe "integration" do
       page.current_path.must_equal '/notifications'
       page.text.must_include 'Cool Factory, Jargon House, Face Surgery, and Fun Section were just notified ' +
                              'that they have mail in their bins today. Thanks.'
+      Notification.all.each { |n| n.destroy }
     end
 	
     it "should singularize confirmation notice for single cohabitant notifications" do
       check 'Fun Section'
       click_button 'Notify!'
       page.text.must_include 'Fun Section was'
+      Notification.all.each { |n| n.destroy }
     end
 	
     it "shouldn't save notification if no cohabitants are present" do
@@ -325,6 +364,27 @@ describe "integration" do
       page.current_path.must_equal '/notifications'
       page.text.must_include "Check each cohabitant that has mail in their bin."
       page.text.must_include 'cohabitants must be chosen'
+    end
+
+    it "should tell of all cohabitants for a given notification." do
+      notification_1 = FactoryGirl.create(:notify_c1, 
+        :user => User.find_by_email('d.jachimiak@neu.edu'),
+        :cohabitants => [@cohabitant])
+      notification_2 = FactoryGirl.create(:notify_c1_and_c4,
+        :user => User.find_by_email('new.student@neu.edu'),
+        :cohabitants => [@cohabitant, @cohabitant_4])
+      
+      ns_notification_link = "#{notification_2.created_at.
+        strftime('%m.%d.%Y (%A) at %I:%M%P')} by New Student"
+
+      click_link 'Notifications'
+      page.text.must_include "#{notification_1.created_at.
+        strftime('%m.%d.%Y (%A) at %I:%M%P')} by Dave Jachimiak" 
+      page.text.must_include ns_notification_link
+      click_link ns_notification_link
+      page.text.must_include "On #{notification_2.created_at.strftime("%A, %B %e, %Y")}"
+      notification_2.cohabitants.each { |c| page.text.must_include c.department }
+      Notification.all.each { |n| n.destroy }
     end
   end
 end

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_filter :authenticate
   before_filter :authenticate_admin, :except => [:password, :update]
-  before_filter :set_user, :only => [:edit, :password, :update, :destroy]
+  before_filter :set_user, :only => [:show, :edit, :password, :update, :destroy]
 
   def password
     if params[:id].to_i == current_user.id

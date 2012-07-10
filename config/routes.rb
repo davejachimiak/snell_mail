@@ -6,7 +6,7 @@ SnellMail::Application.routes.draw do
     :as => :password
   
   resources :sessions, :only => [:new, :create, :destroy]
-  resources :notifications, :only => [:index, :new, :create]
+  resources :notifications, :only => [:index, :show, :new, :create]
   resources :users
   resources :cohabitants
  

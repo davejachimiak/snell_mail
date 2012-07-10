@@ -1,7 +1,7 @@
 <%= link_to 'New user', new_user_path %>
 <% @users.each do |u| %>
   <ul>
-    <li><%= u.name %></li>
+    <li><%= link_to u.name, u %></li>
     <li><%= u.email %></li>
     <li><%= link_to "edit", edit_user_path(u), :title => "Edit #{u.name}" %></li>
     <li><%= link_to "delete", u, :method => :delete, :confirm => "Are you sure?",

@@ -2,7 +2,11 @@ class NotificationsController < ApplicationController
   before_filter :authenticate
 
   def index
-    @notifications = Notification.all
+    @notifications = Notification.order(:created_at).reverse
+  end
+
+  def show
+    @notification = Notification.find(params[:id])
   end
 
   def new
@@ -25,12 +29,12 @@ class NotificationsController < ApplicationController
   
   def notification_created_notice
     cohabitants = @notification.cohabitants
-	  if cohabitants.count > 1
+    if cohabitants.count > 1
       depts_arr = cohabitants.map do |c|
-	    c == cohabitants.last ? "and #{c.department} were " : "#{c.department}, "
+        c == cohabitants.last ? "and #{c.department} were " : "#{c.department}, "
       end
 	  
-	  depts = depts_arr.join
+      depts = depts_arr.join
     else
       depts = cohabitants[0].department + ' was '
     end

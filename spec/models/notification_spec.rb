@@ -12,7 +12,7 @@ describe "Notification" do
     end
 	
     it "belongs to cohabitants and a user" do
-	    @notification.save.must_equal true
+      @notification.save.must_equal true
     end
 	
     it "#cohabitants returns array" do

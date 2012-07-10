@@ -1,10 +1,14 @@
-<header style="display:inline">
-<% if admin? %>
-  <%= link_to 'Users', users_path %>
-  <%= link_to 'Cohabitants', cohabitants_path %>
-<% else %>
-  <%= link_to 'Change password', password_path(current_user) %>
-<% end %>
-  <%= link_to 'Notifications', notifications_path %>
-  <%= link_to 'Sign out', signout_path %>
-</header>
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <% if admin? %>
+        <%= link_to 'Users', users_path %>
+        <%= link_to 'Cohabitants', cohabitants_path %>
+      <% else %>
+        <%= link_to 'Change password', password_path(current_user) %>
+      <% end %>
+        <%= link_to 'Notifications', notifications_path %>
+        <%= link_to 'Sign out', signout_path %>
+    </div>
+  </div>
+</div>

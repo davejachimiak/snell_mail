@@ -22,6 +22,11 @@ describe "Notification" do
     it "#user returns instance of User" do
       @notification.user.must_be_instance_of User
     end
+    
+    it "delegates user attributes" do
+      @notification.user_name.must_equal 'Dave Jachimiak'
+      @notification.user_email.must_equal 'd.jachimiak@neu.edu'
+    end
   end
   
   describe "validators" do

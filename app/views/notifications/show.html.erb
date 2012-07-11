@@ -1,5 +1,5 @@
 <h1>On <%= @notification.created_at.strftime("%A, %B %e, %Y at %l:%M%P") %></h1>
-<p><%= link_to @notification.user.name, @notification.user %> notified the following cohabitants that they had snail mail:</p>
+<p><%= link_to @notification.user_name, @notification.user %> notified the following cohabitants that they had snail mail:</p>
 <% @notification.cohabitants.each do |c| %>
   <li><%= link_to c.department, c %></li>
 <% end %>

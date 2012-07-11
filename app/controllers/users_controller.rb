@@ -44,6 +44,12 @@ class UsersController < ApplicationController
     @user.destroy
     redirect_to users_path
   end
+  
+  def show
+  end
+  
+  def edit
+  end
 
 private
 

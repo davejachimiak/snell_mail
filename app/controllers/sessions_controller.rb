@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     user = User.find_by_email(params[:session][:email])
 
     if user && user.authenticate(params[:session][:password])
-      redirect_to controller: 'notifications', :action => 'new'
+      redirect_to controller: 'notifications', action: 'new'
       session[:user_token] = user.id
     else
       flash[:error] = 'bad email and password combintion. try again.'

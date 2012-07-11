@@ -35,10 +35,10 @@ class CohabitantsController < ApplicationController
     @cohabitant.destroy
     redirect_to cohabitants_path
   end
-  
+
   def show
   end
-  
+
   def edit
   end
 

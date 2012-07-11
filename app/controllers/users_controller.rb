@@ -45,35 +45,35 @@ class UsersController < ApplicationController
     @user.destroy
     redirect_to users_path
   end
-  
+
   def show
   end
-  
+
   def edit
   end
 
-private
+  private
 
-  def set_user
-    @user = User.find(params[:id])
-  end
-
-  def changing_password?
-    @old_password = params[:user][:old_password]
-  end
-
-  def change_password
-    params[:user].delete(:old_password)
-    if @user.authenticate(@old_password) && 
-       @user.update_attributes(params[:user])
-      flash[:notice] = 'new password saved!'
-      redirect_to session[:redirect_back]
-    elsif @user.authenticate(@old_password)
-      flash[:notice] = "Password confirmation doesn't match"
-      redirect_to request.referer
-    else
-      flash[:notice] = "Old password didn't match existing one"
-      redirect_to request.referer
+    def set_user
+      @user = User.find(params[:id])
     end
-  end
+
+    def changing_password?
+      @old_password = params[:user][:old_password]
+    end
+
+    def change_password
+      params[:user].delete(:old_password)
+      if @user.authenticate(@old_password) &&
+         @user.update_attributes(params[:user])
+        flash[:notice] = 'new password saved!'
+        redirect_to session[:redirect_back]
+      elsif @user.authenticate(@old_password)
+        flash[:notice] = "Password confirmation doesn't match"
+        redirect_to request.referer
+      else
+        flash[:notice] = "Old password didn't match existing one"
+        redirect_to request.referer
+      end
+    end
 end

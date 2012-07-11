@@ -64,16 +64,32 @@ class UsersController < ApplicationController
 
     def change_password
       params[:user].delete(:old_password)
-      if @user.authenticate(@old_password) &&
-         @user.update_attributes(params[:user])
-        flash[:notice] = 'new password saved!'
-        redirect_to session[:redirect_back]
+      if authenticates_and_updates?
+        success
       elsif @user.authenticate(@old_password)
-        flash[:notice] = "Password confirmation doesn't match"
-        redirect_to request.referer
+        password_confirmation_mismatch
       else
-        flash[:notice] = "Old password didn't match existing one"
-        redirect_to request.referer
+        old_password_mismatch
       end
+    end
+
+    def authenticates_and_updates?
+      @user.authenticate(@old_password) &&
+      @user.update_attributes(params[:user])
+    end
+
+    def success
+      flash[:notice] = 'new password saved!'
+      redirect_to session[:redirect_back]
+    end
+
+    def password_confirmation_mismatch
+      flash[:notice] = "Password confirmation doesn't match"
+      redirect_to request.referer
+    end
+
+    def old_password_mismatch
+      flash[:notice] = "Old password didn't match existing one"
+      redirect_to request.referer
     end
 end

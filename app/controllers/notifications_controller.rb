@@ -34,7 +34,7 @@ class NotificationsController < ApplicationController
       depts_arr = cohabitants.map do |c|
         c == cohabitants.last ? "and #{c.department} were " :
                                 "#{c.department}, "
-      end
+    end
 
       depts = depts_arr.join
     else

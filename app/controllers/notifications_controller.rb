@@ -32,7 +32,8 @@ class NotificationsController < ApplicationController
     cohabitants = @notification.cohabitants
     if cohabitants.count > 1
       depts_arr = cohabitants.map do |c|
-        c == cohabitants.last ? "and #{c.department} were " : "#{c.department}, "
+        c == cohabitants.last ? "and #{c.department} were " :
+                                "#{c.department}, "
       end
 
       depts = depts_arr.join

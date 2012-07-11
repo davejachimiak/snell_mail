@@ -36,7 +36,8 @@ class UsersController < ApplicationController
     elsif @user.update_attributes(params[:user])
       redirect_to users_path, notice: "#{@user.name} updated"
     else
-      redirect_to edit_user_path @user, notice: "Something went wrong. Try again."
+      redirect_to edit_user_path @user, notice: "Something went wrong. " +
+                                                "Try again."
     end
   end
 
@@ -63,7 +64,8 @@ private
 
   def change_password
     params[:user].delete(:old_password)
-    if @user.authenticate(@old_password) && @user.update_attributes(params[:user])
+    if @user.authenticate(@old_password) && 
+       @user.update_attributes(params[:user])
       flash[:notice] = 'new password saved!'
       redirect_to session[:redirect_back]
     elsif @user.authenticate(@old_password)

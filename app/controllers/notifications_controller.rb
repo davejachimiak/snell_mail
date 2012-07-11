@@ -17,6 +17,7 @@ class NotificationsController < ApplicationController
 
   def create
     @notification = Notification.new(params[:notification])
+    @notification.user = current_user
     if @notification.save
       redirect_to notifications_path, notice: notification_created_notice
     else

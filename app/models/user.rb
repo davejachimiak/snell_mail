@@ -1,8 +1,9 @@
 class User < ActiveRecord::Base
   VALID_NAME_REGEX  = /\A([a-zA-Z]){2,} (([a-zA-Z]){2,}|([a-zA-Z]){2,} ([a-zA-Z]){2,})\z/
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-
-  attr_accessor :old_password
+  
+  attr_accessible :name, :email, :password, :password_confirmation, :admin,
+                  :notifications
 
   has_secure_password
 

@@ -56,6 +56,7 @@ private
   end
 
   def change_password
+    params[:user].delete(:old_password)
     if @user.authenticate(@old_password) && @user.update_attributes(params[:user])
       flash[:notice] = 'new password saved!'
       redirect_to session[:redirect_back]

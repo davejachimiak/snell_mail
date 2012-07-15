@@ -49,14 +49,14 @@ describe "Cohabitant" do
     end
 
     after do
-	  @it.save.wont_equal true
+      @it.save.wont_equal true
     end
 
     it "won't save with blank department" do
       @it.department = ''
     end
 	
-	it "won't save with blank location" do
+    it "won't save with blank location" do
       @it.location = ''
     end
 	
@@ -66,6 +66,41 @@ describe "Cohabitant" do
 	
     it "won't save with blank contact_email" do
       @it.contact_email = ''
+    end
+  end
+
+  describe "::parse_for_notification" do
+    before do
+      @it = Cohabitant
+    end
+    
+    before do
+      Cohabitant.all.each { |cohabitant| cohabitant.destroy }
+    end
+
+    it "is responsive on the class" do
+      @it.must_respond_to :parse_for_notification
+    end
+
+    it "presents necessary text for two cohabitants" do
+      cohabitants = [FactoryGirl.create(:cohabitant)]
+      @it.parse_for_notification(cohabitants).must_equal(
+        'Cool Factory was ')
+    end
+
+    it "presents necessary text for two cohabitants" do
+      cohabitants = [FactoryGirl.create(:cohabitant),
+                     FactoryGirl.create(:cohabitant_3)]
+      @it.parse_for_notification(cohabitants).must_equal(
+        'Cool Factory and Face Surgery were ')
+    end
+
+    it "presents necessary text for three cohabitants" do
+      cohabitants = [FactoryGirl.create(:cohabitant),
+                     FactoryGirl.create(:cohabitant_2),
+                     FactoryGirl.create(:cohabitant_3)]
+      @it.parse_for_notification(cohabitants).must_equal(
+        'Cool Factory, Jargon House, and Face Surgery were ')
     end
   end
 end

@@ -19,7 +19,7 @@ class NotificationsController < ApplicationController
     @notification = Notification.new(params[:notification])
     @notification.user = current_user
     if @notification.save
-      redirect_to notifications_path, notice: notification_created_notice
+      redirect_to notifications_path, :notice => notification_created_notice
     else
       @cohabitants = Cohabitant.all
       render 'new'
@@ -30,22 +30,7 @@ class NotificationsController < ApplicationController
 
     def notification_created_notice
       cohabitants = @notification.cohabitants
-      if cohabitants.count > 1
-        depts_arr = cohabitants.map do |cohabitant|
-          if cohabitant == cohabitants.last
-            "and #{department(cohabitant)} were "
-          else
-            "#{department(cohabitant)}, "
-          end
-        end
-        depts = depts_arr.join
-      else
-        depts = cohabitants[0].department + ' was '
-      end
-      depts + 'just notified that they have mail in their bins today. Thanks.'
-    end
-    
-    def department(cohabitant)
-      cohabitant.department
+      Cohabitant.parse_for_notification(cohabitants) +
+        'just notified that they have mail in their bins today. Thanks.'
     end
 end

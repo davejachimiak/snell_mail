@@ -1,0 +1,1 @@
+require 'snell_mail'

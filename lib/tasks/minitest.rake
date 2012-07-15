@@ -25,4 +25,8 @@ Rake::TestTask.new(test_notification_model: "db:test:prepare") do |t|
   t.pattern = "spec/models/notification_spec.rb"
 end
 
+Rake::TestTask.new(test_notification_confirmation_parser: "db:test:prepare") do |t|
+  t.libs << "spec"
+  t.pattern = "spec/lib/snell_mail/notification_confirmation_parser_spec.rb"
+end
 task default: :test

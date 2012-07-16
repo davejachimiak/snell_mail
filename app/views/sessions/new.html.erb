@@ -1,10 +1,11 @@
-<%= form_for(:session, :url => sessions_path) do |f| %>
+<h1>Sign in</h1>
+<br>
+<%= form_for(:session, :url => sessions_path, :html => { :class => 'well form-inline' }) do |f| %>
   <%= f.label :email %>
-  <%= f.text_field :email %>
-  <br>
+  <%= f.text_field :email, :class => 'span2' %>
+
   <%= f.label :password %>
-  <%= f.password_field :password %>
-  <br>
-  <%= f.submit 'Sign in' %>
+  <%= f.password_field :password, :class => 'span2' %>
+  <%= f.submit 'Sign in', :class => 'btn btn-primary' %>
 <% end %>
 

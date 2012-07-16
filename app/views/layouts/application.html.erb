@@ -9,20 +9,28 @@
 <body>
   <div class="container">
     <div class="row">
-      <div class="span8 offset2">
-        <%= render 'layouts/header' if signed_in? %>
+      <div class="span6 offset3">
+        <%= render 'layouts/header' %>
       </div>
     </div>
     <div class="row">
-      <div class="span8 offset2">
+      <div class="span6 offset3">
         <%= yield %>
       </div>
     </div>
     <div class="row">
-      <div class="span4 offset2">
+      <div class="span3 offset4">
+        <div class="alert">
+        <% if @notification.errors.any? %>
+          <% @notification.errors.full_messages.each do |m| %>
+            <button class="close" data-dismiss="alert">×</button>
+            <p><strong>Warning!</strong> <%= m.downcase %></p>
+          <% end %>
+        <% end %>
         <% flash.each do |key, value| %>
           <p><%= key %>: <%= value %></p>
         <% end %>
+      </div>
       </div>
     </div>
   </div>

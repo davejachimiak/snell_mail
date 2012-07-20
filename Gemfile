@@ -2,11 +2,15 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.1'
 gem 'sqlite3'
+<<<<<<< HEAD
 
 group :development do
   gem 'rails_best_practices'
 end
 
+=======
+gem 'will_paginate', '~> 3.0.0'
+>>>>>>> design
 group :test, :development do
   gem 'minitest'
   gem 'capybara'
@@ -16,6 +20,7 @@ group :test, :development do
 end
 
 group :assets do
+  gem 'twitter-bootstrap-rails'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
 

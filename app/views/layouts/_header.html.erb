@@ -1,10 +1,22 @@
-<header style="display:inline">
-<% if admin? %>
-  <%= link_to 'Users', users_path %>
-  <%= link_to 'Cohabitants', cohabitants_path %>
-<% else %>
-  <%= link_to 'Change password', password_path(current_user) %>
-<% end %>
-  <%= link_to 'Notifications', notifications_path %>
-  <%= link_to 'Sign out', signout_path %>
-</header>
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <div class="brand">
+        <%= link_to 'Snell Mail', notifications_path if signed_in? %>    
+        <%= h 'Snell Mail' if !signed_in? %>
+      </div>
+      <ul class ="nav nav-pills">
+        <% if signed_in? %>
+          <% if admin? %>
+            <li<%= h " class='active'" if request.original_url =~ /users/ %>><%= link_to 'Users', users_path %></li>
+            <li<%= h " class='active'" if request.original_url =~ /cohabitants/ %>><%= link_to 'Cohabitants', cohabitants_path %></li>
+          <% else %>
+            <li<%= h " class='active'" if request.original_url =~ /password/ %>><%= link_to 'Change password', password_path(current_user) %></li>
+          <% end %>
+          <li<%= h " class='active'" if request.original_url =~ /notifications/ %>><%= link_to 'Notifications', notifications_path %></li>
+          <li><%= link_to 'Sign out', signout_path %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

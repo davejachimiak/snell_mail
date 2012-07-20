@@ -1,9 +1,21 @@
+<<<<<<< HEAD
 <%= form_for(:session, url: sessions_path) do |f| %>
   <%= f.label :email %>
   <%= f.text_field :email %>
+=======
+<h1>Sign in</h1>
+<br>
+<%= form_for :session, url: sessions_path do |f| %>
+  <%= f.text_field :email, class: 'span2', placeholder: 'Email' %>
+  <%= f.password_field :password, class: 'span2', placeholder: 'Password' %>
+>>>>>>> design
   <br>
-  <%= f.label :password %>
-  <%= f.password_field :password %>
   <br>
+<<<<<<< HEAD
   <%= f.submit 'Sign in' %>
 <% end %>
+=======
+  <%= f.submit 'Sign in', class: 'btn btn-primary' %>
+<% end %>
+
+>>>>>>> design

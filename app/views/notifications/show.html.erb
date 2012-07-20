@@ -1,5 +1,25 @@
+<<<<<<< HEAD
 <h1>On <%= @notification.created_at.strftime("%A, %B %e, %Y at %l:%M%P") %></h1>
 <p><%= link_to @notification.user_name, @notification.user %> notified the following cohabitants that they had snail mail:</p>
+=======
+<%= render 'header' %>
+<div class="page-header">
+  <h1>On <%= @notification.created_at.strftime("%A, %B %e, %Y at %l:%M%P") %>,</h1>
+</div>
+<p class="lead">
+<% if admin? %>
+  <%= link_to @notification.user.name, @notification.user %>
+<% else %>
+  <%= @notification.user.name %>
+<% end %>
+  notified the following cohabitants that they had snail mail:</p>
+>>>>>>> design
 <% @notification.cohabitants.each do |c| %>
-  <li><%= link_to c.department, c %></li>
+  <li>
+  <% if admin? %>
+    <%= link_to c.department, c %>
+  <% else %>
+    <%= c.department %>
+  <% end %>
+  </li>
 <% end %>

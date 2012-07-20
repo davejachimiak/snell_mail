@@ -1,7 +1,11 @@
 class CohabitantsController < ApplicationController
   before_filter :authenticate
   before_filter :authenticate_admin
+<<<<<<< HEAD
   before_filter :set_cohabitant, except: [:index, :new, :create]
+=======
+  before_filter :set_cohabitant, only: [:show, :edit, :update, :destroy]
+>>>>>>> design
 
   def index
     @cohabitants = Cohabitant.all
@@ -26,7 +30,11 @@ class CohabitantsController < ApplicationController
       redirect_to cohabitants_path,
         notice: "#{@cohabitant.department} updated."
     else
+<<<<<<< HEAD
       redirect_to request.referer,
+=======
+      redirect_to request.referer, 
+>>>>>>> design
         notice: "Something went wrong. Try again."
     end
   end
@@ -34,6 +42,10 @@ class CohabitantsController < ApplicationController
   def destroy
     @cohabitant.destroy
     redirect_to cohabitants_path
+  end
+  
+  def show
+    @notifications = @cohabitant.notifications.order('id DESC').page(params[:page]).per_page(15)
   end
 
   def show

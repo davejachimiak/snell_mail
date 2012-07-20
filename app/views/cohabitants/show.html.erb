@@ -1,7 +1,32 @@
-<% if @cohabitant.notifications.empty? %>
-  <p><%= @cohabitant.department %> has never been notified.</p>
+<div class="hero-unit">
+  <h1><%= @cohabitant.department %></h1>
+  <p><%= mail_to @cohabitant.contact_email %></p>
+</div>
+<p class="lead">Notifications</h3>
+<% unless @notifications.empty? %>
+  <table class="table table-striped table-bordered">
+    <thead id="table-header">
+      <tr>
+        <td class="span3"><strong>Notified on</strong></td>
+        <td class="span3"><strong>Notifier</strong></td>
+      </tr>
+    </thead>
+    <% @notifications.each do |n| %>
+    <tbody>
+      <tr>
+        <td><%= link_to n.created_at.strftime('%A, %B %e %Y'), n %></td>
+        <td>
+        <% unless n.user == nil %>
+          <%= link_to n.user.name, n.user %>
+        <% else %>
+          deleted user
+        <% end %>
+        </td>
+      </tr>
+    </tbody>
+    <% end %>
+  </table>
+  <%= will_paginate @notifications, class: 'pager' %>
 <% else %>
-  <% @cohabitant.notifications.each do |n| %>
-    <p>Notified on <%= link_to n.created_at.strftime('%A, %B %e %Y'), n %> by <%= link_to n.user.name, n.user %></p>
-  <% end %>
+  <p><%= @cohabitant.department %> has never been notified.</p>
 <% end %>

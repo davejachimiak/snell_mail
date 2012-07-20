@@ -11,8 +11,8 @@ describe "integration" do
  
     it "redirects to sign in page if bad email and password combo" do
       visit '/'
-      fill_in 'Email', :with => 'd.jachimik@neu.edu'
-      fill_in 'Password', :with => 'passord'
+      fill_in 'session_email', :with => 'd.jachimik@neu.edu'
+      fill_in 'session_password', :with => 'passord'
       click_button 'Sign in'
       page.current_path.must_equal '/'
       page.text.must_include 'bad email and password combintion. try again.'
@@ -39,8 +39,8 @@ describe "integration" do
   describe "non-admin sign-in integration" do
     before do
       visit '/'
-      fill_in 'Email', :with => 'new.student@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'new.student@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
     end
 
@@ -75,20 +75,20 @@ describe "integration" do
       page.current_path.must_equal '/notifications/new'
       page.text.must_include 'new password saved!'
       click_link 'Sign out'
-      fill_in 'Email', :with => 'new.student@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'new.student@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       page.text.must_include 'bad email and password combintion. try again.'
-      fill_in 'Email', :with => 'new.student@neu.edu'
-      fill_in 'Password', :with => 'passwordpassword'
+      fill_in 'session_email', :with => 'new.student@neu.edu'
+      fill_in 'session_password', :with => 'passwordpassword'
       click_button 'Sign in'
       page.current_path.must_equal '/notifications/new'
       click_link 'Sign out'
-      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       click_link 'Users'
-      click_link 'Edit Dave Jachimiak'
+      click_button 'Edit Dave Jachimiak'
       click_link 'Change password'
       fill_in 'Old password', :with => 'password'
       fill_in 'New password', :with => 'passwordpassword'
@@ -112,21 +112,21 @@ describe "integration" do
     it "allows admin users to destroy other's but doesn't not allow admin users to destroy themselves" do
       Capybara.current_driver = :selenium
       visit '/'
-      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       click_link 'Users'
-      click_link 'Delete New Student'
+      click_button 'Delete New Student'
       page.driver.browser.switch_to.alert.accept
       page.current_path.must_equal '/users'
       page.text.wont_include 'New Student'
       page.body.wont_include 'Delete Dave Jachimiak'
       click_link 'Users'
       click_link 'New user'
-      fill_in 'Name', :with => 'New Student'
-      fill_in 'Email', :with => 'new.student@neu.edu'
-      fill_in 'Password', :with => 'password'
-      fill_in 'Password confirmation', :with => 'password'
+      fill_in 'user_name', :with => 'New Student'
+      fill_in 'user_email', :with => 'new.student@neu.edu'
+      fill_in 'user_password', :with => 'password'
+      fill_in 'user_password_confirmation', :with => 'password'
       click_button 'Create'
       click_link 'Sign out'
       Capybara.current_driver = :rack_test
@@ -134,28 +134,25 @@ describe "integration" do
   
     it "allows admin users to create other and switch users to admin users" do
       visit '/'
-      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       click_link 'Users'
-      click_link 'Edit New Student'
-      fill_in 'Email', :with => 'old.student@neu.edu'
-      fill_in 'Name', :with => 'Old Student'
+      click_button 'Edit New Student'
+      fill_in 'user_email', :with => 'old.student@neu.edu'
       check 'Admin'
       click_button 'Save'
       page.current_path.must_equal '/users'
       page.text.must_include 'old.student@neu.edu'
-      page.text.must_include 'Old Student'
-      User.find_by_name('Old Student').
-        update_attributes(:name  => 'New Student',
-                          :email => 'new.student@neu.edu',
+      User.find_by_email('old.student@neu.edu').
+        update_attributes(:email => 'new.student@neu.edu',
                           :admin => false)
     end
   
     it "allows user to sign out" do
       visit '/'
-      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       click_link 'Sign out'
       page.current_path.must_equal '/'
@@ -166,15 +163,15 @@ describe "integration" do
   
     it "redirects to user index after admin creates user" do
       visit '/'
-      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       click_link 'Users'
       click_link 'New user'
-      fill_in 'Name', :with => 'Happy Bobappy'
-      fill_in 'Email', :with => 'happy.bobappy@example.com'
-      fill_in 'Password', :with => 'password'
-      fill_in 'Password confirmation', :with => 'password'
+      fill_in 'user_name', :with => 'Happy Bobappy'
+      fill_in 'user_email', :with => 'happy.bobappy@example.com'
+      fill_in 'user_password', :with => 'password'
+      fill_in 'user_password_confirmation', :with => 'password'
       click_button 'Create'
       page.text.must_include 'Happy Bobappy'
       page.text.must_include 'happy.bobappy@example.com'
@@ -191,8 +188,8 @@ describe "integration" do
         :cohabitants => [cohabitant, FactoryGirl.create(:cohabitant_4)])
 
       visit '/'
-      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       click_link 'Users'
       click_link 'New Student'
@@ -210,25 +207,25 @@ describe "integration" do
 
     it "should allow admin users to create and edit cohabitants" do
       visit '/'
-      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       click_link 'Cohabitants'
       click_link 'New cohabitant'
-      fill_in 'Department', :with => 'EdTech'
-      fill_in 'Location', :with => '242SL'
-      fill_in 'Contact name', :with => 'Cool Lady'
-      fill_in 'Contact email', :with => 'cool.lady@neu.edu'
+      fill_in 'cohabitant_department', :with => 'EdTech'
+      fill_in 'cohabitant_location', :with => '242SL'
+      fill_in 'cohabitant_contact_name', :with => 'Cool Lady'
+      fill_in 'cohabitant_contact_email', :with => 'cool.lady@neu.edu'
       click_button 'Create'
       page.current_path.must_equal '/cohabitants'
       page.text.must_include 'EdTech'
       page.text.must_include '242SL'
       page.text.must_include 'Cool Lady'
       page.text.must_include 'cool.lady@neu.edu'
-      click_link 'Edit EdTech'
-      fill_in 'Location', :with => '259SL'
-      fill_in 'Contact name', :with => 'Cool Dude'
-      fill_in 'Contact email', :with => 'cool.dude@neu.edu'
+      click_button 'Edit EdTech'
+      fill_in 'cohabitant_location', :with => '259SL'
+      fill_in 'cohabitant_contact_name', :with => 'Cool Dude'
+      fill_in 'cohabitant_contact_email', :with => 'cool.dude@neu.edu'
       click_button 'Edit'
       page.current_path.must_equal '/cohabitants'
       page.text.wont_include 'cool.lady@neu.edu'
@@ -239,21 +236,25 @@ describe "integration" do
     it "allows admin users to destroy cohabitants" do
       Capybara.current_driver = :selenium
       visit '/'
-      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       click_link 'Cohabitants'
       click_link 'New cohabitant'
-      fill_in 'Department', :with => 'EdTech'
-      fill_in 'Location', :with => '242SL'
-      fill_in 'Contact name', :with => 'Cool Lady'
-      fill_in 'Contact email', :with => 'cool.lady@neu.edu'
+      fill_in 'cohabitant_department', :with => 'EdTech'
+      fill_in 'cohabitant_location', :with => '242SL'
+      fill_in 'cohabitant_contact_name', :with => 'Cool Lady'
+      fill_in 'cohabitant_contact_email', :with => 'cool.lady@neu.edu'
       click_button 'Create'
-      click_link 'Delete EdTech'
+      click_button 'Delete EdTech'
       page.driver.browser.switch_to.alert.accept
       page.current_path.must_equal '/cohabitants'
       page.text.wont_include 'Cool Lady'
       Capybara.current_driver = :rack_test
+    end
+
+    it "allows admin users to deactivate cohabitants" do
+      
     end
     
     it "shows all notifications for a given cohabitant" do
@@ -266,15 +267,14 @@ describe "integration" do
         :user => User.find_by_email('new.student@neu.edu'),
         :cohabitants => [cohabitant, cohabitant_4] )
       visit '/'
-      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       click_link 'Cohabitants'
       click_link 'Cool Factory'
-      page.text.must_include "#{Time.zone.now.strftime('%A, %B %e %Y')} by Dave" +   
-        " Jachimiak"
-      page.text.must_include "#{Time.zone.now.strftime('%A, %B %e %Y')} by New" +
-        " Student"
+      page.text.must_include Time.zone.now.strftime('%A, %B %e %Y')
+      page.text.must_include "Dave Jachimiak"
+      page.text.must_include "New Student"
       Cohabitant.all.each { |c| c.destroy }
       Notification.all.each { |n| n.destroy }
     end
@@ -282,8 +282,8 @@ describe "integration" do
     it "gives a friendly message if a cohabitant has no notifications" do
       cohabitant = FactoryGirl.create(:cohabitant)
       visit '/'
-      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       click_link 'Cohabitants'
       click_link 'Cool Factory'
@@ -303,18 +303,18 @@ describe "integration" do
         "contact name can't be blank", "contact email can't be blank"]
 	  
       visit '/'
-      fill_in 'Email', :with => 'd.jachimiak@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
       click_link 'Cohabitants'
       click_link 'New cohabitant'
       click_button 'Create'
       page.current_path.must_equal '/cohabitants'
       inclusion_strings.each { |string| check_inclusion.call(string) }
-      fill_in 'Department', :with => 'Cool Factory'
-      fill_in 'Location', :with => '242SL'
-      fill_in 'Contact name', :with => 'Cool Lady'
-      fill_in 'Contact email', :with => 'cool.ladyneu.edu'
+      fill_in 'cohabitant_department', :with => 'Cool Factory'
+      fill_in 'cohabitant_location', :with => '242SL'
+      fill_in 'cohabitant_contact_name', :with => 'Cool Lady'
+      fill_in 'cohabitant_contact_email', :with => 'cool.ladyneu.edu'
       click_button 'Create'
       page.text.must_include 'contact email is invalid'
     end  
@@ -328,8 +328,8 @@ describe "integration" do
       @cohabitant_4 = FactoryGirl.create(:cohabitant_4)
       @time = Time.now
       visit '/'
-      fill_in 'Email', :with => 'new.student@neu.edu'
-      fill_in 'Password', :with => 'password'
+      fill_in 'session_email', :with => 'd.jachimiak@neu.edu'
+      fill_in 'session_password', :with => 'password'
       click_button 'Sign in'
     end
     
@@ -374,17 +374,30 @@ describe "integration" do
         :user => User.find_by_email('new.student@neu.edu'),
         :cohabitants => [@cohabitant, @cohabitant_4])
       
-      ns_notification_link = "#{notification_2.created_at.
-        strftime('%m.%d.%Y (%A) at %I:%M%P')} by New Student"
+      ns_notification_link = notification_2.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P')
 
       click_link 'Notifications'
-      page.text.must_include "#{notification_1.created_at.
-        strftime('%m.%d.%Y (%A) at %I:%M%P')} by Dave Jachimiak" 
+      page.text.must_include notification_1.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P')
       page.text.must_include ns_notification_link
       click_link ns_notification_link
-      page.text.must_include "On #{notification_2.created_at.strftime("%A, %B %e, %Y")}"
       notification_2.cohabitants.each { |c| page.text.must_include c.department }
       Notification.all.each { |n| n.destroy }
+    end
+
+    it "should indicate that a deleted user made a notification" do
+      user = User.find_by_email('new.student@neu.edu')
+      FactoryGirl.create(:notify_c1_and_c4,
+        :user => user,
+        :cohabitants => [@cohabitant, @cohabitant_4] )
+      User.destroy(user.id)
+      
+      click_link 'Notifications'
+      page.text.must_include 'deleted user'
+      click_link 'Cohabitants'
+      click_link 'Cool Factory'
+      page.text.must_include Time.zone.now.strftime('%A, %B %e %Y')
+      page.text.must_include 'deleted user'
+      FactoryGirl.create(:non_admin)
     end
   end
 end

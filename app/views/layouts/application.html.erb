@@ -7,10 +7,29 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <%= render 'layouts/header' if signed_in? %>
-  <%= yield %>
-  <% flash.each do |key, value| %>
-  <p><%= key %>: <%= value %></p>
-  <% end %>
+  <div class="container">
+    <div class="row">
+      <div class="span6 offset3">
+        <%= render 'layouts/header' %>
+      </div>
+    </div>
+    <% if flash.any? %>
+    <div class="row">
+      <div class="span6 offset3">
+        <% flash.each do |key, value| %>
+          <div class="alert <%= key %>">
+          <a class="close" data-dismiss="alert" href="#">cool</a>
+          <p><%= value %></p>
+        <% end %>
+        </div>
+      </div>
+    </div>
+    <% end %>
+    <div class="row">
+      <div class="span6 offset3">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,10 +1,15 @@
-<h1><%= @user.name %></h1>
-<h2><%= @user.email %></h2>
-<h3>Notifications</h3>
-<% if user_notifications.empty? %>
+<div class="hero-unit">
+  <h1><%= @user.name %></h1>
+  <p><%= mail_to @user.email %></p>
+</div>
+<p class="lead">Notifications</h3>
+<% if @notifications.empty? %>
   <p><%= @user.name %> has no notifications.</p>
 <% else %>
-  <% user_notifications.each do |n| %>
+<ul>
+  <% @notifications.each do |n| %>
     <li><%= link_to n.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P'), n %></li>
   <% end %>
+</ul>
+  <%= will_paginate @notifications, :class => 'pager' %>
 <% end %>

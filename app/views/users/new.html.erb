@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%= form_for @user do |f| %>
   <%= f.label :name %>
   <%= f.text_field :name %>
@@ -16,3 +17,24 @@
 
   <%= f.submit 'Create' %>
 <% end %>
+=======
+<%= render 'header' %>
+<h1>New user</h1>
+<br>
+<%= form_for @user, html: { class: 'form-horizontal' } do |f| %>
+  <%= f.text_field :name, placeholder: "Name" %>
+  <br><br>
+  <%= f.text_field :email, placeholder: "Email" %>
+  <br><br>
+  <%= f.password_field :password, placeholder: "Password" %>
+  <br><br>
+  <%= f.password_field :password_confirmation, placeholder: "Password confirmation" %>
+  <br>
+  <label for="user_admin">
+    Admin
+    <%= f.check_box :admin %>
+  </label>
+  <br>
+  <%= f.submit 'Create', class: 'btn btn-success' %> 
+<% end %>
+>>>>>>> design

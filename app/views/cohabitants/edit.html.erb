@@ -1,3 +1,4 @@
+<%= render 'header' %>
 <h2>Edit <%= @cohabitant.department %></h2>
 <%= form_for @cohabitant do |f| %>
   <%= f.label :location %>
@@ -8,6 +9,6 @@
 
   <%= f.label :contact_email %>
   <%= f.text_field :contact_email %>
-
-  <%= f.submit 'Edit' %>
+  <br><br>
+  <%= f.submit 'Edit', class: 'btn btn-warning' %>
 <% end %>

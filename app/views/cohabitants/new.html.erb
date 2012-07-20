@@ -1,17 +1,16 @@
+<%= render 'header' %>
+<h1>New User</h1>
+<br>
 <%= form_for @cohabitant do |f| %>
-  <%= f.label :department %>
-  <%= f.text_field :department %>
-
-  <%= f.label :location %>
-  <%= f.text_field :location %>
-
-  <%= f.label :contact_name %>
-  <%= f.text_field :contact_name %>
-
-  <%= f.label :contact_email %>
-  <%= f.text_field :contact_email %>
-
-  <%= f.submit 'Create' %>
+  <%= f.text_field :department, placeholder: 'Department' %>
+  <br><br>
+  <%= f.text_field :location, placeholder: 'Location' %>
+  <br><br>
+  <%= f.text_field :contact_name, placeholder: 'Contact name' %>
+  <br><br>
+  <%= f.text_field :contact_email, placeholder: 'Contact email' %>
+  <br><br>
+  <%= f.submit 'Create', class: 'btn btn-success' %>
 <% end %>
 
 <% if @cohabitant.errors.any? %>

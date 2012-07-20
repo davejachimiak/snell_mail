@@ -2,7 +2,8 @@
   <div class="navbar-inner">
     <div class="container">
       <div class="brand">
-        Snell Mail     
+        <%= link_to 'Snell Mail', notifications_path if signed_in? %>    
+        <%= h 'Snell Mail' if !signed_in? %>
       </div>
       <ul class ="nav nav-pills">
         <% if signed_in? %>

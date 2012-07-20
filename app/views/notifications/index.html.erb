@@ -1,4 +1,29 @@
-<%= link_to 'New notification', new_notification_path %>
-<% @notifications.each do |n| %>
-  <li><%= link_to "#{n.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P')} by #{n.user.name}", n %></li>
-<% end %>
+<%= render 'header' %>
+<h1>All Notifications</h1>
+<table class="table table-striped table-bordered">
+  <thead id="table-header">
+    <tr>
+      <td class="span3"><strong>Date and Time</strong></td>
+      <td class="span3"><strong>Notifier</strong></td>
+    </tr>
+  </thead>
+  <tbody>
+  <% @notifications.each do |n| %>
+    <tr>
+      <td><%= link_to "#{n.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P')}", n %></td>
+      <td>
+        <% unless n.user == nil %>
+          <% if admin? %>
+            <%= link_to "#{n.user.name}", n.user %>
+          <% else %>
+            <%= n.user.name %>
+          <% end %>
+        <% else %>
+          deleted user
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= will_paginate @notifications, :class => "pager" %>

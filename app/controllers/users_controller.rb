@@ -7,8 +7,7 @@ class UsersController < ApplicationController
     if params[:id].to_i == current_user.id
       session[:redirect_back] = request.referer
     else
-      flash[:notice] = "you're an idiot"
-      redirect_to '/notifications/new'
+      redirect_to '/notifications/new', flash: { "alert-error" => "You're an idiot." }
     end
   end
   
@@ -23,9 +22,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
-      redirect_to users_path, :notice => "#{@user.name} created"
+      redirect_to users_path, :flash => { "alert_success" => "#{@user.name} created" }
     else
-      flash[:notice] = 'Something went wrong. Try again'
       render 'new'
     end
   end
@@ -43,6 +41,15 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     redirect_to users_path
+  end
+
+  def show
+    notifications = @user.notifications
+    if notifications.empty?
+      @notifications = []
+    else
+      @notifications = notifications.order('id DESC').page(params[:page]).per_page(15)
+    end
   end
 
 private

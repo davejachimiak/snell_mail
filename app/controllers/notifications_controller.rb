@@ -2,7 +2,7 @@ class NotificationsController < ApplicationController
   before_filter :authenticate
 
   def index
-    @notifications = Notification.order(:created_at).reverse
+    @notifications = Notification.order('id DESC').page(params[:page]).per_page(15)
   end
 
   def show
@@ -18,7 +18,7 @@ class NotificationsController < ApplicationController
   def create
     @notification = Notification.new(params[:notification])
     if @notification.save
-      redirect_to notifications_path, :notice => notification_created_notice
+      redirect_to notifications_path, :flash => { "alert-success" => notification_created_notice }
     else
       @cohabitants = Cohabitant.all
       render 'new'

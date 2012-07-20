@@ -1,14 +1,16 @@
-<%= form_for @user do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
+<p class="lead">Edit <%= @user.name %></p>
+<%= form_for(@user, html: { class: 'form-horizontal' }) do |f| %>
+  <label for="user_email">
+    Email
+    <%= f.text_field :email %>
+  </label>
 
-  <%= f.label :email %>
-  <%= f.text_field :email %>
-  
-  <%= f.label :admin %>
-  <%= f.check_box :admin %>
-
-  <%= f.submit 'Save' %> 
+  <label for="user_admin">
+    Admin
+    <%= f.check_box :admin %>
+  </label>
+  <br>
+  <%= f.submit 'Save', class: 'btn btn-warning' %> 
 <% end %>
 
 <%= link_to 'Change password', password_path(current_user) if @user == current_user %>

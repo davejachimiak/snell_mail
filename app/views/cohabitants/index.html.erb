@@ -1,14 +1,17 @@
-<%= link_to 'New cohabitant', new_cohabitant_path %>
+<%= render 'header' %>
+<h1>All Cohabitants</h1>
+<br>
 <% if !@cohabitants.empty? %>
   <% @cohabitants.each do |c| %>
-    <ul>
+    <ul class="span3 unstyled">
       <li><%= link_to c.department, c %></li>
       <li><%= c.location %></li>
       <li><%= c.contact_name %></li>
-      <li><%= c.contact_email %></li>
-      <li><%= link_to 'edit', edit_cohabitant_path(c), :title => "Edit #{c.department}" %>
-      <li><%= link_to "delete", c, :method => :delete, :confirm => "Are you sure?",
-                                   :title => "Delete #{c.department}" %></li>
+      <li><%= mail_to c.contact_email %></li>
+      <br>
+      <li><%= button_to 'edit', edit_cohabitant_path(c), :title => "Edit #{c.department}", method: :get, class: "btn btn-warning" %>
+      <li><%= button_to "delete", c, :method => :delete, :confirm => "Are you sure?",
+                                   :title => "Delete #{c.department}", class: "btn btn-danger" %></li>
     </ul>
   <% end %>
 <% else %>

@@ -1,8 +1,8 @@
+<%= render 'header' %>
 <div class="page-header"><h2>New notification for <%= Time.now.strftime("%A, %B %e, %Y") %></h2></div>
 <br>
-<h3>Check each cohabitant that has mail in their bin.</h3>
-<br>
-<%= form_for(@notification, :html => { :class => 'well span4' }) do |f| %>
+<h3 class="lead">Check each cohabitant that has mail in their bin.</h3>
+<%= form_for(@notification, :html => { :class => '' }) do |f| %>
   <%= f.hidden_field :user_id, :value => current_user.id%>
   <% @cohabitants.each do |c| %>
     <label for="<%= c.department %>">
@@ -13,4 +13,15 @@
   <br>
   <%= f.submit 'Notify!', :class => 'btn btn-success btn-large' %>
 <% end %>
-
+<% if @notification.errors.any? %>
+  <div class="row">
+    <div class="span6">
+      <div class="alert">
+        <% @notification.errors.full_messages.each do |m| %>
+          <button class="close" data-dismiss="alert">×</button>
+          <p><strong>Warning!</strong> <%= m.downcase %></p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

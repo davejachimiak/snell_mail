@@ -8,7 +8,6 @@
       <li><%= c.location %></li>
       <li><%= c.contact_name %></li>
       <li><%= mail_to c.contact_email %></li>
-      <br>
       <li><%= button_to 'edit', edit_cohabitant_path(c), :title => "Edit #{c.department}", method: :get, class: "btn btn-warning" %></li>
       <li>
         <% if c.activated? %>

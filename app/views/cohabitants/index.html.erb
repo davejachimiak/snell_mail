@@ -1,7 +1,7 @@
 <%= render 'header' %>
 <h1>All Cohabitants</h1>
-<br>
-<% if !@cohabitants.empty? %>
+<p class="lead">Deactivate cohabitants to make them unnotifiable.</p>
+<% unless @cohabitants.empty? %>
   <% @cohabitants.each do |c| %>
     <ul class="span3 unstyled">
       <li><%= link_to c.department, c %></li>
@@ -9,11 +9,22 @@
       <li><%= c.contact_name %></li>
       <li><%= mail_to c.contact_email %></li>
       <br>
-      <li><%= button_to 'edit', edit_cohabitant_path(c), :title => "Edit #{c.department}", method: :get, class: "btn btn-warning" %>
-      <li><%= button_to "delete", c, :method => :delete, :confirm => "Are you sure?",
-                                   :title => "Delete #{c.department}", class: "btn btn-danger" %></li>
+      <li><%= button_to 'edit', edit_cohabitant_path(c), :title => "Edit #{c.department}", method: :get, class: "btn btn-warning" %></li>
+      <li>
+        <% if c.activated? %>
+          <%= button_to 'deactivate', deactivate_cohabitant_path(c), title: "Deactivate #{c.department}", class: "btn btn-inverse" %> 
+        <% else %>
+          <%= button_to 'activate', activate_cohabitant_path(c), title: "Activate #{c.department}", class: "btn" %> 
+      </li>
+        <% end %>
+      <li><%= button_to "delete", c, :method => :delete,
+                :confirm => "Are you sure? Deleted Cohabitants will not " +
+                  "show up in archived notifications.",
+                :title => "Delete #{c.department}",
+                class: "btn btn-danger" %></li>
     </ul>
   <% end %>
 <% else %>
   <h2>You have no cohabitants! Click New cohabitant to make one.</h2>
 <% end %>
+

@@ -12,7 +12,7 @@ class NotificationsController < ApplicationController
   def new
     @notification = Notification.new
     @user = User.find(session[:user_token])
-    @cohabitants = Cohabitant.all
+    @cohabitants = Cohabitant.all.select { |c| c if c.activated? }
   end
 
   def create

@@ -31,6 +31,16 @@ class CohabitantsController < ApplicationController
     end
   end
 
+  def deactivate
+    @cohabitant.deactivate!
+    redirect_to cohabitants_path, flash: { "alert-info" => "#{@cohabitant.department} deactivated." }
+  end
+
+  def activate
+    @cohabitant.activate!
+    redirect_to cohabitants_path, flash: { "alert-success" => "#{@cohabitant.department} reactivated." }
+  end
+
   def destroy
     @cohabitant.destroy
     redirect_to cohabitants_path

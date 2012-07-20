@@ -103,4 +103,34 @@ describe "Cohabitant" do
         'Cool Factory, Jargon House, and Face Surgery were ')
     end
   end
+
+  describe "#deactivate!" do
+    before do
+      @it = FactoryGirl.build(:cohabitant)
+    end
+
+    it "is responsive" do
+      @it.must_respond_to :deactivate!
+    end
+
+    it "deactivates the cohabitant and updates attributes" do
+      @it.deactivate!.must_equal true
+      @it.activated.must_equal false
+    end
+  end
+
+  describe "#activate!" do
+    before do
+      @it = FactoryGirl.build(:cohabitant, activated: false)
+    end
+
+    it "is responsive" do
+      @it.must_respond_to :activate!
+    end
+
+    it "activates the cohabitant and updates attributes" do
+      @it.activate!.must_equal true
+      @it.activated.must_equal true
+    end
+  end
 end

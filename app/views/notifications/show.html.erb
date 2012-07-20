@@ -3,10 +3,14 @@
   <h1>On <%= @notification.created_at.strftime("%A, %B %e, %Y at %l:%M%P") %>,</h1>
 </div>
 <p class="lead">
-<% if admin? %>
-  <%= link_to @notification.user.name, @notification.user %>
+<% unless @notification.user.nil? %>
+  <% if admin? %>
+    <%= link_to @notification.user.name, @notification.user %>
+  <% else %>
+    <%= @notification.user.name %>
+  <% end %>
 <% else %>
-  <%= @notification.user.name %>
+  A deleted user
 <% end %>
   notified the following cohabitants that they had snail mail:</p>
 <% @notification.cohabitants.each do |c| %>

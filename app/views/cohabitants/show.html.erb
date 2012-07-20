@@ -1,6 +1,9 @@
 <%= render 'header' %>
 <div class="hero-unit">
   <h1><%= @cohabitant.department %></h1>
+  <% unless @cohabitant.activated? %>
+    <h2>(deactivated)</h2>
+  <% end %>
   <p><%= mail_to @cohabitant.contact_email %></p>
 </div>
 <p class="lead">Notifications</h3>

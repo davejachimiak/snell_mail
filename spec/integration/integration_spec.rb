@@ -233,6 +233,41 @@ describe "integration" do
       Cohabitant.find_by_contact_email('cool.dude@neu.edu').destroy
     end
 
+    it "allows admin users to deactivate cohabitants" do
+      FactoryGirl.create(:cohabitant)
+      visit '/'
+      fill_in 'session_email', with: 'd.jachimiak@neu.edu'
+      fill_in 'session_password', with: 'password'
+      click_button 'Sign in'
+      click_link 'Cohabitants'
+      click_button 'Deactivate Cool Factory'
+      cohabitant = Cohabitant.find_by_department('Cool Factory')
+      cohabitant.activated?.must_equal false
+      page.text.must_include 'Cool Factory deactivated.'
+      click_link 'Cool Factory'
+      page.text.must_include "(deactivated)"
+      Cohabitant.destroy(cohabitant.id)
+    end
+
+    it "deactivated cohabitants won't show up new notification list and can be reactivated" do
+      FactoryGirl.create(:cohabitant, activated: false)
+
+      visit '/'
+      fill_in 'session_email', with: 'd.jachimiak@neu.edu'
+      fill_in 'session_password', with: 'password'
+      click_button 'Sign in'
+      page.text.wont_include 'Cool Factory'
+      click_link 'Cohabitants'
+      click_button 'Activate Cool Factory'
+      page.text.must_include 'Cool Factory reactivated.'
+      cohabitant = Cohabitant.find_by_department('Cool Factory')
+      click_link 'Notifications'
+      click_link 'New notification'
+      page.text.must_include 'Cool Factory'
+      
+      Cohabitant.destroy(cohabitant.id)
+    end
+
     it "allows admin users to destroy cohabitants" do
       Capybara.current_driver = :selenium
       visit '/'

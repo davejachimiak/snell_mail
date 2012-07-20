@@ -22,11 +22,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
-<<<<<<< HEAD
-      redirect_to users_path, notice: "#{@user.name} created"
-=======
       redirect_to users_path, :flash => { "alert_success" => "#{@user.name} created" }
->>>>>>> design
     else
       render 'new'
     end
@@ -49,21 +45,12 @@ class UsersController < ApplicationController
   end
 
   def show
-<<<<<<< HEAD
-=======
     notifications = @user.notifications
     if notifications.empty?
       @notifications = []
     else
       @notifications = notifications.order('id DESC').page(params[:page]).per_page(15)
     end
-  end
-
-private
-
-  def set_user
-    @user = User.find(params[:id])
->>>>>>> design
   end
 
   def edit

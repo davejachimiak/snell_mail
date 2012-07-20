@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-<h3>New notification for <%= Time.now.strftime("%A, %B %e, %Y") %></h3>
-<h4>Check each cohabitant that has mail in their bin.</h4>
-<%= form_for @notification do |f| %>
-  <%= f.hidden_field :user_id, value: current_user.id%>
-=======
 <%= render 'header' %>
 <div class="page-header"><h2>New notification for <%= Time.now.strftime("%A, %B %e, %Y") %></h2></div>
 <br>
 <h3 class="lead">Check each cohabitant that has mail in their bin.</h3>
 <%= form_for(@notification, :html => { :class => '' }) do |f| %>
   <%= f.hidden_field :user_id, :value => current_user.id%>
->>>>>>> design
   <% @cohabitants.each do |c| %>
     <label for="<%= c.department %>">
       <%= check_box_tag 'notification[cohabitant_ids][]', c.id, false, :id => c.department %>

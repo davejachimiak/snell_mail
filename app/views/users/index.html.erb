@@ -2,14 +2,6 @@
 <h1>All Users</h1>
 <br>
 <% @users.each do |u| %>
-<<<<<<< HEAD
-  <ul>
-    <li><%= link_to u.name, u %></li>
-    <li><%= u.email %></li>
-    <li><%= link_to "edit", edit_user_path(u), title: "Edit #{u.name}" %></li>
-    <li><%= link_to "delete", u, method: :delete, confirm: "Are you sure?",
-                                 title: "Delete #{u.name}" if u != current_user %>
-=======
   <ul class="span3 unstyled">
     <li><h3><%= link_to u.name, u %></h3></li>
     <li>
@@ -18,7 +10,6 @@
     <% else %>
       <%= mail_to u.email %>
     <% end %>
->>>>>>> design
     </li>
     <br>
     <li><%= button_to "edit", edit_user_path(u), title: "Edit #{u.name}", method: :get, class: "btn btn-warning" %></li>

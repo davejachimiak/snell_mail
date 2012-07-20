@@ -5,22 +5,12 @@
     <%= f.text_field :email %>
   </label>
 
-<<<<<<< HEAD
-  <%= f.label :email %>
-  <%= f.text_field :email %>
-
-  <%= f.label :admin %>
-  <%= f.check_box :admin %>
-
-  <%= f.submit 'Save' %>
-=======
   <label for="user_admin">
     Admin
     <%= f.check_box :admin %>
   </label>
   <br>
   <%= f.submit 'Save', class: 'btn btn-warning' %> 
->>>>>>> design
 <% end %>
 
 <%= link_to 'Change password', password_path(current_user) if @user == current_user %>

@@ -2,15 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.1'
 gem 'sqlite3'
-<<<<<<< HEAD
-
-group :development do
-  gem 'rails_best_practices'
-end
-
-=======
 gem 'will_paginate', '~> 3.0.0'
->>>>>>> design
 group :test, :development do
   gem 'minitest'
   gem 'capybara'

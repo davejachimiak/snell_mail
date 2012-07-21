@@ -23,7 +23,7 @@ class Cohabitant < ActiveRecord::Base
         cohabitants[0].department + ' was '
       end
     end
-    
+
     def parse_many_cohabitants(cohabitants)
       cohabitants.map do |cohabitant|
         if cohabitant == cohabitants.last
@@ -35,13 +35,13 @@ class Cohabitant < ActiveRecord::Base
         end
       end.join
     end
-    
+
     def last_of_many_cohabitants(cohabitant)
       "and #{cohabitant.department} were "
     end
 
     def first_of_two_cohabitants(cohabitant)
-      "#{cohabitant.department} " 
+      "#{cohabitant.department} "
     end
   end
 end

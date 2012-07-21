@@ -10,7 +10,7 @@
     <%= f.check_box :admin %>
   </label>
   <br>
-  <%= f.submit 'Save', class: 'btn btn-warning' %> 
+  <%= f.submit 'Save', class: 'btn btn-warning' %>
 <% end %>
 <br>
 <%= link_to 'Change password', change_password_path if @user == current_user %>

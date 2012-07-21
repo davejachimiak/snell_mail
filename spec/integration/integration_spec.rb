@@ -1,14 +1,16 @@
 require 'spec_helper'
 
 describe "integration" do
-  FactoryGirl.create(:user)
-  FactoryGirl.create(:non_admin)
-  
   describe "user integration" do
     after do
       reset_session!
     end
  
+    before do
+      FactoryGirl.create(:user)
+      FactoryGirl.create(:non_admin)
+    end
+
     it "redirects to sign in page if bad email and password combo" do
       visit '/'
       fill_in 'session_email', with: 'd.jachimik@neu.edu'
@@ -38,6 +40,9 @@ describe "integration" do
 
   describe "non-admin sign-in integration" do
     before do
+      FactoryGirl.create(:user)
+      FactoryGirl.create(:non_admin)
+
       visit '/'
       fill_in 'session_email', with: 'new.student@neu.edu'
       fill_in 'session_password', with: 'password'
@@ -98,6 +103,11 @@ describe "integration" do
   end
 
   describe "admin sign-in integration" do
+    before do
+      FactoryGirl.create(:user)
+      FactoryGirl.create(:non_admin)
+    end
+
     after do
       reset_session!
     end
@@ -153,7 +163,7 @@ describe "integration" do
       page.current_path.must_equal '/'
       page.text.must_include 'please sign in to go to there.'
     end
-  
+
     it "redirects to user index after admin creates user" do
       visit '/'
       fill_in 'session_email', with: 'd.jachimiak@neu.edu'
@@ -172,7 +182,7 @@ describe "integration" do
 
     it "show all notifications for a given user" do
       cohabitant = FactoryGirl.create(:cohabitant)
-      
+
       notification_1 = FactoryGirl.create(:notify_c1, 
         user: User.find_by_email('new.student@neu.edu'),
         cohabitants: [cohabitant])
@@ -194,6 +204,11 @@ describe "integration" do
   end
 
   describe "valid cohabitants integration" do
+    before do
+      FactoryGirl.create(:user)
+      FactoryGirl.create(:non_admin)
+    end
+
     after do
       reset_session!
     end
@@ -321,6 +336,11 @@ describe "integration" do
   end
 
   describe "invalid cohabitant attributes integration" do
+    before do
+      FactoryGirl.create(:user)
+      FactoryGirl.create(:non_admin)
+    end
+
     after do
       reset_session!
     end
@@ -350,6 +370,9 @@ describe "integration" do
 
   describe "notification integration" do
     before do
+      FactoryGirl.create(:user)
+      FactoryGirl.create(:non_admin)
+
       @cohabitant   = FactoryGirl.create(:cohabitant)
       @cohabitant_2 = FactoryGirl.create(:cohabitant_2)
       @cohabitant_3 = FactoryGirl.create(:cohabitant_3)

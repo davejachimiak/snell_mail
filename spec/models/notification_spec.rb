@@ -10,6 +10,12 @@ describe "Notification" do
                       FactoryGirl.create(:cohabitant_4)]
       @notification = Notification.new(user: user, cohabitants: cohabitants)
     end
+
+    after do
+      User.all.each { |u| u.destroy }
+      Cohabitant.all.each { |c| c.destroy }
+      Notification.all.each { |n| n.destroy }
+    end
 	
     it "belongs to cohabitants and a user" do
       @notification.save.must_equal true
@@ -39,6 +45,9 @@ describe "Notification" do
     
     after do
       @notification.save.wont_equal true
+      User.all.each { |u| u.destroy }
+      Cohabitant.all.each { |c| c.destroy }
+      Notification.all.each { |n| n.destroy }
     end
     
     it "won't save if no cohabitants" do

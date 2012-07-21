@@ -54,24 +54,20 @@ describe "User" do
         @it.name = 'Dave poop fest mcggee'
       end
     end
-	
-    before do
-      @it = FactoryGirl.build(:user)
-    end
-
-    after do
-      @it.save.wont_equal true
-    end
 
     describe "email" do
       it "must be valid email format" do
+        @it = FactoryGirl.build(:user)
         @it.email = 'djachimiakskiatfart.narc'
+        @it.save.wont_equal true
       end      
     end
 
     describe "password" do
       it "must be more than 6 characters" do
+        @it = FactoryGirl.build(:user)
         @it.password = 'joord'
+        @it.save.wont_equal true
       end
     end
   end
@@ -93,5 +89,9 @@ describe "User" do
       user.notifications[1].created_at.must_equal notification_2.created_at
     end
   end
+
+  User.all.each { |u| u.destroy }
+  Cohabitant.all.each { |c| c.destroy }
+  Notification.all.each { |n| n.destroy }
 end
 

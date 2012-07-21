@@ -35,6 +35,12 @@ describe "Cohabitant" do
         user: FactoryGirl.create(:non_admin),
         cohabitants: [@it, FactoryGirl.create(:cohabitant_4)])
     end
+
+    after do
+      Cohabitant.all.each { |c| c.destroy }
+      User.all.each { |u| u.destroy }
+      Notification.all.each { |n| n.destroy }
+    end
     
     it "has many notifications" do
       @it.notifications.count.must_equal 2
@@ -74,7 +80,7 @@ describe "Cohabitant" do
       @it = Cohabitant
     end
     
-    before do
+    after do
       Cohabitant.all.each { |cohabitant| cohabitant.destroy }
     end
 
@@ -109,48 +115,20 @@ describe "Cohabitant" do
       @it = FactoryGirl.create(:cohabitant)
     end
 
+    after do
+      Cohabitant.all.each { |c| c.destroy }
+    end
+
     it "is responsive" do
       @it.must_respond_to :toggle_activated!
     end
 
     it "toggles activated attribute" do
       @it.toggle_activated!
-
       @it.activated.must_equal false
 
       @it.toggle_activated!
-
       @it.activated.must_equal true
     end
   end
-
-#  describe "#deactivate!" do
-#    before do
-#      @it = FactoryGirl.build(:cohabitant)
-#    end
-
-#    it "is responsive" do
-#      @it.must_respond_to :deactivate!
-#    end
-
-#    it "deactivates the cohabitant and updates attributes" do
-#      @it.deactivate!.must_equal true
-#      @it.activated.must_equal false
-#    end
-#  end
-
-#  describe "#activate!" do
-#    before do
-#      @it = FactoryGirl.build(:cohabitant, activated: false)
-#    end
-
-#    it "is responsive" do
-#      @it.must_respond_to :activate!
-#    end
-
-#    it "activates the cohabitant and updates attributes" do
-#      @it.activate!.must_equal true
-#      @it.activated.must_equal true
-#    end
-#  end
 end

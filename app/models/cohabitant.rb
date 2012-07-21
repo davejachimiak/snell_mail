@@ -7,6 +7,10 @@ class Cohabitant < ActiveRecord::Base
 
   has_and_belongs_to_many :notifications
 
+  def toggle_activated!
+    self.update_attributes(activated: !self.activated)
+  end
+
   def deactivate!
     self.update_attributes(activated: false)
   end

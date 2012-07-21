@@ -104,33 +104,53 @@ describe "Cohabitant" do
     end
   end
 
-  describe "#deactivate!" do
+  describe "#toggle_activated!" do
     before do
-      @it = FactoryGirl.build(:cohabitant)
+      @it = FactoryGirl.create(:cohabitant)
     end
 
     it "is responsive" do
-      @it.must_respond_to :deactivate!
+      @it.must_respond_to :toggle_activated!
     end
 
-    it "deactivates the cohabitant and updates attributes" do
-      @it.deactivate!.must_equal true
+    it "toggles activated attribute" do
+      @it.toggle_activated!
+
       @it.activated.must_equal false
-    end
-  end
 
-  describe "#activate!" do
-    before do
-      @it = FactoryGirl.build(:cohabitant, activated: false)
-    end
+      @it.toggle_activated!
 
-    it "is responsive" do
-      @it.must_respond_to :activate!
-    end
-
-    it "activates the cohabitant and updates attributes" do
-      @it.activate!.must_equal true
       @it.activated.must_equal true
     end
   end
+
+#  describe "#deactivate!" do
+#    before do
+#      @it = FactoryGirl.build(:cohabitant)
+#    end
+
+#    it "is responsive" do
+#      @it.must_respond_to :deactivate!
+#    end
+
+#    it "deactivates the cohabitant and updates attributes" do
+#      @it.deactivate!.must_equal true
+#      @it.activated.must_equal false
+#    end
+#  end
+
+#  describe "#activate!" do
+#    before do
+#      @it = FactoryGirl.build(:cohabitant, activated: false)
+#    end
+
+#    it "is responsive" do
+#      @it.must_respond_to :activate!
+#    end
+
+#    it "activates the cohabitant and updates attributes" do
+#      @it.activate!.must_equal true
+#      @it.activated.must_equal true
+#    end
+#  end
 end

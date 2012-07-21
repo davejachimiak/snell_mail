@@ -5,11 +5,8 @@ SnellMail::Application.routes.draw do
   match "/users/change_password" => "users#password",
     as: :change_password
 
-  match "cohabitants/:id/deactivate" => "cohabitants#deactivate",
-    as: :deactivate_cohabitant
-
-  match "cohabitants/:id/activate" => "cohabitants#activate",
-    as: :activate_cohabitant
+  match "cohabitants/:id/toggle_activated" => "cohabitants#toggle_activated",
+    as: :toggle_activated
 
   resources :sessions, only: [:new, :create, :destroy]
   resources :notifications, only: [:index, :show, :new, :create]

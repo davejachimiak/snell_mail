@@ -8,6 +8,6 @@ class RemovePasswordAttrsFromUser < ActiveRecord::Migration
   def down
     add_column :users, :encrypted_password
     add_column :users, :salt
-	  remove_column :users, :password_digest, :string
+    remove_column :users, :password_digest, :string
   end
 end

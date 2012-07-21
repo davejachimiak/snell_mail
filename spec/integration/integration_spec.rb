@@ -47,13 +47,6 @@ describe "integration" do
     after do
       reset_session!
     end
-    
-    it "does not allow a user to change another's password" do
-      another_users_id = User.find_by_email('d.jachimiak@neu.edu').id
-      visit "/users/#{another_users_id}/password"
-      page.current_path.must_equal '/notifications/new'
-      page.text.must_include 'idiot'
-    end
 
     it "allows only admin users to resource users or cohabitants" do
       page.text.wont_include 'Cohabitants'

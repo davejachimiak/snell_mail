@@ -2,8 +2,8 @@ SnellMail::Application.routes.draw do
 
   root to: 'sessions#new'
 
-  match "/users/:id/password" => "users#password",
-    as: :password
+  match "/users/change_password" => "users#password",
+    as: :change_password
 
   match "cohabitants/:id/deactivate" => "cohabitants#deactivate",
     as: :deactivate_cohabitant

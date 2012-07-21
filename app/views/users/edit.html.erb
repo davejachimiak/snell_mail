@@ -1,5 +1,5 @@
 <p class="lead">Edit <%= @user.name %></p>
-<%= form_for(@user, html: { class: 'form-horizontal' }) do |f| %>
+<%= form_for @user, html: { class: 'form-horizontal' } do |f| %>
   <label for="user_email">
     Email
     <%= f.text_field :email %>
@@ -12,5 +12,5 @@
   <br>
   <%= f.submit 'Save', class: 'btn btn-warning' %> 
 <% end %>
-
-<%= link_to 'Change password', password_path(current_user) if @user == current_user %>
+<br>
+<%= link_to 'Change password', change_password_path if @user == current_user %>

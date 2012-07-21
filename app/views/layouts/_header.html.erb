@@ -11,7 +11,7 @@
             <li<%= h " class='active'" if request.original_url =~ /users/ %>><%= link_to 'Users', users_path %></li>
             <li<%= h " class='active'" if request.original_url =~ /cohabitants/ %>><%= link_to 'Cohabitants', cohabitants_path %></li>
           <% else %>
-            <li<%= h " class='active'" if request.original_url =~ /password/ %>><%= link_to 'Change password', password_path(current_user) %></li>
+            <li<%= h " class='active'" if request.original_url =~ /password/ %>><%= link_to 'Change password', change_password_path %></li>
           <% end %>
           <li<%= h " class='active'" if request.original_url =~ /notifications/ %>><%= link_to 'Notifications', notifications_path %></li>
           <li><%= link_to 'Sign out', signout_path %></li>

@@ -1,14 +1,11 @@
 class UsersController < ApplicationController
   before_filter :authenticate
   before_filter :authenticate_admin, except: [:password, :update]
-  before_filter :set_user, except: [:index, :new, :create]
+  before_filter :set_user, except: [:index, :new, :create, :password]
 
   def password
-    if params[:id].to_i == current_user.id
-      session[:redirect_back] = request.referer
-    else
-      redirect_to '/notifications/new', flash: { "alert-error" => "You're an idiot." }
-    end
+    @user = current_user
+    session[:redirect_back] = request.referer
   end
 
   def index

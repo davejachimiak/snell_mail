@@ -10,22 +10,22 @@ Rake::TestTask.new(integration: "db:test:prepare") do |t|
   t.pattern = "spec/integration/integration_spec.rb"
 end
 
-Rake::TestTask.new(test_user_model: "db:test:prepare") do |t|
+Rake::TestTask.new(user_spec: "db:test:prepare") do |t|
   t.libs << "spec"
   t.pattern = "spec/models/user_spec.rb"
 end
 
-Rake::TestTask.new(test_cohabitant_model: "db:test:prepare") do |t|
+Rake::TestTask.new(cohabitant_spec: "db:test:prepare") do |t|
   t.libs << "spec"
   t.pattern = "spec/models/cohabitant_spec.rb"
 end
 
-Rake::TestTask.new(test_notification_model: "db:test:prepare") do |t|
+Rake::TestTask.new(notification_spec: "db:test:prepare") do |t|
   t.libs << "spec"
   t.pattern = "spec/models/notification_spec.rb"
 end
 
-Rake::TestTask.new(test_notification_confirmation_parser: "db:test:prepare") do |t|
+Rake::TestTask.new(notification_confirmation_parser_spec: "db:test:prepare") do |t|
   t.libs << "spec"
   t.pattern = "spec/lib/snell_mail/notification_confirmation_parser_spec.rb"
 end

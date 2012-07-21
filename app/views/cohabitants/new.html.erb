@@ -1,5 +1,5 @@
 <%= render 'header' %>
-<h1>New User</h1>
+<h1>New Cohabitant</h1>
 <br>
 <%= form_for @cohabitant do |f| %>
   <%= f.text_field :department, placeholder: 'Department' %>
@@ -12,9 +12,17 @@
   <br><br>
   <%= f.submit 'Create', class: 'btn btn-success' %>
 <% end %>
+<br>
 
-<% if @cohabitant.errors.any? %>
-  <% @cohabitant.errors.full_messages.each do |m| %>
-    <p><%= m.downcase %></p>
-  <% end %>
-<% end %>
+<div class="row">
+  <div class="span6 offset3">
+    <% if @cohabitant.errors.any? %>
+      <div class="alert">
+        <% @cohabitant.errors.full_messages.each do |m| %>
+          <p><%= m.downcase %></p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

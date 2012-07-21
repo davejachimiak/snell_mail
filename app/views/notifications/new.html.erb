@@ -2,16 +2,16 @@
 <div class="page-header"><h2>New notification for <%= Time.now.strftime("%A, %B %e, %Y") %></h2></div>
 <br>
 <h3 class="lead">Check each cohabitant that has mail in their bin.</h3>
-<%= form_for(@notification, :html => { :class => '' }) do |f| %>
-  <%= f.hidden_field :user_id, :value => current_user.id%>
+<%= form_for @notification do |f| %>
+  <%= f.hidden_field :user_id, value: current_user.id%>
   <% @cohabitants.each do |c| %>
     <label for="<%= c.department %>">
-      <%= check_box_tag 'notification[cohabitant_ids][]', c.id, false, :id => c.department %>
+      <%= check_box_tag 'notification[cohabitant_ids][]', c.id, false, id: c.department %>
       <%= c.department %>
     </label>
   <% end %>
   <br>
-  <%= f.submit 'Notify!', :class => 'btn btn-success btn-large' %>
+  <%= f.submit 'Notify!', class: 'btn btn-success btn-large' %>
 <% end %>
 <% if @notification.errors.any? %>
   <div class="row">

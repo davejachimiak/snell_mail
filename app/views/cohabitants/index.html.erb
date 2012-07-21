@@ -8,7 +8,7 @@
       <li><%= c.location %></li>
       <li><%= c.contact_name %></li>
       <li><%= mail_to c.contact_email %></li>
-      <li><%= button_to 'edit', edit_cohabitant_path(c), :title => "Edit #{c.department}", method: :get, class: "btn btn-warning" %></li>
+      <li><%= button_to 'edit', edit_cohabitant_path(c), title: "Edit #{c.department}", method: :get, class: "btn btn-warning" %></li>
       <li>
         <% if c.activated? %>
           <%= button_to 'deactivate', deactivate_cohabitant_path(c), title: "Deactivate #{c.department}", class: "btn btn-inverse" %> 
@@ -16,10 +16,10 @@
           <%= button_to 'activate', activate_cohabitant_path(c), title: "Activate #{c.department}", class: "btn" %> 
       </li>
         <% end %>
-      <li><%= button_to "delete", c, :method => :delete,
-                :confirm => "Are you sure? Deleted Cohabitants will not " +
+      <li><%= button_to "delete", c, method: :delete,
+                confirm: "Are you sure? Deleted Cohabitants will not " +
                   "show up in archived notifications.",
-                :title => "Delete #{c.department}",
+                title: "Delete #{c.department}",
                 class: "btn btn-danger" %></li>
     </ul>
   <% end %>

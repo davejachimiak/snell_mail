@@ -17,3 +17,9 @@
   <br>
   <%= f.submit 'Create', class: 'btn btn-success' %> 
 <% end %>
+
+<% if @user.errors.any? %>
+  <% @user.errors.full_messages.each do |m| %>
+    <p><%= m.downcase %></p>
+  <% end %>
+<% end %>

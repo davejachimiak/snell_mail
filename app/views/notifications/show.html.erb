@@ -5,9 +5,9 @@
 <p class="lead">
 <% unless @notification.user.nil? %>
   <% if admin? %>
-    <%= link_to @notification.user.name, @notification.user %>
+    <%= link_to @notification.user_name, @notification.user %>
   <% else %>
-    <%= @notification.user.name %>
+    <%= @notification.user_name %>
   <% end %>
 <% else %>
   A deleted user

@@ -8,7 +8,7 @@ describe "Notification" do
       cohabitants  = [FactoryGirl.create(:cohabitant), 
                       FactoryGirl.create(:cohabitant_2),
                       FactoryGirl.create(:cohabitant_4)]
-      @notification = Notification.new(:user => user, :cohabitants => cohabitants)
+      @notification = Notification.new(user: user, cohabitants: cohabitants)
     end
 	
     it "belongs to cohabitants and a user" do
@@ -33,7 +33,7 @@ describe "Notification" do
     before do
       user = FactoryGirl.create(:user)
       cohabitant = FactoryGirl.create(:cohabitant)
-      @notification = Notification.new(:user_id => user.id, :cohabitant_ids => 
+      @notification = Notification.new(user_id: user.id, cohabitant_ids: 
                                        [cohabitant.id])
     end
     

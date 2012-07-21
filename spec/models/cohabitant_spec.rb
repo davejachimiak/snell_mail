@@ -29,11 +29,11 @@ describe "Cohabitant" do
       @it = FactoryGirl.create(:cohabitant)
       
       FactoryGirl.create(:notify_c1, 
-        :user => FactoryGirl.create(:user),
-        :cohabitants => [@it])
+        user: FactoryGirl.create(:user),
+        cohabitants: [@it])
       FactoryGirl.create(:notify_c1_and_c4, 
-        :user => FactoryGirl.create(:non_admin),
-        :cohabitants => [@it, FactoryGirl.create(:cohabitant_4)])
+        user: FactoryGirl.create(:non_admin),
+        cohabitants: [@it, FactoryGirl.create(:cohabitant_4)])
     end
     
     it "has many notifications" do

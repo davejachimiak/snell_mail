@@ -82,11 +82,11 @@ describe "User" do
       user = FactoryGirl.create(:non_admin)
 
       notification_1 = FactoryGirl.create(:notify_c1, 
-        :user => user,
-        :cohabitants => [cohabitant])
+        user: user,
+        cohabitants: [cohabitant])
       notification_2 = FactoryGirl.create(:notify_c1_and_c4,
-        :user => user,
-        :cohabitants => [cohabitant, FactoryGirl.create(:cohabitant_4)])
+        user: user,
+        cohabitants: [cohabitant, FactoryGirl.create(:cohabitant_4)])
 
       user.notifications.count.must_equal 2
       user.notifications[0].created_at.must_equal notification_1.created_at

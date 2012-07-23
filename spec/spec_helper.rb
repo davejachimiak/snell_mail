@@ -33,7 +33,10 @@ def create_non_admin_user
 end
 
 def test_sign_in_admin
-
+  visit '/'
+  fill_in 'session_email', with: 'd.jachimiak@neu.edu'
+  fill_in 'session_password', with: 'password'
+  click_button 'Sign in'
 end
 
 def test_sign_in_non_admin

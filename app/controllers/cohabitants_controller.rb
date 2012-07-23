@@ -1,6 +1,5 @@
 class CohabitantsController < ApplicationController
-  before_filter :authenticate
-  before_filter :authenticate_admin
+  before_filter :authenticate, :authenticate_admin
   before_filter :set_cohabitant, except: [:index, :new, :create]
 
   def index

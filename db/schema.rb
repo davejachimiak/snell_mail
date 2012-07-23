@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(:version => 20120720184427) do
     t.string "notification_id", :null => false
   end
 
-  add_index "cohabitants_notifications", ["cohabitant_id", "notification_id"], :name => "c_n_index"
-  add_index "cohabitants_notifications", ["notification_id", "cohabitant_id"], :name => "n_c_index"
+  add_index "cohabitants_notifications", ["cohabitant_id"], :name => "index_cohabitants_notifications_on_cohabitant_id"
+  add_index "cohabitants_notifications", ["notification_id"], :name => "index_cohabitants_notifications_on_notification_id"
 
   create_table "notifications", :force => true do |t|
     t.integer  "user_id"

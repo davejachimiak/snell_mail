@@ -12,12 +12,12 @@ class NotificationsController < ApplicationController
 
   def new
     @notification = Notification.new
-    @user = User.find(session[:user_token])
-    @cohabitants = Cohabitant.all.select { |c| c if c.activated? }
+    @user         = User.find(session[:user_token])
+    @cohabitants  = Cohabitant.all.select { |c| c if c.activated? }
   end
 
   def create
-    @notification = Notification.new(params[:notification])
+    @notification      = Notification.new(params[:notification])
     @notification.user = current_user
     if @notification.save
       redirect_to notifications_path,

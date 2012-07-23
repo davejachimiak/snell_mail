@@ -11,14 +11,6 @@ class Cohabitant < ActiveRecord::Base
     self.update_attributes(activated: !self.activated)
   end
 
-  def deactivate!
-    self.update_attributes(activated: false)
-  end
-
-  def activate!
-    self.update_attributes(activated: true)
-  end
-
   class << self
     def parse_for_notification(cohabitants)
       if cohabitants.count > 1

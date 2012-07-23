@@ -1,17 +1,18 @@
 require 'spec_helper'
 
 describe "integration" do
-  describe "user integration" do
-    after do
-      reset_session!
-    end
- 
-    before do
-      FactoryGirl.create(:user)
-      FactoryGirl.create(:non_admin)
+  after do
+    %w(User Cohabitant Notification).each do |model_string|
+      model = Kernel.const_get(model_string)
+      model.all.each { |m| m.destroy } if model.any?
     end
 
+    reset_session!
+  end
+
+  describe "user integration" do
     it "redirects to sign in page if bad email and password combo" do
+      FactoryGirl.create(:user)
       visit '/'
       fill_in 'session_email', with: 'd.jachimik@neu.edu'
       fill_in 'session_password', with: 'passord'
@@ -38,19 +39,14 @@ describe "integration" do
     end
   end
 
-  describe "non-admin sign-in integration" do
+  describe "sign in non admin integration" do
     before do
-      FactoryGirl.create(:user)
-      FactoryGirl.create(:non_admin)
+      create_test_users
 
       visit '/'
       fill_in 'session_email', with: 'new.student@neu.edu'
       fill_in 'session_password', with: 'password'
       click_button 'Sign in'
-    end
-
-    after do
-      reset_session!
     end
 
     it "allows only admin users to resource users or cohabitants" do
@@ -106,10 +102,6 @@ describe "integration" do
     before do
       FactoryGirl.create(:user)
       FactoryGirl.create(:non_admin)
-    end
-
-    after do
-      reset_session!
     end
 
     it "allows admin users to destroy other's but doesn't not allow admin users to destroy themselves" do
@@ -209,10 +201,6 @@ describe "integration" do
       FactoryGirl.create(:non_admin)
     end
 
-    after do
-      reset_session!
-    end
-
     it "should allow admin users to create and edit cohabitants" do
       visit '/'
       fill_in 'session_email', with: 'd.jachimiak@neu.edu'
@@ -296,10 +284,6 @@ describe "integration" do
       Capybara.current_driver = :rack_test
     end
 
-    it "allows admin users to deactivate cohabitants" do
-      
-    end
-    
     it "shows all notifications for a given cohabitant" do
       cohabitant = FactoryGirl.create(:cohabitant)
       cohabitant_4 = FactoryGirl.create(:cohabitant_4)
@@ -339,10 +323,6 @@ describe "integration" do
     before do
       FactoryGirl.create(:user)
       FactoryGirl.create(:non_admin)
-    end
-
-    after do
-      reset_session!
     end
 
     it "won't save new cohabitant" do
@@ -386,7 +366,6 @@ describe "integration" do
     
     after do 
       Cohabitant.all.each { |c| c.destroy }
-      reset_session!
     end
 
     it "should notify cohabitants that they have mail and redirect to notifications after notification" do

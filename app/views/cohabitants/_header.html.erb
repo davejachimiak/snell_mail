@@ -1,8 +1,8 @@
 <header class="subhead">
   <div class="subnav">
     <ul class="nav nav-pills">
-      <li <%= h " class='active'" if request.original_url =~ /(cohabitants$|cohabitants\?)/ %>><%= link_to 'All cohabitants', cohabitants_path %></li>
-      <li <%= h " class='active'" if request.original_url =~ /new/ %>><%= link_to 'New cohabitant', new_cohabitant_path %></li>
+      <li <%= h " class='active'" if request.original_url =~ /(cohabitants$|cohabitants\?)/ && @error.nil? %>><%= link_to 'All cohabitants', cohabitants_path %></li>
+      <li <%= h " class='active'" if request.original_url =~ /new/ || @error %>><%= link_to 'New cohabitant', new_cohabitant_path %></li>
     </ul>
   </div>
 </header>

@@ -1,7 +1,7 @@
 <%= render 'header' %>
 <h1>New Cohabitant</h1>
 <br>
-<%= form_for @cohabitant do |f| %>
+<%= form_for @cohabitant, html: { class: 'form-horizontal span3' } do |f| %>
   <%= f.text_field :department, placeholder: 'Department' %>
   <br><br>
   <%= f.text_field :location, placeholder: 'Location' %>
@@ -14,15 +14,15 @@
 <% end %>
 <br>
 
-<div class="row">
-  <div class="span6 offset3">
-    <% if @cohabitant.errors.any? %>
-      <div class="alert">
-        <% @cohabitant.errors.full_messages.each do |m| %>
-          <p><%= m.downcase %></p>
-        <% end %>
-      </div>
-    <% end %>
+<% if @cohabitant.errors.any? %>
+  <div class="span3">
+    <div class="alert">
+      <a class="close" data-dismiss="alert" href="#">cool</a>
+      <p class="lead">Your cohabitant wasn't created for the following <%= @cohabitant.errors.one? ? "reason" : "reasons" %>:</p>
+      <% @cohabitant.errors.full_messages.each do |m| %>
+        <p><%= m.downcase %></p>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>
 

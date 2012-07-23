@@ -9,6 +9,11 @@ Rake::TestTask.new(models: "db:test:prepare") do |t|
   t.pattern = "spec/models/*_spec*.rb"
 end
 
+Rake::TestTask.new(test_spec: "db:test:prepare") do |t|
+  t.libs << "spec"
+  t.pattern = "spec/models/test_spec.rb"
+end
+
 Rake::TestTask.new(integration: "db:test:prepare") do |t|
   t.libs << "spec"
   t.pattern = "spec/integration/integration_spec.rb"

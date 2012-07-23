@@ -22,6 +22,7 @@ class UsersController < ApplicationController
       redirect_to users_path,
         flash: { "alert_success" => "#{@user.name} created" }
     else
+      @error = true
       render 'new'
     end
   end

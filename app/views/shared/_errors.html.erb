@@ -1,0 +1,12 @@
+<% if object.errors.any? %>
+  <div class="span3">
+    <div class="alert">
+      <a class="close" data-dismiss="alert" href="#">cool</a>
+      <p class="lead">Your <%= object.class.to_s.underscore.humanize.downcase %> wasn't 
+      created for the following <%= object.errors.one? ? "reason" : "reasons" %>:</p>
+      <% object.errors.full_messages.each do |m| %>
+        <p><%= m.downcase %></p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

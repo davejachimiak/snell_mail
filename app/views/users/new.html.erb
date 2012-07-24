@@ -18,14 +18,4 @@
   <%= f.submit 'Create', class: 'btn btn-success' %>
 <% end %>
 
-<% if @user.errors.any? %>
-  <div class="span3">
-    <div class="alert">
-      <a class="close" data-dismiss="alert" href="#">cool</a>
-      <p class="lead">Your user wasn't created for the following <%= @user.errors.one? ? "reason" : "reasons" %>:</p>
-      <% @user.errors.full_messages.each do |m| %>
-        <p><%= m.downcase %></p>
-      <% end %>
-    </div>
-  </div>
-<% end %>
+<%= render 'shared/errors', object: @user %>

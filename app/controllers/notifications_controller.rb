@@ -40,4 +40,10 @@ class NotificationsController < ApplicationController
       parser.confirmation +
         'just notified that they have mail in their bins today. Thanks.'
     end
+
+    def render_errors
+      @cohabitants = Cohabitant.all
+      @error = true
+      render 'new'
+    end
 end

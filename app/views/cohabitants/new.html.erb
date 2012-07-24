@@ -1,4 +1,4 @@
-<%= render 'header' %>
+<%= render 'shared/sub_header', klass: 'cohabitant', error: @error %>
 <h1>New Cohabitant</h1>
 <br>
 <%= form_for @cohabitant, html: { class: 'form-horizontal span3' } do |f| %>

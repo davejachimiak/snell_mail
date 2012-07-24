@@ -1,0 +1,12 @@
+<header class="subhead">
+  <div class="subnav">
+    <ul class="nav nav-pills">
+      <li<%= h " class='active'" if index_url?(request.original_url, error) %>>
+	    <%= link_to "All #{klass.pluralize}", send("#{klass.pluralize}_path") %>
+	  </li>
+      <li<%= h " class='active'" if new_url?(request.original_url, error) %>>
+	    <%= link_to "New #{klass}", send("new_#{klass}_path") %>
+	  </li>
+    </ul>
+  </div>
+</header>

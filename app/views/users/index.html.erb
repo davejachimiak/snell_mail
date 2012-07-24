@@ -1,4 +1,4 @@
-<%= render 'header' %>
+<%= render 'shared/sub_header', klass: 'user', error: @error %>
 <h1>All Users</h1>
 <br>
 <% @users.each do |u| %>

@@ -1,4 +1,4 @@
-<%= render 'header' %>
+<%= render 'shared/sub_header', klass: 'cohabitant', error: @error %>
 <h1>All Cohabitants</h1>
 <p class="lead">Deactivate cohabitants to make them unnotifiable.</p>
 <% unless @cohabitants.empty? %>

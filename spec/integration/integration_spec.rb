@@ -197,7 +197,7 @@ describe "integration" do
         click_link 'New notification'
         page.text.must_include 'Cool Factory'
       end
-      
+
       describe "sign in admin integration" do
         before do
           test_sign_in_admin

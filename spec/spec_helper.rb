@@ -14,7 +14,7 @@ end
 class HelperTest < MiniTest::Spec
   include ActiveSupport::Testing::SetupAndTeardown
   include ActionView::TestCase::Behavior
-  register_spec_type(/Helper$/, self)
+  register_spec_type(/(method$|Helper$)/, self)
 end
 
 Turn.config.format = :outline

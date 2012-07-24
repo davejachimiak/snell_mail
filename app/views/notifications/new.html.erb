@@ -1,4 +1,4 @@
-<%= render 'header' %>
+<%= render 'shared/sub_header', klass: 'notification', error: @error %>
 <div class="page-header"><h2>New notification for <%= Time.now.strftime("%A, %B %e, %Y") %></h2></div>
 <br>
 <h3 class="lead">Check each cohabitant that has mail in their bin.</h3>

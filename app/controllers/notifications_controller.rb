@@ -26,6 +26,7 @@ class NotificationsController < ApplicationController
         flash: { "alert-success" => notification_created_notice }
     else
       @cohabitants = Cohabitant.all
+      @error = true
       render 'new'
     end
   end

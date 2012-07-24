@@ -1,3 +1,4 @@
+<%= render 'shared/sub_header', klass: 'user', error: @error %>
 <p class="lead">Edit <%= @user.name %></p>
 <br>
 <%= form_for @user, html: { class: 'form-horizontal span3' } do |f| %>

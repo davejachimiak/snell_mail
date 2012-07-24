@@ -13,7 +13,9 @@ class NotificationsController < ApplicationController
   def new
     @notification = Notification.new
     @user         = User.find(session[:user_token])
-    @cohabitants  = Cohabitant.all.select { |c| c if c.activated? }
+    @cohabitants  = Cohabitant.all.select do |cohabitant|
+                      cohabitant if cohabitant.activated?
+                    end
   end
 
   def create
@@ -32,7 +34,7 @@ class NotificationsController < ApplicationController
 
     def notification_created_notice
       cohabitants = @notification.cohabitants
-      departments = cohabitants.map { |c| c.department }
+      departments = cohabitants.map { |cohabitant| cohabitant.department }
       parser = SnellMail::NotificationConfirmationParser.new(departments)
       parser.confirmation +
         'just notified that they have mail in their bins today. Thanks.'

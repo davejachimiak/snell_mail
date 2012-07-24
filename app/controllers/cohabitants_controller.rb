@@ -31,14 +31,10 @@ class CohabitantsController < ApplicationController
   end
 
   def toggle_activated
-    @cohabitant.toggle_activated!
-    if @cohabitant.activated?
-      redirect_to cohabitants_path,
-        flash: { "alert-success" => "#{@cohabitant.department} reactivated." }
-    else
-      redirect_to cohabitants_path,
-        flash: { "alert-info" => "#{@cohabitant.department} deactivated." }
-    end
+    strings = @cohabitant.toggle_activated!
+    redirect_to cohabitants_path,
+      flash: { "alert-#{strings[:flash]}" =>
+      "#{@cohabitant.department} #{strings[:adj]}." }
   end
 
   def destroy

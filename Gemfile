@@ -12,7 +12,7 @@ group :test, :development do
 end
 
 group :assets do
-  gem 'twitter-bootstrap-rails'
+  #gem 'twitter-bootstrap-rails'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   

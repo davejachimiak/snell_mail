@@ -95,5 +95,15 @@ describe "Cohabitant" do
       @it.toggle_activated!
       @it.activated.must_equal true
     end
+    
+    it "returns flash value" do
+      @it.toggle_activated![:flash].must_equal 'info'
+      @it.toggle_activated![:flash].must_equal 'success'
+    end
+    
+    it "returns adjetive" do
+      @it.toggle_activated![:adj].must_equal 'deactivated'
+      @it.toggle_activated![:adj].must_equal 'reactivated'
+    end
   end
 end

@@ -1,14 +1,14 @@
 <%= render 'header' %>
 <h2>Edit <%= @cohabitant.department %></h2>
-<%= form_for @cohabitant do |f| %>
-  <%= f.label :location %>
-  <%= f.text_field :location %>
-
-  <%= f.label :contact_name %>
-  <%= f.text_field :contact_name %>
-
-  <%= f.label :contact_email %>
-  <%= f.text_field :contact_email %>
+<br>
+<%= form_for @cohabitant, html: { class: 'form-horizontal span3' } do |f| %>
+  <%= f.text_field :location, placeholder: 'Location' %>
+  <br><br>
+  <%= f.text_field :contact_name, placeholder: 'Contact name' %>
+  <br><br>
+  <%= f.text_field :contact_email, placeholder: 'Contact email' %>
   <br><br>
   <%= f.submit 'Edit', class: 'btn btn-warning' %>
 <% end %>
+
+<%= render 'shared/errors', object: @cohabitant %>

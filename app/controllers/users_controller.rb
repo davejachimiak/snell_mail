@@ -33,8 +33,7 @@ class UsersController < ApplicationController
     elsif @user.update_attributes(params[:user])
       redirect_to users_path, notice: "#{@user.name} updated"
     else
-      redirect_to edit_user_path @user, notice: "Something went wrong. " +
-                                                "Try again."
+      render 'edit'
     end
   end
 

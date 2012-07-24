@@ -26,8 +26,7 @@ class CohabitantsController < ApplicationController
       redirect_to cohabitants_path,
         notice: "#{@cohabitant.department} updated."
     else
-      redirect_to request.referer,
-        notice: "Something went wrong. Try again."
+      render 'edit'
     end
   end
 

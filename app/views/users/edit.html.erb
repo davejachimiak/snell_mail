@@ -1,10 +1,8 @@
 <p class="lead">Edit <%= @user.name %></p>
-<%= form_for @user, html: { class: 'form-horizontal' } do |f| %>
-  <label for="user_email">
-    Email
-    <%= f.text_field :email %>
-  </label>
-
+<br>
+<%= form_for @user, html: { class: 'form-horizontal span3' } do |f| %>
+  <%= f.text_field :email, placeholder: 'Email' %>
+  <br>
   <label for="user_admin">
     Admin
     <%= f.check_box :admin %>
@@ -14,3 +12,5 @@
 <% end %>
 <br>
 <%= link_to 'Change password', change_password_path if @user == current_user %>
+
+<%= render 'shared/errors', object: @user %>

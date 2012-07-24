@@ -75,41 +75,6 @@ describe "Cohabitant" do
     end
   end
 
-  describe "::parse_for_notification" do
-    before do
-      @it = Cohabitant
-    end
-    
-    after do
-      Cohabitant.all.each { |cohabitant| cohabitant.destroy }
-    end
-
-    it "is responsive on the class" do
-      @it.must_respond_to :parse_for_notification
-    end
-
-    it "presents necessary text for two cohabitants" do
-      cohabitants = [FactoryGirl.create(:cohabitant)]
-      @it.parse_for_notification(cohabitants).must_equal(
-        'Cool Factory was ')
-    end
-
-    it "presents necessary text for two cohabitants" do
-      cohabitants = [FactoryGirl.create(:cohabitant),
-                     FactoryGirl.create(:cohabitant_3)]
-      @it.parse_for_notification(cohabitants).must_equal(
-        'Cool Factory and Face Surgery were ')
-    end
-
-    it "presents necessary text for three cohabitants" do
-      cohabitants = [FactoryGirl.create(:cohabitant),
-                     FactoryGirl.create(:cohabitant_2),
-                     FactoryGirl.create(:cohabitant_3)]
-      @it.parse_for_notification(cohabitants).must_equal(
-        'Cool Factory, Jargon House, and Face Surgery were ')
-    end
-  end
-
   describe "#toggle_activated!" do
     before do
       @it = FactoryGirl.create(:cohabitant)

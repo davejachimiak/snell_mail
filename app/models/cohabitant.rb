@@ -10,34 +10,4 @@ class Cohabitant < ActiveRecord::Base
   def toggle_activated!
     self.update_attributes(activated: !self.activated)
   end
-
-  class << self
-    def parse_for_notification(cohabitants)
-      if cohabitants.count > 1
-        parse_many_cohabitants(cohabitants)
-      else
-        cohabitants[0].department + ' was '
-      end
-    end
-
-    def parse_many_cohabitants(cohabitants)
-      cohabitants.map do |cohabitant|
-        if cohabitant == cohabitants.last
-          last_of_many_cohabitants(cohabitant)
-        elsif cohabitants.count == 2
-          first_of_two_cohabitants(cohabitant)
-        else
-          "#{cohabitant.department}, "
-        end
-      end.join
-    end
-
-    def last_of_many_cohabitants(cohabitant)
-      "and #{cohabitant.department} were "
-    end
-
-    def first_of_two_cohabitants(cohabitant)
-      "#{cohabitant.department} "
-    end
-  end
 end

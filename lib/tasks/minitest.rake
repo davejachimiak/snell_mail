@@ -1,6 +1,6 @@
 require "rake/testtask"
 
-Rake::TestTask.new(test: ["integration", "models"]) do |t|
+Rake::TestTask.new(test: ["integration", "lib", "models"]) do |t|
   t.libs << "spec"
 end
 
@@ -9,9 +9,9 @@ Rake::TestTask.new(models: "db:test:prepare") do |t|
   t.pattern = "spec/models/*_spec*.rb"
 end
 
-Rake::TestTask.new(test_spec: "db:test:prepare") do |t|
+Rake::TestTask.new(lib: "db:test:prepare") do |t|
   t.libs << "spec"
-  t.pattern = "spec/models/test_spec.rb"
+  t.pattern = "spec/snell_mail/**/*.rb"
 end
 
 Rake::TestTask.new(integration: "db:test:prepare") do |t|
@@ -34,9 +34,9 @@ Rake::TestTask.new(notification_spec: "db:test:prepare") do |t|
   t.pattern = "spec/models/notification_spec.rb"
 end
 
-Rake::TestTask.new(notification_confirmation_parser_spec: "db:test:prepare") do |t|
+Rake::TestTask.new(parser_spec: "db:test:prepare") do |t|
   t.libs << "spec"
-  t.pattern = "spec/lib/snell_mail/notification_confirmation_parser_spec.rb"
+  t.pattern = "spec/snell_mail/notification_confirmation_parser_spec.rb"
 end
 
 task default: :test

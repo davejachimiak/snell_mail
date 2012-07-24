@@ -32,7 +32,9 @@ class NotificationsController < ApplicationController
 
     def notification_created_notice
       cohabitants = @notification.cohabitants
-      Cohabitant.parse_for_notification(cohabitants) +
+      departments = cohabitants.map { |c| c.department }
+      parser = SnellMail::NotificationConfirmationParser.new(departments)
+      parser.confirmation +
         'just notified that they have mail in their bins today. Thanks.'
     end
 end

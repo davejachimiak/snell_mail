@@ -2,7 +2,7 @@
   <div class="span3">
     <div class="alert">
       <a class="close" data-dismiss="alert" href="#">cool</a>
-      <p class="lead">Your <%= object.class.to_s.underscore.humanize.downcase %> wasn't 
+      <p class="lead">Your <%= object.class.to_s.underscore.humanize.downcase %> wasn't
       saved for the following <%= object.errors.one? ? "reason" : "reasons" %>:</p>
       <% object.errors.full_messages.each do |m| %>
         <p><%= m.downcase %></p>

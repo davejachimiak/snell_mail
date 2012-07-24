@@ -26,12 +26,12 @@ namespace :test do
       t.pattern = "spec/models/notification_spec.rb"
     end
   end
-  
+
   Rake::TestTask.new(helpers: "db:test:prepare") do |t|
     t.libs << "spec"
     t.pattern = "spec/helpers/**/*.rb"
   end
-  
+
   namespace :helpers do
 	Rake::TestTask.new(shared: "db:test:prepare") do |t|
       t.libs << "spec"

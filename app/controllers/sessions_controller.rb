@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by_email(params[:session][:email])
 
-    if user && user_authenticates?
+    if user && user_authenticates?(user)
       redirect_to controller: 'notifications', action: 'new'
       session[:user_token] = user.id
     else
@@ -19,10 +19,10 @@ class SessionsController < ApplicationController
     reset_session
     redirect_to :root
   end
-  
+
   private
-  
-    def user_authenticates?
+
+    def user_authenticates?(user)
       user.authenticate(params[:session][:password])
     end
 end

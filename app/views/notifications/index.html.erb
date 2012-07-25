@@ -8,22 +8,14 @@
     </tr>
   </thead>
   <tbody>
-  <% @notifications.each do |n| %>
+  <% @notifications.each do |notification| %>
     <tr>
-      <td><%= link_to "#{n.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P')}", n %></td>
+      <td><%= link_to "#{n.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P')}", notification %></td>
       <td>
-        <% unless n.user == nil %>
-          <% if admin? %>
-            <%= link_to "#{n.user.name}", n.user %>
-          <% else %>
-            <%= n.user.name %>
-          <% end %>
-        <% else %>
-          deleted user
-        <% end %>
+        <%= notifier(notification, admin?) %>
       </td>
     </tr>
   <% end %>
   </tbody>
 </table>
-<%= will_paginate @notifications, :class => "pager" %>
+<%= will_paginate @notifications, class: "pager" %>

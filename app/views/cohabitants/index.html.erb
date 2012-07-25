@@ -14,16 +14,16 @@
           <%= button_to 'deactivate', toggle_activated_path(c), title: "Deactivate #{c.department}", class: "btn btn-inverse" %>
         <% else %>
           <%= button_to 'activate', toggle_activated_path(c), title: "Activate #{c.department}", class: "btn" %>
-      </li>
         <% end %>
+	  </li>
       <li><%= button_to "delete", c, method: :delete,
                 confirm: "Are you sure? Deleted Cohabitants will not " +
                   "show up in archived notifications.",
                 title: "Delete #{c.department}",
-                class: "btn btn-danger" %></li>
+                class: "btn btn-danger" %>
+	  </li>
     </ul>
   <% end %>
 <% else %>
   <h2>You have no cohabitants! Click New cohabitant to make one.</h2>
 <% end %>
-

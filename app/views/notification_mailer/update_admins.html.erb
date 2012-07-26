@@ -1,0 +1,10 @@
+<html>
+  <body>
+    <h1>Hello!</h1>
+    <p>
+      <%= @departments_string %> notified by
+      <%= mail_to @notification.user_name, @notification.user_email %> that snail mail
+      has arrived for them.
+    </p> 
+  </body>
+</html>

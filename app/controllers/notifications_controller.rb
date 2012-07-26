@@ -24,6 +24,7 @@ class NotificationsController < ApplicationController
     if @notification.save
       redirect_to notifications_path,
         flash: { "alert-success" => notification_created_notice }
+      NotificationMailer.mail_notification(@notification).deliver
     else
       @cohabitants = Cohabitant.all
       @error = true

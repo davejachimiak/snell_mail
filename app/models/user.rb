@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
     /\A([a-zA-Z]){2,} (([a-zA-Z]){2,}|([a-zA-Z]){2,} ([a-zA-Z]){2,})\z/
 
   attr_accessible :name, :email, :password, :password_confirmation, :admin,
-                  :notifications
+                  :notifications, :wants_update
 
   has_secure_password
 

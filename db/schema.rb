@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120720184427) do
+ActiveRecord::Schema.define(:version => 20120726014352) do
 
   create_table "cohabitants", :force => true do |t|
     t.string   "department"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20120720184427) do
     t.datetime "updated_at",      :null => false
     t.boolean  "admin"
     t.string   "password_digest"
+    t.boolean  "wants_update"
   end
 
 end

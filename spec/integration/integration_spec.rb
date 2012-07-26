@@ -311,6 +311,16 @@ describe "integration" do
                                      'and Face Surgery were just notified ' +
                                      'that they have mail ' +
                                      'in their bins today. Thanks.'
+
+              notification_email = ActionMailer::Base.deliveries.first
+              ['d.jachimiak@neu.edu'].each do |text|
+                notification_email.encoded.must_include text
+              end
+              
+              update_email = ActionMailer::Base.deliveries.last
+              ['Cool Factory', 'Jargon House', 'Face Surgery', 'Fun Section', 'Dave Jachimiak'].each do |text|
+                update_email.encoded.must_include text
+              end
             end
             
             describe "sign in integration" do

@@ -3,7 +3,6 @@ class NotificationMailer < ActionMailer::Base
     notifier = notification.user_email
     cohabitants = notification.cohabitants.map { |c| c.contact_email }
     mail(to: cohabitants, from: notifier, subject: "You've got mail downstairs!")
-    self.update_admins(notification)
   end
 
   def update_admins(notification)

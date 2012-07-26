@@ -313,7 +313,7 @@ describe "integration" do
                                      'in their bins today. Thanks.'
 
               notification_email = ActionMailer::Base.deliveries.first
-              ['d.jachimiak@neu.edu'].each do |text|
+              ['d.jachimiak@neu.edu', 'waiting for you', 'cool.guy@neu.edu'].each do |text|
                 notification_email.encoded.must_include text
               end
               

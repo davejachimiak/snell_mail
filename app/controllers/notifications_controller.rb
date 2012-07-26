@@ -24,12 +24,9 @@ class NotificationsController < ApplicationController
     if @notification.save
       redirect_to notifications_path,
         flash: { "alert-success" => notification_created_notice }
-      NotificationMailer.mail_notification(@notification).deliver
-      NotificationMailer.update_admins(@notification).deliver
+      send_notification_and_update
     else
-      @cohabitants = Cohabitant.all
-      @error = true
-      render 'new'
+      render_errors
     end
   end
 
@@ -41,6 +38,11 @@ class NotificationsController < ApplicationController
       parser = SnellMail::NotificationConfirmationParser.new(departments)
       parser.confirmation +
         'just notified that they have mail in their bins today. Thanks.'
+    end
+
+    def send_notification_and_update
+      NotificationMailer.mail_notification(@notification).deliver
+      NotificationMailer.update_admins(@notification).deliver
     end
 
     def render_errors

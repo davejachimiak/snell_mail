@@ -5,14 +5,12 @@ FactoryGirl.define do
     password 'password'
     password_confirmation 'password'
     admin    true
-  end
 
-  factory :non_admin, class: User do
-    name     'New Student'
-    email    'new.student@neu.edu'
-    password 'password'
-    password_confirmation 'password'
-    admin    false
+    factory :non_admin do
+      name 'New Student'
+      email 'new.student@neu.edu'
+      admin false
+    end
   end
   
   factory :cohabitant do

@@ -8,6 +8,7 @@ require "factory_girl_rails"
 class IntegrationTest < MiniTest::Spec
   include Rails.application.routes.url_helpers
   include Capybara::DSL
+  include ActiveSupport::Testing::SetupAndTeardown
   register_spec_type(/integration$/, self)
 end
 

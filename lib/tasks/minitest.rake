@@ -27,21 +27,33 @@ namespace :test do
     end
   end
 
+  Rake::TestTask.new(mailers: "db:test:prepare") do |t|
+    t.libs << "spec"
+    t.pattern = "spec/mailers/**/*.rb"
+  end
+
+  namespace :mailers do
+    Rake::TestTask.new(notification: "db:test:prepare") do |t|
+      t.libs << "spec"
+      t.pattern = "spec/mailers/notification_mailer_spec.rb"
+    end
+  end
+
   Rake::TestTask.new(helpers: "db:test:prepare") do |t|
     t.libs << "spec"
     t.pattern = "spec/helpers/**/*.rb"
   end
 
   namespace :helpers do
-	Rake::TestTask.new(shared: "db:test:prepare") do |t|
+    Rake::TestTask.new(shared: "db:test:prepare") do |t|
       t.libs << "spec"
-	  t.pattern = "spec/helpers/shared_helper_spec.rb"
-	end
+      t.pattern = "spec/helpers/shared_helper_spec.rb"
+    end
 	
     Rake::TestTask.new(notifications: "db:test:prepare") do |t|
       t.libs << "spec"
-	  t.pattern = "spec/helpers/notifications_helper_spec.rb"
-	end
+      t.pattern = "spec/helpers/notifications_helper_spec.rb"
+    end
   end
 
   Rake::TestTask.new(lib: "db:test:prepare") do |t|

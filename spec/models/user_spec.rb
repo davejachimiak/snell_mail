@@ -89,9 +89,5 @@ describe "User" do
       user.notifications[1].created_at.must_equal notification_2.created_at
     end
   end
-
-  User.all.each { |u| u.destroy }
-  Cohabitant.all.each { |c| c.destroy }
-  Notification.all.each { |n| n.destroy }
 end
 

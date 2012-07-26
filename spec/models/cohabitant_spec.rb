@@ -36,11 +36,11 @@ describe "Cohabitant" do
         cohabitants: [@it, FactoryGirl.create(:cohabitant_4)])
     end
 
-    after do
-      Cohabitant.all.each { |c| c.destroy }
-      User.all.each { |u| u.destroy }
-      Notification.all.each { |n| n.destroy }
-    end
+    #after do
+    #  Cohabitant.all.each { |c| c.destroy }
+    #  User.all.each { |u| u.destroy }
+    #  Notification.all.each { |n| n.destroy }
+    #end
     
     it "has many notifications" do
       @it.notifications.count.must_equal 2
@@ -78,10 +78,6 @@ describe "Cohabitant" do
   describe "#toggle_activated!" do
     before do
       @it = FactoryGirl.create(:cohabitant)
-    end
-
-    after do
-      Cohabitant.all.each { |c| c.destroy }
     end
 
     it "is responsive" do

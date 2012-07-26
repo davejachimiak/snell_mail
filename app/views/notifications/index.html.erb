@@ -10,7 +10,7 @@
   <tbody>
   <% @notifications.each do |notification| %>
     <tr>
-      <td><%= link_to "#{n.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P')}", notification %></td>
+      <td><%= link_to "#{notification.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P')}", notification %></td>
       <td>
         <%= notifier(notification, admin?) %>
       </td>

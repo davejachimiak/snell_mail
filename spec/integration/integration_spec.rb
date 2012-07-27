@@ -89,6 +89,11 @@ describe "integration" do
         page.current_path.must_equal "/users/#{id}/edit"
         page.text.must_include 'new password saved!'
       end
+
+      it "shows a friendly message if there are no active cohabitants" do
+        page.text.must_include 'There are no active cohabitants to notify. ' +
+                          'Please tell your supervisor to add them.'
+      end
     end
 
     describe "sign in admin integration" do
@@ -102,6 +107,10 @@ describe "integration" do
         visit '/notifications'
         page.current_path.must_equal '/'
         page.text.must_include 'please sign in to go to there.'
+      end
+
+      it "should give a friendly message if there are no cohabitants" do
+        page.text.must_include 'There are no active cohabitants. Please activate or add them'
       end
       
       it "should allow admin users to create and edit cohabitants" do

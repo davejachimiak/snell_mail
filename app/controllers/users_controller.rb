@@ -67,23 +67,21 @@ class UsersController < ApplicationController
 
     def change_password
       params[:user].delete(:old_password)
-      if authenticates_and_updates?
-        success
-      elsif @user.authenticate(@old_password)
-        password_confirmation_mismatch
+      if @user.authenticate(@old_password)
+        if @user.update_attributes(params[:user])
+          success
+        else
+          password_confirmation_mismatch
+        end
       else
         old_password_mismatch
       end
     end
 
-    def authenticates_and_updates?
-      @user.authenticate(@old_password) &&
-      @user.update_attributes(params[:user])
-    end
-
     def success
       flash[:notice] = 'new password saved!'
       redirect_to session[:redirect_back]
+      session[:redirect_back] = nil
     end
 
     def password_confirmation_mismatch

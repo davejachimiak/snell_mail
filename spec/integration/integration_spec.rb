@@ -90,6 +90,20 @@ describe "integration" do
         page.text.must_include 'new password saved!'
       end
 
+      it "shows proper messages if change password errors" do
+        click_link 'Change password'
+        fill_in 'Old password', with: 'passworth'
+        fill_in 'New password', with: 'passwordpassword'
+        fill_in 'New password again', with: 'passwordpassword'
+        click_button 'Change password'
+        page.text.must_include "Old password didn't match existing one"
+        fill_in 'Old password', with: 'password'
+        fill_in 'New password', with: 'passwordpasswork'
+        fill_in 'New password again', with: 'passwordpassword'
+        click_button 'Change password'
+        page.text.must_include "Password confirmation doesn't match"
+      end
+
       it "shows a friendly message if there are no active cohabitants" do
         page.text.must_include 'There are no active cohabitants to notify. ' +
                           'Please tell your supervisor to add them.'
@@ -221,7 +235,7 @@ describe "integration" do
           click_link 'Cool Factory'
           page.text.must_include "(deactivated)"
         end
-        	
+
         it "shouldn't save notification if no cohabitants are present" do
           click_button 'Notify!'
           page.current_path.must_equal '/notifications'
@@ -365,45 +379,45 @@ describe "integration" do
     end
   end
 
-  # describe "selenium integration" do
-    # before do
-      # create_test_users
-      # Capybara.current_driver = :selenium
-    # end
+  describe "selenium integration" do
+    before do
+      create_test_users
+      Capybara.current_driver = :selenium
+    end
 
-    # after do
-      # Capybara.current_driver = :rack_test
-    # end
+    #after do
+    #  Capybara.current_driver = :rack_test
+    #end
 
-    # it "allows admin users to destroy other's but doesn't not allow " +
-      # "admin users to destroy themselves" do
-      # test_sign_in_admin
+    it "allows admin users to destroy other's but doesn't not allow " +
+      "admin users to destroy themselves" do
+      test_sign_in_admin
       
-      # click_link 'Users'
-      # click_button 'Delete New Student'
-      # page.driver.browser.switch_to.alert.accept
-      # page.current_path.must_equal '/users'
-      # page.text.wont_include 'New Student'
-      # page.body.wont_include 'Delete Dave Jachimiak'
-      # click_link 'Users'
-      # click_link 'New user'
-      # fill_in 'user_name', with: 'New Student'
-      # fill_in 'user_email', with: 'new.student@neu.edu'
-      # fill_in 'user_password', with: 'password'
-      # fill_in 'user_password_confirmation', with: 'password'
-      # click_button 'Create'
-      # click_link 'Sign out'
-    # end
+      click_link 'Users'
+      click_button 'Delete New Student'
+      page.driver.browser.switch_to.alert.accept
+      page.current_path.must_equal '/users'
+      page.text.wont_include 'New Student'
+      page.body.wont_include 'Delete Dave Jachimiak'
+      click_link 'Users'
+      click_link 'New user'
+      fill_in 'user_name', with: 'New Student'
+      fill_in 'user_email', with: 'new.student@neu.edu'
+      fill_in 'user_password', with: 'password'
+      fill_in 'user_password_confirmation', with: 'password'
+      click_button 'Create'
+      click_link 'Sign out'
+    end
 
-    # it "allows admin users to destroy cohabitants" do
-      # FactoryGirl.create(:cohabitant)
-      # test_sign_in_admin
+    it "allows admin users to destroy cohabitants" do
+      FactoryGirl.create(:cohabitant)
+      test_sign_in_admin
  
-      # click_link 'Cohabitants'
-      # click_button 'Delete Cool Factory'
-      # page.driver.browser.switch_to.alert.accept
-      # page.current_path.must_equal '/cohabitants'
-      # page.text.wont_include 'Cool Factory'
-    # end
-  # end
+      click_link 'Cohabitants'
+      click_button 'Delete Cool Factory'
+      page.driver.browser.switch_to.alert.accept
+      page.current_path.must_equal '/cohabitants'
+      page.text.wont_include 'Cool Factory'
+    end
+  end
 end

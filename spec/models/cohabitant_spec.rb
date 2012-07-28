@@ -35,12 +35,6 @@ describe "Cohabitant" do
         user: FactoryGirl.create(:non_admin),
         cohabitants: [@it, FactoryGirl.create(:cohabitant_4)])
     end
-
-    #after do
-    #  Cohabitant.all.each { |c| c.destroy }
-    #  User.all.each { |u| u.destroy }
-    #  Notification.all.each { |n| n.destroy }
-    #end
     
     it "has many notifications" do
       @it.notifications.count.must_equal 2
@@ -68,6 +62,10 @@ describe "Cohabitant" do
 	
     it "won't save with blank contact_name" do
       @it.contact_name = ''
+    end
+
+    it "won't save with an invalid name" do
+      @it.contact_name = 'Si'
     end
 	
     it "won't save with blank contact_email" do

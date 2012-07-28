@@ -317,7 +317,7 @@ describe "integration" do
                "and redirect to notifications after notification" do
               FactoryGirl.create(:cohabitant_2)
               FactoryGirl.create(:cohabitant_3)
-              @time = Time.now
+              @time = Time.zone.now
               test_sign_in_admin
             
               page.text.must_include "New notification " +

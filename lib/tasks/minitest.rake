@@ -70,7 +70,41 @@ namespace :test do
 
   Rake::TestTask.new(integration: "db:test:prepare") do |t|
     t.libs << "spec"
-    t.pattern = "spec/integration/integration_spec.rb"
+    t.pattern = "spec/integration/**/*.rb"
+  end
+
+  namespace :integration do
+    Rake::TestTask.new(sign_in_and_out: "db:test:prepare") do |t|
+      t.libs << "spec"
+      t.pattern = "spec/integration/sign_in_and_out_spec.rb"
+    end
+
+    Rake::TestTask.new(non_admin_user: "db:test:prepare") do |t|
+      t.libs << "spec"
+      t.pattern = "spec/integration/non_admin_user_spec.rb"
+    end
+
+    Rake::TestTask.new(admin_user: "db:test:prepare") do |t|
+      t.libs << "spec"
+      t.pattern = "spec/integration/admin_user/**/*.rb"
+    end
+
+    Rake::TestTask.new(all_users: "db:test:prepare") do |t|
+      t.libs << "spec"
+      t.pattern = "spec/integration/all_users_spec.rb"
+    end
+
+    namespace :admin_user do
+      Rake::TestTask.new(user_management: "db:test:prepare") do |t|
+        t.libs << "spec"
+        t.pattern = "spec/integration/admin_user/user_management_spec.rb"
+      end
+
+      Rake::TestTask.new(user_management: "db:test:prepare") do |t|
+        t.libs << "spec"
+        t.pattern = "spec/integration/admin_user/user_management_spec.rb"
+      end
+    end
   end
 end
 

@@ -14,22 +14,26 @@ describe 'non admin user integration' do
     reset_session!
   end
 
-  it "shows a friendly message if there are no active cohabitants (non_admin)" do
-    test_sign_in_non_admin
-    page.text.must_include 'There are no active cohabitants to notify. ' +
-                           'Please tell your supervisor to add them.'
-  end
+  describe 'with no db prep' do
+    before do
+      test_sign_in_non_admin
+    end
 
-  it "allows only admin users to resource users or cohabitants" do
-    test_sign_in_non_admin
-    page.text.wont_include 'Cohabitants'
-    page.text.wont_include 'Users'
-    visit '/cohabitants'
-    page.current_path.must_equal '/notifications'
-    page.text.must_include 'Only admin users can go to there.'
-    visit '/users'
-    page.current_path.must_equal '/notifications'
-    page.text.must_include 'Only admin users can go to there.'
+    it "shows a friendly message if there are no active cohabitants (non_admin)" do
+      page.text.must_include 'There are no active cohabitants to notify. ' +
+                             'Please tell your supervisor to add them.'
+    end
+
+    it "allows only admin users to resource users or cohabitants" do
+      page.text.wont_include 'Cohabitants'
+      page.text.wont_include 'Users'
+      visit '/cohabitants'
+      page.current_path.must_equal '/notifications'
+      page.text.must_include 'Only admin users can go to there.'
+      visit '/users'
+      page.current_path.must_equal '/notifications'
+      page.text.must_include 'Only admin users can go to there.'
+    end
   end
 
   it "deactivated cohabitants won't show up new notification list " +

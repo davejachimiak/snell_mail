@@ -3,7 +3,6 @@ require 'spec_helper'
 describe 'admin user user management integration' do
   before do
     create_test_users
-    @non_admin = User.find_by_email('new.student@neu.edu')
     @admin = User.find_by_email('d.jachimiak@neu.edu')
     @cohabitant = FactoryGirl.create(:cohabitant)
     @cohabitant_4 = FactoryGirl.create(:cohabitant_4)
@@ -16,8 +15,6 @@ describe 'admin user user management integration' do
       model = Kernel.const_get(model_string)
       model.all.each { |m| m.destroy } if model.any?
     end
-
-    reset_session!
   end
 
   describe 'non-selenium integration' do

@@ -25,13 +25,72 @@ describe 'all users integration' do
     reset_session!
   end
 
-  it "shouldn't save notification if no cohabitants are present" do
-    test_sign_in_non_admin
-    click_button 'Notify!'
-    page.current_path.must_equal '/notifications'
-    page.text.must_include "Check each cohabitant that has mail " +
-                           "in their bin."
-    page.text.must_include 'cohabitants must be chosen'
+  describe 'with no db prep' do
+    before do
+      test_sign_in_non_admin
+    end
+
+    it "shouldn't save notification if no cohabitants are present" do
+      click_button 'Notify!'
+      page.current_path.must_equal '/notifications'
+      page.text.must_include "Check each cohabitant that has mail " +
+                             "in their bin."
+      page.text.must_include 'cohabitants must be chosen'
+    end
+
+    it "allows any user to change their password" do
+      click_link 'Change password'
+      fill_in 'Old password', with: 'password'
+      fill_in 'New password', with: 'passwordpassword'
+      fill_in 'New password again', with: 'passwordpassword'
+      click_button 'Change password'
+      page.current_path.must_equal '/notifications/new'
+      page.text.must_include 'new password saved!'
+      click_link 'Sign out'
+      fill_in 'session_email', with: 'new.student@neu.edu'
+      fill_in 'session_password', with: 'password'
+      click_button 'Sign in'
+      page.text.must_include 'bad email and password combintion. try again.'
+      fill_in 'session_email', with: 'new.student@neu.edu'
+      fill_in 'session_password', with: 'passwordpassword'
+      click_button 'Sign in'
+      page.current_path.must_equal '/notifications/new'
+      click_link 'Sign out'
+      fill_in 'session_email', with: 'd.jachimiak@neu.edu'
+      fill_in 'session_password', with: 'password'
+      click_button 'Sign in'
+      click_link 'Users'
+      click_button 'Edit Dave Jachimiak'
+      click_link 'Change password'
+      fill_in 'Old password', with: 'password'
+      fill_in 'New password', with: 'passwordpassword'
+      fill_in 'New password again', with: 'passwordpassword'
+      click_button 'Change password'
+      id = User.find_by_email('d.jachimiak@neu.edu').id
+      page.current_path.must_equal "/users/#{id}/edit"
+      page.text.must_include 'new password saved!'
+    end
+
+    it "shows proper messages if change password errors" do
+      click_link 'Change password'
+      fill_in 'Old password', with: 'passworth'
+      fill_in 'New password', with: 'passwordpassword'
+      fill_in 'New password again', with: 'passwordpassword'
+      click_button 'Change password'
+      page.text.must_include "Old password didn't match existing one"
+      fill_in 'Old password', with: 'password'
+      fill_in 'New password', with: 'passwordpasswork'
+      fill_in 'New password again', with: 'passwordpassword'
+      click_button 'Change password'
+      page.text.must_include "Password confirmation doesn't match"
+    end
+
+    it "should singularize confirmation notice " +
+       "for single cohabitant notifications" do
+      check 'Cool Factory'
+      click_button 'Notify!'
+      page.text.must_include 'Cool Factory was'
+    end
   end
 
   it "should indicate that a deleted user made a notification" do
@@ -77,63 +136,6 @@ describe 'all users integration' do
     ['Cool Factory', 'Jargon House', 'Face Surgery', 'Fun Section', 'Dave Jachimiak'].each do |text|
       update_email.encoded.must_include text
     end
-  end
-
-  it "allows any user to change their password" do
-    test_sign_in_non_admin
-    click_link 'Change password'
-    fill_in 'Old password', with: 'password'
-    fill_in 'New password', with: 'passwordpassword'
-    fill_in 'New password again', with: 'passwordpassword'
-    click_button 'Change password'
-    page.current_path.must_equal '/notifications/new'
-    page.text.must_include 'new password saved!'
-    click_link 'Sign out'
-    fill_in 'session_email', with: 'new.student@neu.edu'
-    fill_in 'session_password', with: 'password'
-    click_button 'Sign in'
-    page.text.must_include 'bad email and password combintion. try again.'
-    fill_in 'session_email', with: 'new.student@neu.edu'
-    fill_in 'session_password', with: 'passwordpassword'
-    click_button 'Sign in'
-    page.current_path.must_equal '/notifications/new'
-    click_link 'Sign out'
-    fill_in 'session_email', with: 'd.jachimiak@neu.edu'
-    fill_in 'session_password', with: 'password'
-    click_button 'Sign in'
-    click_link 'Users'
-    click_button 'Edit Dave Jachimiak'
-    click_link 'Change password'
-    fill_in 'Old password', with: 'password'
-    fill_in 'New password', with: 'passwordpassword'
-    fill_in 'New password again', with: 'passwordpassword'
-    click_button 'Change password'
-    id = User.find_by_email('d.jachimiak@neu.edu').id
-    page.current_path.must_equal "/users/#{id}/edit"
-    page.text.must_include 'new password saved!'
-  end
-
-  it "shows proper messages if change password errors" do
-    test_sign_in_non_admin
-    click_link 'Change password'
-    fill_in 'Old password', with: 'passworth'
-    fill_in 'New password', with: 'passwordpassword'
-    fill_in 'New password again', with: 'passwordpassword'
-    click_button 'Change password'
-    page.text.must_include "Old password didn't match existing one"
-    fill_in 'Old password', with: 'password'
-    fill_in 'New password', with: 'passwordpasswork'
-    fill_in 'New password again', with: 'passwordpassword'
-    click_button 'Change password'
-    page.text.must_include "Password confirmation doesn't match"
-  end
-
-  it "should singularize confirmation notice " +
-     "for single cohabitant notifications" do
-    test_sign_in_non_admin
-    check 'Cool Factory'
-    click_button 'Notify!'
-    page.text.must_include 'Cool Factory was'
   end
 
   it "should tell of all cohabitants for a given notification." do

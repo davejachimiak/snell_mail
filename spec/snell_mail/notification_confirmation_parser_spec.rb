@@ -1,10 +1,9 @@
 require 'spec_helper'
 require_relative './../../lib/snell_mail/notification_confirmation_parser.rb'
 
-new_parser = Proc.new { |departments| SnellMail::NotificationConfirmationParser.
-               new(departments) }
-
 describe 'NotificationConfirmationParser' do
+  let(:new_parser) { Proc.new { |departments| SnellMail::NotificationConfirmationParser.new(departments) } }
+
   after do
     Cohabitant.all.each { |cohabitant| cohabitant.destroy } if Cohabitant.any?
   end
@@ -18,7 +17,7 @@ describe 'NotificationConfirmationParser' do
   
   describe '#confirmation' do
     it 'is responsive' do
-      it = SnellMail::NotificationConfirmationParser.new(@departments)
+      it = SnellMail::NotificationConfirmationParser.new(nil)
       it.must_respond_to :confirmation
     end
     

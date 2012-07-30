@@ -23,13 +23,6 @@ describe "User" do
     end
   end
   
-  describe "password attribute" do
-    it "is a accessorable" do
-      it = User.new
-      it.password.must_be_nil
-    end
-  end
-  
   describe "validators" do
     let(:user) { FactoryGirl.build(:user) }
     
@@ -69,15 +62,15 @@ describe "User" do
   
   describe "notifications association" do
     it "has many notifications" do
-      cohabitant = FactoryGirl.create(:cohabitant)
-      user = FactoryGirl.create(:non_admin)
+      cohabitant = Factory(:cohabitant)
+      user = Factory(:non_admin)
 
-      notification_1 = FactoryGirl.create(:notify_c1, 
+      notification_1 = Factory(:notify_c1, 
         user: user,
         cohabitants: [cohabitant])
-      notification_2 = FactoryGirl.create(:notify_c1_and_c4,
+      notification_2 = Factory(:notify_c1_and_c4,
         user: user,
-        cohabitants: [cohabitant, FactoryGirl.create(:cohabitant_4)])
+        cohabitants: [cohabitant, Factory(:cohabitant_4)])
 
       user.notifications.count.must_equal 2
       user.notifications[0].created_at.must_equal notification_1.created_at

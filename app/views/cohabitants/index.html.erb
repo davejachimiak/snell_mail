@@ -15,13 +15,13 @@
         <% else %>
           <%= button_to 'activate', toggle_activated_path(c), title: "Activate #{c.department}", class: "btn" %>
         <% end %>
-	  </li>
+      </li>
       <li><%= button_to "delete", c, method: :delete,
                 confirm: "Are you sure? Deleted Cohabitants will not " +
                   "show up in archived notifications.",
                 title: "Delete #{c.department}",
                 class: "btn btn-danger" %>
-	  </li>
+      </li>
     </ul>
   <% end %>
 <% else %>

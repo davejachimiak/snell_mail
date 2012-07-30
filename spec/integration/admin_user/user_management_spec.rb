@@ -70,7 +70,7 @@ describe 'admin user user management integration' do
      "admin users to destroy themselves" do
     Capybara.current_driver = :selenium
     test_sign_in_admin
-    
+
     click_link 'Users'
     click_button 'Delete New Student'
     page.driver.browser.switch_to.alert.accept

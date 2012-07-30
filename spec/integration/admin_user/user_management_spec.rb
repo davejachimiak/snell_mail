@@ -66,7 +66,7 @@ describe 'admin user user management integration' do
 
   it "allows admin users to destroy other's but doesn't not allow " +
      "admin users to destroy themselves" do
-    Capybara.current_driver = :selenium
+    Capybara.current_driver = :webkit
     test_sign_in_admin
     
     click_link 'Users'
@@ -85,6 +85,6 @@ describe 'admin user user management integration' do
     click_link 'Sign out'
 
     reset_session!
-    Capybara.current_driver = :rack_test
+    Capybara.user_default_driver
   end
 end

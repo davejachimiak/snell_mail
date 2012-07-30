@@ -3,25 +3,23 @@ require_relative '../../app/models/user.rb'
 
 describe "User" do
   describe "new object" do
-    before do
-      @it = User.new
-    end
+    let(:user) { User.new }
 	
     it "attributes should be nil" do
-      @it.name.must_be_nil
-      @it.email.must_be_nil
-      @it.password_digest.must_be_nil
-      @it.admin.must_be_nil
+      user.name.must_be_nil
+      user.email.must_be_nil
+      user.password_digest.must_be_nil
+      user.admin.must_be_nil
     end
 	
     it "saves with password_digest if everything validates" do
-      @it.name                  = 'Dave Jachimiak'
-      @it.email                 = 'd.jachimiak@neu.edu'
-      @it.password              = 'password'
-      @it.password_confirmation = 'password'
+      user.name                  = 'Dave Jachimiak'
+      user.email                 = 'd.jachimiak@neu.edu'
+      user.password              = 'password'
+      user.password_confirmation = 'password'
 	  
-      @it.save.must_equal true
-      @it.password_digest.wont_be_nil
+      user.save.must_equal true
+      user.password_digest.wont_be_nil
     end
   end
   
@@ -33,41 +31,38 @@ describe "User" do
   end
   
   describe "validators" do
+    let(:user) { FactoryGirl.build(:user) }
+    
     describe "name" do
-      before do
-        @it = FactoryGirl.build(:user)
-      end
 
       after do
-        @it.save.wont_equal true
+        user.save.wont_equal true
       end
 	  
       it "rejects a name under two characters" do
-	@it.name = 'f'
+	user.name = 'f'
       end
 
       it "rejects a name with no spaces" do
-        @it.name = 'Dave'
+        user.name = 'Dave'
       end
 
       it "rejects a name with more than three spaces" do
-        @it.name = 'Dave poop fest mcggee'
+        user.name = 'Dave poop fest mcggee'
       end
     end
 
     describe "email" do
       it "must be valid email format" do
-        @it = FactoryGirl.build(:user)
-        @it.email = 'djachimiakskiatfart.narc'
-        @it.save.wont_equal true
+        user.email = 'djachimiakskiatfart.narc'
+        user.save.wont_equal true
       end      
     end
 
     describe "password" do
       it "must be more than 6 characters" do
-        @it = FactoryGirl.build(:user)
-        @it.password = 'joord'
-        @it.save.wont_equal true
+        user.password = 'joord'
+        user.save.wont_equal true
       end
     end
   end

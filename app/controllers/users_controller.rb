@@ -67,8 +67,8 @@ class UsersController < ApplicationController
 
     def change_password
       params[:user].delete(:old_password)
-      if @user.authenticate(@old_password)
-        if @user.update_attributes(params[:user])
+      if old_password_authenticates?
+        if new_password_confirmed?
           success
         else
           password_confirmation_mismatch
@@ -78,9 +78,16 @@ class UsersController < ApplicationController
       end
     end
 
+    def old_password_authenticates?
+      @user.authenticate(@old_password)
+    end
+
+    def new_password_confirmed?
+      @user.update_attributes(params[:user])
+    end
+
     def success
-      flash[:notice] = 'new password saved!'
-      redirect_to session[:redirect_back]
+      redirect_from_password_change_success
       session[:redirect_back] = nil
     end
 
@@ -92,5 +99,10 @@ class UsersController < ApplicationController
     def old_password_mismatch
       flash[:notice] = "Old password didn't match existing one"
       redirect_to request.referer
+    end
+
+    def redirect_from_password_change_success
+      flash[:notice] = 'new password saved!'
+      redirect_to session[:redirect_back]
     end
 end

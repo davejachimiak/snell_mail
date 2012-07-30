@@ -1,7 +1,7 @@
 require "rake/testtask"
 
 namespace :test do
-  Rake::TestTask.new(all: ['integration', 'lib', 'models']) do |t|
+  Rake::TestTask.new(all: ['integration', 'lib', 'models', 'helpers', 'mailers']) do |t|
     t.libs << "spec"
   end
 

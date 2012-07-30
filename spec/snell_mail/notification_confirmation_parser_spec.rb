@@ -14,16 +14,16 @@ describe 'NotificationConfirmationParser' do
       it.must_raise ArgumentError
     end
   end
-  
+
   describe '#confirmation' do
     it 'is responsive' do
       it = SnellMail::NotificationConfirmationParser.new(nil)
       it.must_respond_to :confirmation
     end
-    
+
     describe 'with one department' do
       it 'returns neccessary text' do
-        department = [FactoryGirl.create(:cohabitant).department]
+        department = [Factory(:cohabitant).department]
         it = new_parser.call(department)
 
         it.confirmation.must_equal('Cool Factory was ')
@@ -32,8 +32,8 @@ describe 'NotificationConfirmationParser' do
 
     describe 'with two departments' do
       it 'returns neccessary text' do
-        departments = [FactoryGirl.create(:cohabitant).department,
-                       FactoryGirl.create(:cohabitant_3).department]
+        departments = [Factory(:cohabitant).department,
+                       Factory(:cohabitant_3).department]
         it = new_parser.call(departments)
 
         it.confirmation.must_equal('Cool Factory and Face Surgery were ')
@@ -42,9 +42,9 @@ describe 'NotificationConfirmationParser' do
 
     describe 'with many departments' do
       it "returns necessary text" do
-        departments = [FactoryGirl.create(:cohabitant).department,
-                       FactoryGirl.create(:cohabitant_2).department,
-                       FactoryGirl.create(:cohabitant_3).department]
+        departments = [Factory(:cohabitant).department,
+                       Factory(:cohabitant_2).department,
+                       Factory(:cohabitant_3).department]
         it = new_parser.call(departments)
 
         it.confirmation.must_equal('Cool Factory, Jargon House, ' +

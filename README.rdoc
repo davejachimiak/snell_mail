@@ -1,5 +1,5 @@
 == Snell Mail
 
-This app notifies NEU Snell Library's cohabitants that they have snail mail.
-
-=== Warning!: WIP/NSFW
+This app lets NEU Snell Library's student workers notify cohabitants that
+they have snail mail. It keeps a record of notifications and provides
+special capabilities for admins.

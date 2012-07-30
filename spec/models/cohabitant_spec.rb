@@ -23,24 +23,25 @@ describe "Cohabitant" do
   end
   
   describe "notifications association" do
-    let(:cohabitant) { Cohabitant.new }
+    let(:cohabitant) { Factory(:cohabitant) }
+    let(:cohabitant_4) { Factory(:cohabitant_4) }
 
     before do
       Factory(:notify_c1, 
-        user: Factorycreate(:user),
+        user: Factory(:user),
         cohabitants: [cohabitant])
-      Factory(:notify_c1, 
+      Factory(:notify_c1_and_c4, 
         user: Factory(:non_admin),
-        cohabitants: [cohabitant])
+        cohabitants: [cohabitant, cohabitant_4])
     end
-    
+
     it "has many notifications" do
       cohabitant.notifications.count.must_equal 2
       cohabitant.notifications[0].user.name.must_equal 'Dave Jachimiak'
       cohabitant.notifications[1].user.name.must_equal 'New Student'
     end
   end
-  
+
   describe "validators" do
     let(:cohabitant) { FactoryGirl.build(:cohabitant) }
 
@@ -70,7 +71,7 @@ describe "Cohabitant" do
   end
 
   describe "#toggle_activated!" do
-    let(:cohbaitant) { Factory(:cohabitant) }
+    let(:cohabitant) { Factory(:cohabitant) }
 
     it "is responsive" do
       cohabitant.must_respond_to :toggle_activated!

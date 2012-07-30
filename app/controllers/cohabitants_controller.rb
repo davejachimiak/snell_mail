@@ -13,8 +13,7 @@ class CohabitantsController < ApplicationController
   def create
     @cohabitant = Cohabitant.new(params[:cohabitant])
     if @cohabitant.save
-      redirect_to cohabitants_path, notice: 'New cohabitant successfully ' +
-                                            'created.'
+      redirect_to cohabitants_path, notice: 'New cohabitant successfully created.'
     else
       @error = true
       render 'new'

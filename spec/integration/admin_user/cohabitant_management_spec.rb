@@ -1,19 +1,16 @@
 require 'spec_helper'
 
 describe 'admin user cohabitant management integration' do
+  let(:admin) { User.find_by_email('d.jachimiak@neu.edu') }
+  let(:non_admin) { User.find_by_email('new.student@neu.edu') }
+
   before do
     create_test_users
-    admin = User.find_by_email('d.jachimiak@neu.edu')
-    non_admin = User.find_by_email('new.student@neu.edu')
-    cohabitant = FactoryGirl.create(:cohabitant)
-    cohabitant_4 = FactoryGirl.create(:cohabitant_4)
-    FactoryGirl.create(:notify_c1, user: admin, 
-                        cohabitants: [cohabitant])
-    @notification_2 = FactoryGirl.create(
-                        :notify_c1_and_c4,
-                        user: non_admin,
-                        cohabitants: [cohabitant, cohabitant_4]
-                                        )
+    cohabitant = Factory(:cohabitant)
+    cohabitant_4 = Factory(:cohabitant_4)
+    Factory(:notify_c1, user: admin, cohabitants: [cohabitant])
+    Factory(:notify_c1_and_c4, user: non_admin, 
+            cohabitants: [cohabitant, cohabitant_4])
   end
 
   after do
@@ -48,12 +45,12 @@ describe 'admin user cohabitant management integration' do
         page.text.must_include 'cool.lady@neu.edu'
         click_button 'Edit EdTech'
         fill_in 'cohabitant_location', with: '259SL'
-        fill_in 'cohabitant_contact_name', with: 'Cool Dude'
-        fill_in 'cohabitant_contact_email', with: 'cool.dude@neu.edu'
+        fill_in 'cohabitant_contact_name', with: 'Cool Person'
+        fill_in 'cohabitant_contact_email', with: 'cool.person@neu.edu'
         click_button 'Edit'
         page.current_path.must_equal '/cohabitants'
         page.text.wont_include 'cool.fade@neu.edu'
-        page.text.must_include 'cool.dude@neu.edu'
+        page.text.must_include 'cool.person@neu.edu'
       end
 
       it "shows all notifications for a given cohabitant" do
@@ -69,7 +66,7 @@ describe 'admin user cohabitant management integration' do
                              "location can't be blank",
                              "contact name can't be blank",
                              "contact email can't be blank"]
-      
+
         click_link 'Cohabitants'
         click_link 'New cohabitant'
         click_button 'Create'
@@ -95,11 +92,18 @@ describe 'admin user cohabitant management integration' do
     end
 
     describe "cohabitants" do
-      it "shows a friendly message if there are no active cohabitants" do
+      it "shows a friendly message if there are no active cohabitants " +
+          "and are able to be reactivated" do
         Cohabitant.all.each { |cohabitant| cohabitant.update_attributes(activated: false) }
         test_sign_in_admin
 
         page.text.must_include 'There are no active cohabitants. Please activate or add them.'
+        click_link 'Cohabitants'
+        click_button 'Activate Cool Factory'
+        page.text.must_include 'Cool Factory reactivated.'
+        click_link 'Notifications'
+        click_link 'New notification'
+        page.text.must_include 'Cool Factory'
       end
     end
 
@@ -115,17 +119,17 @@ describe 'admin user cohabitant management integration' do
     end
   end
 
-  it "allows admin users to destroy cohabitants" do
-    Capybara.current_driver = :selenium
-    test_sign_in_admin
+  # it "allows admin users to destroy cohabitants" do
+    # Capybara.current_driver = :selenium
+    # test_sign_in_admin
 
-    click_link 'Cohabitants'
-    click_button 'Delete Cool Factory'
-    page.driver.browser.switch_to.alert.accept
-    page.current_path.must_equal '/cohabitants'
-    page.text.wont_include 'Cool Factory'
+    # click_link 'Cohabitants'
+    # click_button 'Delete Cool Factory'
+    # page.driver.browser.switch_to.alert.accept
+    # page.current_path.must_equal '/cohabitants'
+    # page.text.wont_include 'Cool Factory'
 
-    reset_session!
-    Capybara.current_driver = :rack_test
-  end
+    # reset_session!
+    # Capybara.current_driver = :rack_test
+  # end
 end

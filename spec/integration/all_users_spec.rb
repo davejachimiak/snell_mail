@@ -1,19 +1,18 @@
 require 'spec_helper'
 
 describe 'all users integration' do
+  let(:admin) { User.find_by_email('d.jachimiak@neu.edu') }
+  let(:non_admin) { User.find_by_email('new.student@neu.edu') }
+
   before do
     create_test_users
-    @admin = User.find_by_email('d.jachimiak@neu.edu')
-    @non_admin = User.find_by_email('new.student@neu.edu')
-    cohabitant = Factory(:cohabitant)
-    cohabitant_4 = Factory(:cohabitant_4)
-    @notification_1 = Factory(:notify_c1, user: @admin, 
-                        cohabitants: [cohabitant])
-    @notification_2 = Factory(
-                        :notify_c1_and_c4,
-                        user: @non_admin,
-                        cohabitants: [cohabitant, cohabitant_4]
-                             )
+    cohabitant      = Factory(:cohabitant)
+    cohabitant_4    = Factory(:cohabitant_4)
+    @notification_1 = Factory(:notify_c1, user: admin, 
+                      cohabitants: [cohabitant])
+    @notification_2 = Factory(:notify_c1_and_c4,
+                      user: non_admin,
+                      cohabitants: [cohabitant, cohabitant_4])
   end
 
   after do
@@ -94,7 +93,7 @@ describe 'all users integration' do
   end
 
   it "should indicate that a deleted user made a notification" do
-    User.destroy(@non_admin.id)
+    User.destroy(non_admin.id)
     test_sign_in_admin
 
     click_link 'Notifications'
@@ -107,8 +106,8 @@ describe 'all users integration' do
 
   it "should notify cohabitants that they have mail " +
      "and redirect to notifications after notification" do
-    FactoryGirl.create(:cohabitant_2)
-    FactoryGirl.create(:cohabitant_3)
+    Factory(:cohabitant_2)
+    Factory(:cohabitant_3)
     time = Time.zone.now
     test_sign_in_admin
   

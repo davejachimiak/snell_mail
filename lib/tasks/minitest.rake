@@ -95,9 +95,9 @@ namespace :test do
     end
 
     namespace :admin_user do
-      Rake::TestTask.new(user_management: "db:test:prepare") do |t|
+      Rake::TestTask.new(cohabitant_management: "db:test:prepare") do |t|
         t.libs << "spec"
-        t.pattern = "spec/integration/admin_user/user_management_spec.rb"
+        t.pattern = "spec/integration/admin_user/cohabitant_management_spec.rb"
       end
 
       Rake::TestTask.new(user_management: "db:test:prepare") do |t|

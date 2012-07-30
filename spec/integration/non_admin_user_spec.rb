@@ -35,18 +35,4 @@ describe 'non admin user integration' do
       page.text.must_include 'Only admin users can go to there.'
     end
   end
-
-  it "deactivated cohabitants won't show up new notification list " +
-     "and can be reactivated" do
-    cohabitant = Factory(:cohabitant, activated: false)
-    test_sign_in_admin
-
-    page.text.wont_include 'Cool Factory'
-    click_link 'Cohabitants'
-    click_button 'Activate Cool Factory'
-    page.text.must_include 'Cool Factory reactivated.'
-    click_link 'Notifications'
-    click_link 'New notification'
-    page.text.must_include 'Cool Factory'
-  end
 end

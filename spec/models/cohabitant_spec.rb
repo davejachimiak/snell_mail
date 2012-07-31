@@ -1,74 +1,26 @@
 require 'spec_helper'
 require_relative '../../app/models/cohabitant.rb'
 
-describe "Cohabitant" do
-  describe "new object" do
-    let(:cohabitant) { Cohabitant.new }
+describe "Cohabitant model" do
+  subject { Cohabitant.new }
 
-    it "attributes should be nil" do
-      cohabitant.department.must_be_nil
-      cohabitant.location.must_be_nil
-      cohabitant.contact_name.must_be_nil
-      cohabitant.contact_email.must_be_nil
-    end
-	
-    it "saves if everything validates" do
-      cohabitant.department    = 'EdTech'
-      cohabitant.location      = '242SL'
-      cohabitant.contact_name  = 'Cool Guy'
-      cohabitant.contact_email = 'cool.guy@email.com'
-	  
-      cohabitant.save.must_equal true
-    end
-  end
-  
-  describe "notifications association" do
-    let(:cohabitant) { Factory(:cohabitant) }
-    let(:cohabitant_4) { Factory(:cohabitant_4) }
+  it_must { have_and_belong_to_many :notifications }
 
-    before do
-      Factory(:notify_c1, 
-        user: Factory(:user),
-        cohabitants: [cohabitant])
-      Factory(:notify_c1_and_c4, 
-        user: Factory(:non_admin),
-        cohabitants: [cohabitant, cohabitant_4])
-    end
+  it_must { allow_mass_assignment_of :department }
+  it_must { allow_mass_assignment_of :location }
+  it_must { allow_mass_assignment_of :contact_name }
+  it_must { allow_mass_assignment_of :contact_email }
+  it_must { allow_mass_assignment_of :activated }
 
-    it "has many notifications" do
-      cohabitant.notifications.count.must_equal 2
-      cohabitant.notifications[0].user.name.must_equal 'Dave Jachimiak'
-      cohabitant.notifications[1].user.name.must_equal 'New Student'
-    end
-  end
+  it_must { validate_presence_of :department }
+  it_must { validate_presence_of :location }
+  it_must { validate_presence_of :contact_name }
+  it_must { validate_presence_of :contact_email }
 
-  describe "validators" do
-    let(:cohabitant) { FactoryGirl.build(:cohabitant) }
-
-    after do
-      cohabitant.save.wont_equal true
-    end
-
-    it "won't save with blank department" do
-      cohabitant.department = ''
-    end
-	
-    it "won't save with blank location" do
-      cohabitant.location = ''
-    end
-	
-    it "won't save with blank contact_name" do
-      cohabitant.contact_name = ''
-    end
-
-    it "won't save with an invalid name" do
-      cohabitant.contact_name = 'Si'
-    end
-	
-    it "won't save with blank contact_email" do
-      cohabitant.contact_email = ''
-    end
-  end
+  it_must { validate_format_of(:contact_name).with("Cool Guy Plus") }
+  it_must { validate_format_of(:contact_name).not_with("SoCool") }
+  it_must { validate_format_of(:contact_email).with("cool.guy@neu.edu") }
+  it_must { validate_format_of(:contact_email).not_with("cool.guyneu.edu") }
 
   describe "#toggle_activated!" do
     let(:cohabitant) { Factory(:cohabitant) }
@@ -84,12 +36,12 @@ describe "Cohabitant" do
       cohabitant.toggle_activated!
       cohabitant.activated.must_equal true
     end
-    
+
     it "returns flash value" do
       cohabitant.toggle_activated![:flash].must_equal 'info'
       cohabitant.toggle_activated![:flash].must_equal 'success'
     end
-    
+
     it "returns adjetive" do
       cohabitant.toggle_activated![:adj].must_equal 'deactivated'
       cohabitant.toggle_activated![:adj].must_equal 'reactivated'

@@ -4,6 +4,7 @@ require "minitest/autorun"
 require "capybara/rails"
 require "active_support/testing/setup_and_teardown"
 require "factory_girl_rails"
+require "shoulda/matchers"
 
 class IntegrationTest < MiniTest::Spec
   include Rails.application.routes.url_helpers
@@ -15,7 +16,36 @@ end
 class HelperTest < MiniTest::Spec
   include ActiveSupport::Testing::SetupAndTeardown
   include ActionView::TestCase::Behavior
-  register_spec_type(/(method$|Helper$)/, self)
+  register_spec_type(/(Helper$)/, self)
+end
+
+class MiniTest::Unit::TestCase
+  include Shoulda::Matchers::ActiveRecord
+  extend Shoulda::Matchers::ActiveRecord
+  include Shoulda::Matchers::ActiveModel
+  extend Shoulda::Matchers::ActiveModel
+end
+
+class MiniTest::Spec
+  class << self
+    def it_must &block
+      matcher = yield
+
+      it "must #{matcher.description}" do
+        result = matcher.matches? subject
+        assert result, matcher.failure_message
+      end
+    end
+
+    def it_wont &block
+      matcher = yield
+
+      it "wont #{matcher.description}" do
+        result = matcher.does_not_match? subject
+        assert result, matcher.negative_failure_message
+      end
+    end
+  end
 end
 
 Turn.config.format = :outline

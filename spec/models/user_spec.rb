@@ -33,7 +33,7 @@ describe "User" do
       end
 	  
       it "rejects a name under two characters" do
-	user.name = 'f'
+	      user.name = 'f'
       end
 
       it "rejects a name with no spaces" do

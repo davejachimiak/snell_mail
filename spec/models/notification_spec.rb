@@ -2,52 +2,24 @@ require 'spec_helper'
 require_relative '../../app/models/notification.rb'
 
 describe "Notification" do
-  describe "associations" do
-    let(:notification) { Notification.new(user: @user, cohabitants: @cohabitants) }
+  subject { Notification.new }
 
-    before do
-      @user = Factory(:user)
-      @cohabitants = [Factory(:cohabitant), 
-                      Factory(:cohabitant_2),
-                      Factory(:cohabitant_4)]
-    end
+  it_must { allow_mass_assignment_of :cohabitants }
+  it_must { allow_mass_assignment_of :user }
+  it_must { allow_mass_assignment_of :cohabitant_ids }
+  it_must { allow_mass_assignment_of :user_id }
+  it_must { have_readonly_attribute  :created_at }
 
-    it "belongs to cohabitants and a user" do
-      notification.save.must_equal true
-    end
-	
-    it "#cohabitants returns array" do
-      notification.cohabitants.must_be_instance_of Array
-    end
-    
-    it "#user returns instance of User" do
-      notification.user.must_be_instance_of User
-    end
-    
-    it "delegates user attributes" do
-      notification.user_name.must_equal 'Dave Jachimiak'
-      notification.user_email.must_equal 'd.jachimiak@neu.edu'
-    end
-  end
+  it_must { have_and_belong_to_many :cohabitants }
+  it_must { belong_to :user }
+
+  it_must { validate_presence_of(:cohabitants).with_message(/must be chosen/) }
+  it_must { validate_presence_of(:user) }
+
+  describe "delegates user attributes" do
+    subject { Notification.new }
   
-  describe "validators" do
-    let(:notification) { Notification.new(user_id: @user.id, cohabitant_ids: [@cohabitant.id]) }
-
-    before do
-      @user = FactoryGirl.create(:user)
-      @cohabitant = FactoryGirl.create(:cohabitant)
-    end
-    
-    after do
-      notification.save.wont_equal true
-    end
-
-    it "won't save if no cohabitants" do
-      notification.cohabitant_ids = nil
-    end
-    
-    it "won't save if no users" do
-      notification.user_id = nil
-    end
+    it { subject.must_respond_to :user_name }
+    it { subject.must_respond_to :user_email }
   end
 end

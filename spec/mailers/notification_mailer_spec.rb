@@ -4,8 +4,7 @@ require_relative '../../app/mailers/notification_mailer.rb'
 describe 'Notification Mailer' do
   let(:cohabitants)     { [Factory(:cohabitant), Factory(:cohabitant_4)] }
   let(:user)            { Factory(:non_admin) }
-  let(:notification)    { Notification.create(cohabitants: cohabitants, user: user) }
-  let(:delivered_email) { ActionMailer::Base.deliveries.last }
+  let(:notification)    { Factory(:notification_by_non_admin, cohabitants: cohabitants) }
   
   after do
     %w(User Cohabitant Notification).each do |model_string|
@@ -39,7 +38,7 @@ describe 'Notification Mailer' do
     it_must { have_sent_email.with_subject(/New Student has notified cohabitants/) }
     it_must { have_sent_email.from(/new.student@neu.edu/) }
 
-    User.select { |u| u.wants_update? }.map { |u| u.email }.each do |user|
+    User.select { |user| user.wants_update? }.map { |user| user.email }.each do |user|
       it_must { have_sent_email.to(/#{user}/) }
     end
 

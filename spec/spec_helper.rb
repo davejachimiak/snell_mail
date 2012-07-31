@@ -24,6 +24,8 @@ class MiniTest::Unit::TestCase
   extend Shoulda::Matchers::ActiveRecord
   include Shoulda::Matchers::ActiveModel
   extend Shoulda::Matchers::ActiveModel
+  include Shoulda::Matchers::ActionMailer
+  extend Shoulda::Matchers::ActionMailer
 end
 
 class MiniTest::Spec

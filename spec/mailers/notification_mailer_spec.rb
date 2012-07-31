@@ -4,7 +4,7 @@ require_relative '../../app/mailers/notification_mailer.rb'
 describe 'Notification Mailer' do
   let(:cohabitants)     { [Factory(:cohabitant), Factory(:cohabitant_4)] }
   let(:user)            { Factory(:non_admin) }
-  let(:notification)    { Factory(:notify_c1_and_c4, cohabitants: cohabitants, user: user) }
+  let(:notification)    { Notification.create(cohabitants: cohabitants, user: user) }
   let(:delivered_email) { ActionMailer::Base.deliveries.last }
   
   after do
@@ -17,51 +17,36 @@ describe 'Notification Mailer' do
   end
 
   describe 'mail_notification' do
-    before do
-      NotificationMailer.mail_notification(notification).deliver
-    end
+    subject { NotificationMailer.mail_notification(notification).deliver }
 
-    it "is from the student's address" do
-      delivered_email.from.first.must_equal notification.user_email
-    end
+    it_must { have_sent_email.with_subject(/You've got mail downstairs!/) }
+    it_must { have_sent_email.from(/new.student@neu.edu/) }
+    it_must { have_sent_email.to(/cool.guy@neu.edu/) }
+    it_must { have_sent_email.to(/cool.lady@neu.edu/) }
 
-    it "is to all of the cohabitants selected for notification" do
-      delivered_email.to.must_equal notification.cohabitants.map { |c| c.contact_email }
-    end
-
-    it "subject is friendly" do
-      delivered_email.subject.must_equal "You've got mail downstairs!"
-    end
-
-    it "body contains friendly message" do
-      delivered_email.encoded.must_match /Hello/
-      delivered_email.encoded.must_match /mail waiting for you in your space downstairs/
-      delivered_email.encoded.must_match /Thank you./
+    [/Hello/, /mail waiting for you in your space downstairs/, /Thank you./].each do |regex| 
+      it_must { have_sent_email.with_body(regex) }
     end
   end
 
   describe 'update_admins' do
+    subject { NotificationMailer.update_admins(notification).deliver }
+
     before do
       Factory(:user, wants_update: true)
-      NotificationMailer.update_admins(notification).deliver
     end
 
-    it "is from the student's address" do
-      delivered_email.from.first.must_equal notification.user_email
+    it_must { have_sent_email.with_subject(/New Student has notified cohabitants/) }
+    it_must { have_sent_email.from(/new.student@neu.edu/) }
+
+    User.select { |u| u.wants_update? }.map { |u| u.email }.each do |user|
+      it_must { have_sent_email.to(/#{user}/) }
     end
 
-    it "is to all of the admins selected for notification of notification" do
-      delivered_email.to.must_equal User.select { |u| u.wants_update? }.map { |u| u.email }
+    [/Cool Factory/, /Fun Section/].each do |regex|
+      it_must { have_sent_email.with_body(regex) }
     end
 
-    it "subject is telling of action and person who did it" do
-      delivered_email.subject.must_equal "#{notification.user_name} has notified cohabitants"
-    end
-
-    it "body contains informative message" do
-      department_names = notification.cohabitants.map { |c| c.department }
-      department_names.each { |d| delivered_email.encoded.must_include d }
-      delivered_email.encoded.must_include notification.user_name
-    end
+    it_must { have_sent_email.with_body(/New Student/) }
   end
 end

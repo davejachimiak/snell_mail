@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe ApplicationHelper do
-  let(:admin_user)   { Factory(:user) }
-  let(:non_admin_user) { Factory(:non_admin) }
-  let(:cohabitant)   { Factory(:cohabitant) }
-  let(:cohabitant_4) { Factory(:cohabitant_4) }
-  let(:notification) { Factory(:notify_c1, user: admin_user, cohabitants: [cohabitant]) }
+  let(:admin_user)     { User.find_by_email('d.jachimiak@neu.edu') }
+  let(:non_admin_user) { User.find_by_email('new.student@neu.edu') }
+  let(:cohabitant)     { Factory(:cohabitant) }
+  let(:cohabitant_4)   { Factory(:cohabitant_4) }
+  let(:notification)   { Factory(:notification, cohabitants: [cohabitant]) }
 
   after do
     %w(User Cohabitant Notification).each do |model_string|
@@ -25,18 +25,16 @@ describe ApplicationHelper do
   end
 
   it '::notifier returns deleted user text if notifier was deleted' do
-    Factory(:notify_c1_and_c4, user: non_admin_user, 
-            cohabitants: [cohabitant, cohabitant_4])
-    non_admin_user.destroy
+    Factory(:notification_by_non_admin, cohabitants: [cohabitant, cohabitant_4])
+    User.destroy(non_admin_user.id)
                                   
     it = notifier(Notification.last, admin: false)
     it.must_equal 'deleted user'
   end
 
   it "::notifier returns 'A deleted user' if current url is notifications#show" do
-    Factory(:notify_c1_and_c4, user: non_admin_user, 
-            cohabitants: [cohabitant, cohabitant_4])
-    non_admin_user.destroy
+    Factory(:notification_by_non_admin, cohabitants: [cohabitant, cohabitant_4])
+    User.destroy(non_admin_user.id)
 
     it = notifier(Notification.last, admin: false, notifications_show: true)
     it.must_equal 'A deleted user'

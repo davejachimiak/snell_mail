@@ -15,16 +15,12 @@
         <td class="span3"><strong>Notifier</strong></td>
       </tr>
     </thead>
-    <% @notifications.each do |n| %>
+    <% @notifications.each do |notification| %>
     <tbody>
       <tr>
-        <td><%= link_to n.created_at.strftime('%A, %B %e %Y'), n %></td>
+        <td><%= link_to notification.created_at.strftime('%A, %B %e %Y'), notification %></td>
         <td>
-        <% unless n.user == nil %>
-          <%= link_to n.user.name, n.user %>
-        <% else %>
-          deleted user
-        <% end %>
+          <%= notifier(notification) %>
         </td>
       </tr>
     </tbody>

@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :user do
-    name     'Dave Jachimiak'
-    email    'd.jachimiak@neu.edu'
+    name 'Dave Jachimiak'
+    email 'd.jachimiak@neu.edu'
     password 'password'
     password_confirmation 'password'
-    admin    true
+    admin true
 
     factory :non_admin do
       name 'New Student'
@@ -39,6 +39,14 @@ FactoryGirl.define do
     location      'New Section'
     contact_name  'Super Cool Lady'
     contact_email 'cool.lady@neu.edu'
+  end
+
+  factory :notification do
+    user
+
+    factory :notification_by_non_admin do
+      user :non_admin
+    end
   end
 
   factory :notify_c1, class: Notification do

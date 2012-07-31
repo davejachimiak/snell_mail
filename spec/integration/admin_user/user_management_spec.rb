@@ -87,6 +87,6 @@ describe 'admin user user management integration' do
     click_link 'Sign out'
 
     reset_session!
-    Capybara.user_default_driver
+    Capybara.use_default_driver
   end
 end

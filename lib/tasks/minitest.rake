@@ -50,9 +50,14 @@ namespace :test do
       t.pattern = "spec/helpers/shared_helper_spec.rb"
     end
 
-    Rake::TestTask.new(notifications: "db:test:prepare") do |t|
+    Rake::TestTask.new(application: "db:test:prepare") do |t|
       t.libs << "spec"
-      t.pattern = "spec/helpers/notifications_helper_spec.rb"
+      t.pattern = "spec/helpers/application_helper_spec.rb"
+    end
+
+    Rake::TestTask.new(cohabitants: "db:test:prepare") do |t|
+      t.libs << "spec"
+      t.pattern = "spec/helpers/cohabitants_helper_spec.rb"
     end
   end
 

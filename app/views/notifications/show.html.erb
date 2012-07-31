@@ -3,18 +3,15 @@
   <h1>On <%= @notification.created_at.strftime("%A, %B %e, %Y at %l:%M%P") %>,</h1>
 </div>
 <p class="lead">
+<%= notifier(@notification, admin: admin?, notifications_show: true) %>
 <% if @notification.cohabitants.any? %>
-  <%= notifier(@notification, admin?, true) %>
-    notified the following cohabitants that they had snail mail:</p>
-  <% @notification.cohabitants.each do |c| %>
+  notified the following cohabitants that they had snail mail:
+</p>
+  <% @notification.cohabitants.each do |cohabitant| %>
     <li>
-    <% if admin? %>
-      <%= link_to c.department, c %>
-    <% else %>
-      <%= c.department %>
-    <% end %>
+    <%= cohabitant_of_notification(cohabitant, admin?) %>
     </li>
   <% end %>
 <% else %>
-  The notified cohabitants were deleted.
+  notified cohabitants that were deleted.
 <% end %>

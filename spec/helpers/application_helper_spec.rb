@@ -20,7 +20,7 @@ describe ApplicationHelper do
   end
 
   it '::notifier returns text if current user is not admin' do
-    it = notifier(notification, nil)
+    it = notifier(notification, admin: false)
     it.must_equal 'Dave Jachimiak'
   end
 
@@ -29,7 +29,7 @@ describe ApplicationHelper do
             cohabitants: [cohabitant, cohabitant_4])
     non_admin_user.destroy
                                   
-    it = notifier(Notification.last, nil)
+    it = notifier(Notification.last, admin: false)
     it.must_equal 'deleted user'
   end
 
@@ -37,9 +37,8 @@ describe ApplicationHelper do
     Factory(:notify_c1_and_c4, user: non_admin_user, 
             cohabitants: [cohabitant, cohabitant_4])
     non_admin_user.destroy
-    current_url = "http::/libstaff.neu.edu/snell_mail/notifications/46"
 
-    it = notifier(Notification.last, nil, current_url)
+    it = notifier(Notification.last, admin: false, notifications_show: true)
     it.must_equal 'A deleted user'
   end
 end

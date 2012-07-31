@@ -12,7 +12,7 @@
     <tr>
       <td><%= link_to "#{notification.created_at.strftime('%m.%d.%Y (%A) at %I:%M%P')}", notification %></td>
       <td>
-        <%= notifier(notification, admin?) %>
+        <%= notifier(notification, admin: admin?) %>
       </td>
     </tr>
   <% end %>

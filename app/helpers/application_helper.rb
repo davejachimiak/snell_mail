@@ -1,9 +1,11 @@
 module ApplicationHelper
-  def notifier(notification, admin=true, notifications_show=false)
+  def notifier(notification, options={})
+    options.reverse_merge!({admin: true})
+
     unless notification.user.nil?
-      admin ? link_to_user(notification) : notification.user_name
+      options[:admin] ? link_to_user(notification) : notification.user_name
     else
-      notifications_show ? 'A deleted user' : 'deleted user'
+      options[:notifications_show] ? 'A deleted user' : 'deleted user'
     end
   end
 

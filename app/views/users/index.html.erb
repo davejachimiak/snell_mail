@@ -1,21 +1,17 @@
 <%= render 'shared/sub_header', klass: 'user', error: @error %>
 <h1>All Users</h1>
 <br>
-<% @users.each do |u| %>
+<% @users.each do |user| %>
   <ul class="span3 unstyled">
-    <li><h3><%= link_to u.name, u %></h3></li>
+    <li><h3><%= link_to user.name, user %></h3></li>
     <li>
-    <% if u.id == current_user.id %>
-      <%= u.email %>
-    <% else %>
-      <%= mail_to u.email %>
-    <% end %>
+    <%= user_email(user, current_user.id) %>
     </li>
     <br>
-    <li><%= button_to "edit", edit_user_path(u), title: "Edit #{u.name}", method: :get, class: "btn btn-warning" %></li>
-    <% unless u == current_user %>
-      <li><%= button_to "delete", u, method: :delete, confirm: "Are you sure?",
-                title: "Delete #{u.name}", class: "btn btn-danger" if u != current_user %>
+    <li><%= button_to "edit", edit_user_path(user), title: "Edit #{user.name}", method: :get, class: "btn btn-warning" %></li>
+    <% unless user.id == current_user.id %>
+      <li><%= button_to "delete", user, method: :delete, confirm: "Are you sure?",
+                title: "Delete #{user.name}", class: "btn btn-danger" %>
       </li>
     <% end %>
   </ul>

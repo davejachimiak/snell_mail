@@ -45,11 +45,6 @@ namespace :test do
   end
 
   namespace :helpers do
-    Rake::TestTask.new(shared: "db:test:prepare") do |t|
-      t.libs << "spec"
-      t.pattern = "spec/helpers/shared_helper_spec.rb"
-    end
-
     Rake::TestTask.new(application: "db:test:prepare") do |t|
       t.libs << "spec"
       t.pattern = "spec/helpers/application_helper_spec.rb"
@@ -58,6 +53,21 @@ namespace :test do
     Rake::TestTask.new(cohabitants: "db:test:prepare") do |t|
       t.libs << "spec"
       t.pattern = "spec/helpers/cohabitants_helper_spec.rb"
+    end
+
+	Rake::TestTask.new(notifications: "db:test:prepare") do |t|
+      t.libs << "spec"
+      t.pattern = "spec/helpers/notifications_helper_spec.rb"
+    end
+
+    Rake::TestTask.new(users: "db:test:prepare") do |t|
+      t.libs << "spec"
+      t.pattern = "spec/helpers/users_helper_spec.rb"
+    end
+
+	Rake::TestTask.new(shared: "db:test:prepare") do |t|
+      t.libs << "spec"
+      t.pattern = "spec/helpers/shared_helper_spec.rb"
     end
   end
 

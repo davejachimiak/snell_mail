@@ -18,8 +18,6 @@ describe 'admin user user management integration' do
 
   describe 'non-selenium integration' do
     before do
-      Factory(:notification, cohabitants: [cohabitant])
-      Factory(:notification, cohabitants: [cohabitant, cohabitant_4])
       test_sign_in_admin
     end
 
@@ -40,8 +38,8 @@ describe 'admin user user management integration' do
     end
 
     it "show all notifications for a given user" do
-      notification_1 = Notification.first
-      notification_2 = Notification.last
+      notification_1 = Factory(:notification, user: admin, cohabitants: [cohabitant])
+      notification_2 = Factory(:notification, user: admin, cohabitants: [cohabitant, cohabitant_4])
 
       click_link 'Users'
       click_link 'Dave Jachimiak'
@@ -64,27 +62,27 @@ describe 'admin user user management integration' do
     end
   end
 
-  # it "allows admin users to destroy other's but doesn't not allow " +
-     # "admin users to destroy themselves" do
-    # Capybara.current_driver = :selenium
-    # test_sign_in_admin
+  it "allows admin users to destroy other's but doesn't not allow " +
+     "admin users to destroy themselves" do
+    Capybara.current_driver = :selenium
+    test_sign_in_admin
 
-    # click_link 'Users'
-    # click_button 'Delete New Student'
-    # page.driver.browser.switch_to.alert.accept
-    # page.current_path.must_equal '/users'
-    # page.text.wont_include 'New Student'
-    # page.body.wont_include 'Delete Dave Jachimiak'
-    # click_link 'Users'
-    # click_link 'New user'
-    # fill_in 'user_name', with: 'New Student'
-    # fill_in 'user_email', with: 'new.student@neu.edu'
-    # fill_in 'user_password', with: 'password'
-    # fill_in 'user_password_confirmation', with: 'password'
-    # click_button 'Create'
-    # click_link 'Sign out'
+    click_link 'Users'
+    click_button 'Delete New Student'
+    page.driver.browser.switch_to.alert.accept
+    page.current_path.must_equal '/users'
+    page.text.wont_include 'New Student'
+    page.body.wont_include 'Delete Dave Jachimiak'
+    click_link 'Users'
+    click_link 'New user'
+    fill_in 'user_name', with: 'New Student'
+    fill_in 'user_email', with: 'new.student@neu.edu'
+    fill_in 'user_password', with: 'password'
+    fill_in 'user_password_confirmation', with: 'password'
+    click_button 'Create'
+    click_link 'Sign out'
 
-    # reset_session!
-    # Capybara.use_default_driver
-  # end
+    reset_session!
+    Capybara.use_default_driver
+  end
 end

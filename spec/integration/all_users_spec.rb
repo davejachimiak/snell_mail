@@ -8,9 +8,9 @@ describe 'all users integration' do
     create_test_users
     cohabitant      = Factory(:cohabitant)
     cohabitant_4    = Factory(:cohabitant_4)
-    @notification_1 = Factory(:notify_c1, user: admin, 
+    @notification_1 = Factory(:notification, user: admin, 
                       cohabitants: [cohabitant])
-    @notification_2 = Factory(:notify_c1_and_c4,
+    @notification_2 = Factory(:notification_by_non_admin,
                       user: non_admin,
                       cohabitants: [cohabitant, cohabitant_4])
   end

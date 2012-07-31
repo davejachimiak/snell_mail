@@ -9,9 +9,9 @@ module ApplicationHelper
     end
   end
 
- private
+  private
 
-   def link_to_user(notification)
-     link_to notification.user_name, notification.user
+    def link_to_user(notification)
+      link_to notification.user_name, notification.user
     end
 end

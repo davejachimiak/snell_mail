@@ -1,9 +1,9 @@
 module ApplicationHelper
-  def notifier(notification, admin=true)
+  def notifier(notification, admin=true, notifications_show=false)
     unless notification.user.nil?
       admin ? link_to_user(notification) : notification.user_name
     else
-     'deleted user'
+      notifications_show ? 'A deleted user' : 'deleted user'
     end
   end
 

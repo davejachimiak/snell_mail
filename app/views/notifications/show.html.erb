@@ -4,15 +4,7 @@
 </div>
 <p class="lead">
 <% if @notification.cohabitants.any? %>
-  <% unless @notification.user.nil? %>
-    <% if admin? %>
-      <%= link_to @notification.user_name, @notification.user %>
-    <% else %>
-      <%= @notification.user_name %>
-    <% end %>
-  <% else %>
-    A deleted user
-  <% end %>
+  <%= notifier(@notification, admin?, true) %>
     notified the following cohabitants that they had snail mail:</p>
   <% @notification.cohabitants.each do |c| %>
     <li>

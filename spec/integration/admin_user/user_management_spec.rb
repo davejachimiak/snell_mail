@@ -7,7 +7,6 @@ describe 'admin user user management integration' do
 
   before do
     create_test_users
-
   end
 
   after do
@@ -19,6 +18,8 @@ describe 'admin user user management integration' do
 
   describe 'non-selenium integration' do
     before do
+      Factory(:notification, cohabitants: [cohabitant])
+      Factory(:notification, cohabitants: [cohabitant, cohabitant_4])
       test_sign_in_admin
     end
 
@@ -35,15 +36,12 @@ describe 'admin user user management integration' do
       page.current_path.must_equal '/users'
       page.text.must_include 'old.student@neu.edu'
       User.find_by_email('old.student@neu.edu').
-        update_attributes(email: 'new.student@neu.edu',
-                          admin: false)
+        update_attributes(email: 'new.student@neu.edu', admin: false)
     end
 
     it "show all notifications for a given user" do
-      notification_1 = FactoryGirl.create(:notify_c1, user: admin, 
-                        cohabitants: [cohabitant])
-      notification_2 = FactoryGirl.create(:notify_c1_and_c4,
-        user: admin, cohabitants: [cohabitant, cohabitant_4])
+      notification_1 = Notification.first
+      notification_2 = Notification.last
 
       click_link 'Users'
       click_link 'Dave Jachimiak'

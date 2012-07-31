@@ -8,9 +8,8 @@ describe 'admin user cohabitant management integration' do
     create_test_users
     cohabitant   = Factory(:cohabitant)
     cohabitant_4 = Factory(:cohabitant_4)
-    Factory(:notify_c1, user: admin, cohabitants: [cohabitant])
-    Factory(:notify_c1_and_c4, user: non_admin, 
-            cohabitants: [cohabitant, cohabitant_4])
+    Factory(:notification, cohabitants: [cohabitant])
+    Factory(:notification_by_non_admin, cohabitants: [cohabitant, cohabitant_4])
   end
 
   after do

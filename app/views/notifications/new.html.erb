@@ -4,7 +4,6 @@
   <br>
   <h3 class="lead">Check each cohabitant that has mail in their bin.</h3>
   <%= form_for @notification do |f| %>
-    <%= f.hidden_field :user_id, value: current_user.id%>
     <% @cohabitants.each do |c| %>
       <label for="<%= c.department %>">
         <%= check_box_tag 'notification[cohabitant_ids][]', c.id, false, id: c.department %>

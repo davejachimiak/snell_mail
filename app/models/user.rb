@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation, :admin,
-                  :notifications, :wants_update
+                  :wants_update
+  attr_readonly   :notifications
 
   has_secure_password
 

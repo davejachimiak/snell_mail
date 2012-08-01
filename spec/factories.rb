@@ -5,11 +5,13 @@ FactoryGirl.define do
     password 'password'
     password_confirmation 'password'
     admin true
+    wants_update true
 
     factory :non_admin do
       name 'New Student'
       email 'new.student@neu.edu'
       admin false
+      wants_update false
     end
   end
 
@@ -47,11 +49,5 @@ FactoryGirl.define do
     factory :notification_by_non_admin do
       association :user, factory: :non_admin
     end
-  end
-
-  factory :notify_c1, class: Notification do
-  end
-
-  factory :notify_c1_and_c4, class: Notification do
   end
 end

@@ -77,9 +77,9 @@ namespace :test do
   end
 
   namespace :lib do
-    Rake::TestTask.new(parser: "db:test:prepare") do |t|
+    Rake::TestTask.new(notification_confirmer: "db:test:prepare") do |t|
       t.libs << "spec"
-      t.pattern = "spec/snell_mail/notification_confirmation_parser_spec.rb"
+      t.pattern = "spec/snell_mail/notification_confirmer_spec.rb"
     end
   end
 

@@ -53,16 +53,8 @@ end
 Turn.config.format = :outline
 
 def create_test_users
-  FactoryGirl.create(:user)
-  FactoryGirl.create(:non_admin)
-end
-
-def create_admin_user
-  FactoryGirl.create(:user)
-end
-
-def create_non_admin_user
-  FactoryGirl.create(:non_admin)
+  Factory(:user)
+  Factory(:non_admin)
 end
 
 def test_sign_in_admin

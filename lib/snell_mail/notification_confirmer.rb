@@ -1,12 +1,12 @@
 module SnellMail
-  class NotificationConfirmationParser
+  class NotificationConfirmer
     def initialize(departments)
       @departments = departments
     end
 
-    def confirmation
+    def departments_string
       if @departments.count > 1
-        parse_many_departments
+        join_many_departments
       else
         @departments[0] + ' was '
       end
@@ -14,7 +14,7 @@ module SnellMail
 
     private
 
-      def parse_many_departments
+      def join_many_departments
         @departments.map do |department|
           if department == @departments.last
             last_of_many_departments

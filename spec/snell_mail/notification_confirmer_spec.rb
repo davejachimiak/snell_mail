@@ -1,8 +1,8 @@
 require 'spec_helper'
-require_relative './../../lib/snell_mail/notification_confirmation_parser.rb'
+require_relative './../../lib/snell_mail/notification_confirmer.rb'
 
-describe 'NotificationConfirmationParser' do
-  let(:new_parser) { Proc.new { |departments| SnellMail::NotificationConfirmationParser.new(departments) } }
+describe 'NotificationConfirmer' do
+  let(:new_parser) { Proc.new { |departments| SnellMail::NotificationConfirmer.new(departments) } }
 
   after do
     Cohabitant.all.each { |cohabitant| cohabitant.destroy } if Cohabitant.any?
@@ -10,23 +10,23 @@ describe 'NotificationConfirmationParser' do
 
   describe 'new instance' do
     it 'requires departments as an argument' do
-      it = Proc.new { SnellMail::NotificationConfirmationParser.new }
+      it = Proc.new { SnellMail::NotificationConfirmer.new }
       it.must_raise ArgumentError
     end
   end
 
-  describe '#confirmation' do
+  describe '#departments_string' do
     it 'is responsive' do
-      it = SnellMail::NotificationConfirmationParser.new(nil)
-      it.must_respond_to :confirmation
+      it = SnellMail::NotificationConfirmer.new(nil)
+      it.must_respond_to :departments_string
     end
 
     describe 'with one department' do
       it 'returns neccessary text' do
         department = [Factory(:cohabitant).department]
-        it = new_parser.call(department)
+        it = SnellMail::NotificationConfirmer.new(department)
 
-        it.confirmation.must_equal('Cool Factory was ')
+        it.departments_string.must_equal('Cool Factory was ')
       end
     end
 
@@ -34,9 +34,9 @@ describe 'NotificationConfirmationParser' do
       it 'returns neccessary text' do
         departments = [Factory(:cohabitant).department,
                        Factory(:cohabitant_3).department]
-        it = new_parser.call(departments)
+        it = SnellMail::NotificationConfirmer.new(departments)
 
-        it.confirmation.must_equal('Cool Factory and Face Surgery were ')
+        it.departments_string.must_equal('Cool Factory and Face Surgery were ')
       end
     end
 
@@ -45,9 +45,9 @@ describe 'NotificationConfirmationParser' do
         departments = [Factory(:cohabitant).department,
                        Factory(:cohabitant_2).department,
                        Factory(:cohabitant_3).department]
-        it = new_parser.call(departments)
+        it = SnellMail::NotificationConfirmer.new(departments)
 
-        it.confirmation.must_equal('Cool Factory, Jargon House, ' +
+        it.departments_string.must_equal('Cool Factory, Jargon House, ' +
                                    'and Face Surgery were ')
       end
     end

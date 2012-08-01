@@ -21,10 +21,11 @@ describe 'all users integration' do
       model.all.each { |m| m.destroy } if model.any?
     end
 
+    ActionMailer::Base.deliveries = []
     reset_session!
   end
 
-  describe 'with no db prep' do
+  describe 'with no db prep and non_admin sign in' do
     before do
       test_sign_in_non_admin
     end
@@ -92,6 +93,19 @@ describe 'all users integration' do
     end
   end
 
+  it "should talk in the second person to admin in update if they notify" do
+    test_sign_in_admin
+    check 'Cool Factory'
+    click_button 'Notify!'
+
+    update_admins_delivery = ActionMailer::Base.deliveries[-2]
+    update_admins_delivery.to.wont_include 'd.jachimiak@neu.edu'
+    
+    update_notifier_delivery = ActionMailer::Base.deliveries.last
+    update_notifier_delivery.subject.must_equal 'You just notified cohabitants'
+    update_notifier_delivery.encoded.must_include 'Cool Factory was notified by you'
+  end
+
   it "should indicate that a deleted user made a notification" do
     User.destroy(non_admin.id)
     test_sign_in_admin
@@ -110,7 +124,7 @@ describe 'all users integration' do
     Factory(:cohabitant_3)
     time = Time.zone.now
     test_sign_in_admin
-  
+
     page.text.must_include "New notification " +
                            "for #{time.strftime("%A, %B %e, %Y")}"
     page.text.must_include "Check each cohabitant " +
@@ -126,15 +140,24 @@ describe 'all users integration' do
                            'that they have mail ' +
                            'in their bins today. Thanks.'
 
-    notification_email = ActionMailer::Base.deliveries[-2]
+    notification_email = ActionMailer::Base.deliveries[-3]
     ['d.jachimiak@neu.edu', 'waiting for you', 'cool.guy@neu.edu'].each do |text|
       notification_email.encoded.must_include text
     end
     
-    update_email = ActionMailer::Base.deliveries.last
+    update_email = ActionMailer::Base.deliveries[-2]
     ['Cool Factory', 'Jargon House', 'Face Surgery', 'Fun Section', 'Dave Jachimiak'].each do |text|
       update_email.encoded.must_include text
     end
+  end
+
+  it "shouldn't send update admins email is no admins want update" do
+    User.find_by_email('d.jachimiak@neu.edu').update_attributes(wants_update: false)
+    test_sign_in_non_admin
+    
+    check 'Cool Factory'
+    click_button 'Notify!'
+    ActionMailer::Base.deliveries.last.to.must_include 'cool.guy@neu.edu'
   end
 
   it "should tell of all cohabitants for a given notification." do

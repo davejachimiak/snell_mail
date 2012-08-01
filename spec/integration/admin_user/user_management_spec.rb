@@ -6,7 +6,8 @@ describe 'admin user user management integration' do
   let(:cohabitant_4) { Factory(:cohabitant_4) }
 
   before do
-    create_test_users
+    Factory(:user, wants_update: false)
+    Factory(:non_admin)
   end
 
   after do
@@ -48,7 +49,10 @@ describe 'admin user user management integration' do
     end
 
     describe "creates user" do
+      let(:user_wants_update) {  User.find_by_email('happy.bobappy@example.com').wants_update }
+
       before do
+        Factory(:cohabitant)
         click_link 'Users'
         click_link 'New user'
         fill_in 'user_name', with: 'Happy Bobappy'
@@ -63,43 +67,49 @@ describe 'admin user user management integration' do
         page.text.must_include 'happy.bobappy@example.com'
       end
 
-      it "and allows admin users to create admin users that want to be updated " +
-        "when there's a notification" do
+      it "and allows admin users to create and edit admin users that " +
+        "want to be updated when there's a notification" do
         page.text.wont_include 'wants update'
         check 'Admin'
         page.has_checked_field?('Wants update').must_equal true
         click_button 'Create'
-        User.find_by_email('happy.bobappy@example.com').wants_update.must_equal true
+        user_wants_update.must_equal true
         click_button 'Edit Happy Bobappy'
-        check 'Wants update'
+        uncheck 'Admin'
+        page.has_selector?('Wants update').must_equal false
+        check 'Admin'
+        uncheck 'Wants update'
         click_button 'Save'
-        page.text.must_include 'cool'
-        User.find_by_email('happy.bobappy@example.com').wants_update.must_equal false
+        click_link 'Notifications'
+        click_link 'New notification'
+        check 'Cool Factory'
+        click_button 'Notify!'
+        ActionMailer::Base.deliveries.last.to.wont_include 'happy.bobappy@example.com'
       end
     end
   end
 
-  it "allows admin users to destroy other's but doesn't not allow " +
-     "admin users to destroy themselves" do
-    Capybara.current_driver = :selenium
-    test_sign_in_admin
+  # it "allows admin users to destroy other's but doesn't not allow " +
+     # "admin users to destroy themselves" do
+    # Capybara.current_driver = :selenium
+    # test_sign_in_admin
 
-    click_link 'Users'
-    click_button 'Delete New Student'
-    page.driver.browser.switch_to.alert.accept
-    page.current_path.must_equal '/users'
-    page.text.wont_include 'New Student'
-    page.body.wont_include 'Delete Dave Jachimiak'
-    click_link 'Users'
-    click_link 'New user'
-    fill_in 'user_name', with: 'New Student'
-    fill_in 'user_email', with: 'new.student@neu.edu'
-    fill_in 'user_password', with: 'password'
-    fill_in 'user_password_confirmation', with: 'password'
-    click_button 'Create'
-    click_link 'Sign out'
+    # click_link 'Users'
+    # click_button 'Delete New Student'
+    # page.driver.browser.switch_to.alert.accept
+    # page.current_path.must_equal '/users'
+    # page.text.wont_include 'New Student'
+    # page.body.wont_include 'Delete Dave Jachimiak'
+    # click_link 'Users'
+    # click_link 'New user'
+    # fill_in 'user_name', with: 'New Student'
+    # fill_in 'user_email', with: 'new.student@neu.edu'
+    # fill_in 'user_password', with: 'password'
+    # fill_in 'user_password_confirmation', with: 'password'
+    # click_button 'Create'
+    # click_link 'Sign out'
 
-    reset_session!
-    Capybara.use_default_driver
-  end
+    # reset_session!
+    # Capybara.use_default_driver
+  # end
 end

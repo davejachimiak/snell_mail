@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120731221458) do
+ActiveRecord::Schema.define(:version => 20120801125947) do
 
   create_table "cohabitants", :force => true do |t|
     t.string   "department"
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(:version => 20120731221458) do
     t.string "notification_id", :null => false
   end
 
-  add_index "cohabitants_notifications", ["cohabitant_id", "notification_id"], :name => "c_n_index"
-  add_index "cohabitants_notifications", ["notification_id", "cohabitant_id"], :name => "n_c_index"
+  add_index "cohabitants_notifications", ["cohabitant_id"], :name => "index_cohabitants_notifications_on_cohabitant_id"
+  add_index "cohabitants_notifications", ["notification_id"], :name => "index_cohabitants_notifications_on_notification_id"
 
   create_table "notifications", :force => true do |t|
     t.integer  "user_id"
@@ -42,11 +42,11 @@ ActiveRecord::Schema.define(:version => 20120731221458) do
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "email"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.boolean  "admin"
     t.string   "password_digest"
-    t.boolean  "wants_update",    :default => true
+    t.boolean  "wants_update",    :default => false
   end
 
 end

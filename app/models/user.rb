@@ -10,4 +10,8 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 7 }, allow_nil: true
 
   has_many :notifications
+  
+  def self.want_update
+    all.select { |user| user.wants_update? }
+  end
 end

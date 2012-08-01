@@ -33,8 +33,6 @@ describe 'admin user user management integration' do
       click_button 'Save'
       page.current_path.must_equal '/users'
       page.text.must_include 'old.student@neu.edu'
-      User.find_by_email('old.student@neu.edu').
-        update_attributes(email: 'new.student@neu.edu', admin: false)
     end
 
     it "show all notifications for a given user" do
@@ -49,16 +47,30 @@ describe 'admin user user management integration' do
         strftime('%m.%d.%Y (%A) at %I:%M%P')
     end
 
-    it "redirects to user index after admin creates user" do
-      click_link 'Users'
-      click_link 'New user'
-      fill_in 'user_name', with: 'Happy Bobappy'
-      fill_in 'user_email', with: 'happy.bobappy@example.com'
-      fill_in 'user_password', with: 'password'
-      fill_in 'user_password_confirmation', with: 'password'
-      click_button 'Create'
-      page.text.must_include 'Happy Bobappy'
-      page.text.must_include 'happy.bobappy@example.com'
+    describe "creates user" do
+      before do
+        click_link 'Users'
+        click_link 'New user'
+        fill_in 'user_name', with: 'Happy Bobappy'
+        fill_in 'user_email', with: 'happy.bobappy@example.com'
+        fill_in 'user_password', with: 'password'
+        fill_in 'user_password_confirmation', with: 'password'
+      end
+
+      it "and redirects to user index after admin creates user" do
+        click_button 'Create'
+        page.text.must_include 'Happy Bobappy'
+        page.text.must_include 'happy.bobappy@example.com'
+      end
+
+      it "and allows admin users to create admin users that want to be updated " +
+        "when there's a notification" do
+        page.text.wont_include 'wants update'
+        check 'Admin'
+        page.has_checked_field?('Wants update').must_equal true
+        click_button 'Create'
+        User.find_by_email('happy.bobappy@example.com').wants_update.must_equal true
+      end
     end
   end
 

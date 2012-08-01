@@ -12,8 +12,14 @@
   <br>
   <label for="user_admin">
     Admin
-    <%= f.check_box :admin %>
+    <input id="user_admin" name="user[admin]" type="checkbox" value="0" />
   </label>
+  <div class="wants-update" style="display:none">
+    <label for="user_wants_update">
+      Wants update
+      <input checked="checked" id="user_wants_update" name="user[wants_update]" type="checkbox" value="1" />
+    </label>
+  </div>
   <br>
   <%= f.submit 'Create', class: 'btn btn-success' %>
 <% end %>

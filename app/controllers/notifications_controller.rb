@@ -45,11 +45,9 @@ class NotificationsController < ApplicationController
       
       unless User.want_update.empty?
         if notifier_wants_update?
-          NotificationMailer.update_admins(@notification, notifier_wants_update: 'others').deliver
           NotificationMailer.update_admins(@notification, notifier_wants_update: 'notifier').deliver
-        else
-          NotificationMailer.update_admins(@notification).deliver
         end
+        NotificationMailer.update_admins(@notification).deliver
       end
     end
     

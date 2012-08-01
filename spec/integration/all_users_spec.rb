@@ -97,13 +97,13 @@ describe 'all users integration' do
     test_sign_in_admin
     check 'Cool Factory'
     click_button 'Notify!'
-
-    update_admins_delivery = ActionMailer::Base.deliveries[-2]
-    update_admins_delivery.to.wont_include 'd.jachimiak@neu.edu'
     
-    update_notifier_delivery = ActionMailer::Base.deliveries.last
+    update_notifier_delivery = ActionMailer::Base.deliveries[-2]
     update_notifier_delivery.subject.must_equal 'You just notified cohabitants'
     update_notifier_delivery.encoded.must_include 'Cool Factory was notified by you'
+
+    update_admins_delivery = ActionMailer::Base.deliveries.last
+    update_admins_delivery.to.wont_include 'd.jachimiak@neu.edu'
   end
 
   it "should indicate that a deleted user made a notification" do
@@ -146,7 +146,7 @@ describe 'all users integration' do
     end
     
     update_email = ActionMailer::Base.deliveries[-2]
-    ['Cool Factory', 'Jargon House', 'Face Surgery', 'Fun Section', 'Dave Jachimiak'].each do |text|
+    ['Cool Factory', 'Jargon House', 'Face Surgery', 'Fun Section', 'you'].each do |text|
       update_email.encoded.must_include text
     end
   end

@@ -51,14 +51,14 @@ describe 'Notification Mailer' do
     it_must { have_sent_email.with_body(/New Student/) }
 
     describe 'notifier wants update, mail the others' do
-      subject { NotificationMailer.update_admins(notification_2, notifier_wants_update: 'others' ).deliver }
+      subject { NotificationMailer.update_admins(notification_2).deliver }
 
       it_must { have_sent_email.to(/dave.jachimiak@gmail.com/) }
       it_must { have_sent_email.with_subject(/Dave Jachimiak has notified cohabitants/) }
     end
 
     describe 'notifier wants update, mail the notifier' do
-      subject { NotificationMailer.update_admins(notification_2, notifier_wants_update: 'notifier' ).deliver }
+      subject { NotificationMailer.update_admins(notification_2, notifier_wants_update: true ).deliver }
 
       it_must { have_sent_email.to(/d.jachimiak@neu.edu/) }
       it_must { have_sent_email.with_subject(/You just notified cohabitants/) }

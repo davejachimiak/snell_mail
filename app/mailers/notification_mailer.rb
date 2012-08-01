@@ -8,30 +8,32 @@ class NotificationMailer < ActionMailer::Base
 
   def update_admins(notification, options={})
     @notification = notification
-    admins_that_want_update, notifier = set_to_and_from
+    want_update_addrs = set_to
+    
     departments = @notification.cohabitants.map { |cohabitant| cohabitant.department }
     @departments_string = SnellMail::NotificationConfirmer.new(departments).departments_string
-    notifier_options = options[:notifier_wants_update]
 
-    if notifier_options
-      if notifier_options == 'others'
-        admins_that_want_update.delete(notifier)
-        mail(to: admins_that_want_update, from: notifier,
-          subject: "#{@notification.user_name} has notified cohabitants")
-      else
-        @notifier = true
-        mail(to: notifier, from: notifier,
-          subject: "You just notified cohabitants")
-      end
-    else
-      mail(to: admins_that_want_update, from: notifier,
-        subject: "#{@notification.user_name} has notified cohabitants")
-    end
+    send_update(want_update_addrs, options)
   end
 
   private
 
-    def set_to_and_from
-      [User.want_update.map { |user| user.email }, @notification.user_email]
+    def set_to
+      User.want_update.select { |user| user.id != @notification.user_id }.map { |user| user.email }
+    end
+
+    def send_update(want_update_addrs, options)
+      if options[:notifier_wants_update]
+        send_update_to_notifier
+      else
+        mail(to: want_update_addrs, from: @notification.user_email,
+          subject: "#{@notification.user_name} has notified cohabitants")
+      end
+    end
+    
+    def send_update_to_notifier
+      @notifier = true
+        mail(to: @notification.user_email, from: @notification.user_email,
+          subject: "You just notified cohabitants")
     end
 end

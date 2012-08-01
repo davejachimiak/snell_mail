@@ -70,6 +70,11 @@ describe 'admin user user management integration' do
         page.has_checked_field?('Wants update').must_equal true
         click_button 'Create'
         User.find_by_email('happy.bobappy@example.com').wants_update.must_equal true
+        click_button 'Edit Happy Bobappy'
+        check 'Wants update'
+        click_button 'Save'
+        page.text.must_include 'cool'
+        User.find_by_email('happy.bobappy@example.com').wants_update.must_equal false
       end
     end
   end

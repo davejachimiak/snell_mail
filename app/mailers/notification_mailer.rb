@@ -33,7 +33,7 @@ class NotificationMailer < ActionMailer::Base
     
     def send_update_to_notifier
       @notifier = true
-        mail(to: @notification.user_email, from: @notification.user_email,
-          subject: "You just notified cohabitants")
+      mail(to: @notification.user_email, from: @notification.user_email,
+        subject: "You just notified cohabitants")
     end
 end

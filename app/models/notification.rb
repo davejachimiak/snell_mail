@@ -9,4 +9,8 @@ class Notification < ActiveRecord::Base
   has_and_belongs_to_many :cohabitants
 
   delegate :name, :email, to: :user, prefix: true
+
+  def cohabitants_departments
+    self.cohabitants.map(&:department)
+  end
 end

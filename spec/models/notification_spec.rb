@@ -22,4 +22,21 @@ describe "Notification" do
     it { subject.must_respond_to :user_name }
     it { subject.must_respond_to :user_email }
   end
+
+  describe "#cohabitants_departments" do
+    before { @notification = Factory(:notification_with_cohabitant) }
+
+    after do
+      %w(Notification Cohabitant).each do |model_string|
+        model = Kernel.const_get(model_string)
+        model.destroy_all
+      end
+    end
+
+    describe 'has cohabitants' do
+      it "returns departments of given cohabitants" do
+        @notification.cohabitants_departments.must_include 'Cool Factory'
+      end
+    end
+  end
 end

@@ -13,14 +13,12 @@ class NotificationsController < ApplicationController
   def new
     @notification = Notification.new
     @user         = current_user
-    @cohabitants  = Cohabitant.all.select do |cohabitant|
-                      cohabitant if cohabitant.activated?
-                    end
+    @cohabitants  = Cohabitant.activated
   end
 
   def create
-    @notification      = Notification.new(params[:notification])
-    @notification.user = current_user
+    @notification = current_user.notifications.build(params[:notification])
+
     if @notification.save
       redirect_to notifications_path,
         flash: { "alert-success" => notification_confirmation }
@@ -33,9 +31,9 @@ class NotificationsController < ApplicationController
   private
 
     def notification_confirmation
-      cohabitants = @notification.cohabitants
-      departments = cohabitants.map { |cohabitant| cohabitant.department }
-      confirmer = SnellMail::NotificationConfirmer.new(departments)
+      departments = @notification.cohabitants_departments
+      confirmer   = SnellMail::NotificationConfirmer.new(departments)
+
       confirmer.departments_string +
         'just notified that they have mail in their bins today. Thanks.'
     end

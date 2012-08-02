@@ -20,6 +20,13 @@ FactoryGirl.define do
     location      'Penthouse'
     contact_name  'Very Cool Guy'
     contact_email 'cool.guy@neu.edu'
+
+    factory :activated_cohabitant do
+    end
+
+    factory :deactivated_cohabitant do
+      activated false
+    end
   end
 
   factory :cohabitant_2, class: Cohabitant do
@@ -49,5 +56,12 @@ FactoryGirl.define do
     factory :notification_by_non_admin do
       association :user, factory: :non_admin
     end
+
+    factory :notification_with_cohabitant do
+      after_build do |notification|
+        notification.cohabitants << Factory(:cohabitant)
+      end
+    end
+
   end
 end

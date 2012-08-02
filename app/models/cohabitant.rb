@@ -19,4 +19,8 @@ class Cohabitant < ActiveRecord::Base
 
     strings
   end
+
+  def self.activated
+    where(activated: true)
+  end
 end

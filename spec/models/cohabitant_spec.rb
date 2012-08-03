@@ -2,6 +2,11 @@ require 'spec_helper'
 require_relative '../../app/models/cohabitant.rb'
 
 describe "Cohabitant model" do
+
+  after do
+    Cohabitant.destroy_all
+  end
+
   subject { Cohabitant.new }
 
   it_must { have_and_belong_to_many :notifications }
@@ -45,6 +50,21 @@ describe "Cohabitant model" do
     it "returns adjetive" do
       cohabitant.toggle_activated![:adj].must_equal 'deactivated'
       cohabitant.toggle_activated![:adj].must_equal 'reactivated'
+    end
+  end
+
+  describe "::activated" do
+    before do
+      @activated_cohabitant = Factory(:activated_cohabitant)
+      @deactivated_cohabitant = Factory(:deactivated_cohabitant)
+    end
+
+    it "returns activated cohabitants" do
+      Cohabitant.activated.must_include @activated_cohabitant
+    end
+
+    it "doesn't return deactivated cohabitants" do
+      Cohabitant.activated.wont_include @deactivated_cohabitant
     end
   end
 end

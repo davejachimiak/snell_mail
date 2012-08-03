@@ -15,7 +15,6 @@ class CohabitantsController < ApplicationController
     if @cohabitant.save
       redirect_to cohabitants_path, notice: 'New cohabitant successfully created.'
     else
-      @error = true
       render 'new'
     end
   end

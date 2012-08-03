@@ -24,12 +24,12 @@ ActiveRecord::Schema.define(:version => 20120801125947) do
   end
 
   create_table "cohabitants_notifications", :id => false, :force => true do |t|
-    t.string "cohabitant_id",   :null => false
-    t.string "notification_id", :null => false
+    t.integer "cohabitant_id"
+    t.integer "notification_id"
   end
 
-  add_index "cohabitants_notifications", ["cohabitant_id"], :name => "index_cohabitants_notifications_on_cohabitant_id"
-  add_index "cohabitants_notifications", ["notification_id"], :name => "index_cohabitants_notifications_on_notification_id"
+  add_index "cohabitants_notifications", ["cohabitant_id", "notification_id"], :name => "c_n_index"
+  add_index "cohabitants_notifications", ["notification_id", "cohabitant_id"], :name => "n_c_index"
 
   create_table "notifications", :force => true do |t|
     t.integer  "user_id"

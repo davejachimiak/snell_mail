@@ -29,10 +29,10 @@ class CohabitantsController < ApplicationController
   end
 
   def toggle_activated
-    strings = @cohabitant.toggle_activated!
+    cohabitant_state_info = @cohabitant.toggle_activated!
     redirect_to cohabitants_path,
-      flash: { "alert-#{strings[:flash]}" =>
-      "#{@cohabitant.department} #{strings[:adj]}." }
+      flash: { "alert-#{cohabitant_state_info[:flash]}" =>
+      "#{@cohabitant.department} #{cohabitant_state_info[:adj]}." }
   end
 
   def destroy

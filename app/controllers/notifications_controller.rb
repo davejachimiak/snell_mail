@@ -32,9 +32,11 @@ class NotificationsController < ApplicationController
 
     def confirmation_message
       departments = @notification.cohabitants_departments
-      departments_for_message = SnellMail::NotificationConfirmer.new(departments)
 
-      departments_for_message.departments_string +
+      message_subjects = SnellMail::MessageSubjects.new(departments)
+      beginning_of_message = message_subjects.construct
+
+      beginning_of_message +
         'just notified that they have mail in their bins today. Thanks.'
     end
 

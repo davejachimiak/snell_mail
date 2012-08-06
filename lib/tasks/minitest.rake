@@ -55,7 +55,7 @@ namespace :test do
       t.pattern = "spec/helpers/cohabitants_helper_spec.rb"
     end
 
-	Rake::TestTask.new(notifications: "db:test:prepare") do |t|
+    Rake::TestTask.new(notifications: "db:test:prepare") do |t|
       t.libs << "spec"
       t.pattern = "spec/helpers/notifications_helper_spec.rb"
     end
@@ -65,7 +65,7 @@ namespace :test do
       t.pattern = "spec/helpers/users_helper_spec.rb"
     end
 
-	Rake::TestTask.new(shared: "db:test:prepare") do |t|
+    Rake::TestTask.new(shared: "db:test:prepare") do |t|
       t.libs << "spec"
       t.pattern = "spec/helpers/shared_helper_spec.rb"
     end
@@ -80,6 +80,11 @@ namespace :test do
     Rake::TestTask.new(notification_confirmer: "db:test:prepare") do |t|
       t.libs << "spec"
       t.pattern = "spec/snell_mail/notification_confirmer_spec.rb"
+    end
+
+    Rake::TestTask.new(cohabitant_activation_state: "db:test:prepare") do |t|
+      t.libs << "spec"
+      t.pattern = "spec/snell_mail/cohabitant_activation_state_spec.rb"
     end
   end
 

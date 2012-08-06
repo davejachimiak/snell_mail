@@ -45,7 +45,7 @@ class CohabitantsController < ApplicationController
 
   def show
     @notifications = @cohabitant.notifications.order('id DESC').
-      page(params[:page]).per_page(15)
+      page(params[:page]).per_page(RECORDS_PER_PAGE)
   end
 
   def edit

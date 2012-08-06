@@ -47,7 +47,7 @@ class UsersController < ApplicationController
       @notifications = []
     else
       @notifications = notifications.order('id DESC').page(params[:page]).
-                         per_page(15)
+                         per_page(RECORDS_PER_PAGE)
     end
   end
 

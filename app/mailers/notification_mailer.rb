@@ -11,7 +11,7 @@ class NotificationMailer < ActionMailer::Base
     want_update_addrs = set_to
     
     departments = @notification.cohabitants.map { |cohabitant| cohabitant.department }
-    @departments_string = SnellMail::NotificationConfirmer.new(departments).departments_string
+    @departments_string = SnellMail::MessageSubjects.new(departments).construct
 
     send_update(want_update_addrs, options)
   end

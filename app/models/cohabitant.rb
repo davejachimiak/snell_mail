@@ -10,14 +10,6 @@ class Cohabitant < ActiveRecord::Base
 
   def toggle_activated!
     self.update_attributes(activated: !self.activated)
-
-    if self.activated?
-      strings = { flash: 'success', adj: 'reactivated' }
-    else
-      strings = { flash: 'info', adj: 'deactivated' }
-    end
-
-    strings
   end
 
   def self.activated

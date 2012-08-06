@@ -77,9 +77,9 @@ namespace :test do
   end
 
   namespace :lib do
-    Rake::TestTask.new(notification_confirmer: "db:test:prepare") do |t|
+    Rake::TestTask.new(message_subjects: "db:test:prepare") do |t|
       t.libs << "spec"
-      t.pattern = "spec/snell_mail/notification_confirmer_spec.rb"
+      t.pattern = "spec/snell_mail/message_subjects_spec.rb"
     end
 
     Rake::TestTask.new(cohabitant_activation_state: "db:test:prepare") do |t|

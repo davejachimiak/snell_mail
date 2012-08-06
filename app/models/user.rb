@@ -12,6 +12,6 @@ class User < ActiveRecord::Base
   has_many :notifications
   
   def self.want_update
-    all.select { |user| user.wants_update? }
+    where(wants_update: true)
   end
 end

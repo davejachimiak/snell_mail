@@ -120,17 +120,17 @@ describe 'admin user cohabitant management integration' do
     end
   end
 
-  it "allows admin users to destroy cohabitants" do
-    Capybara.current_driver = :selenium
-    test_sign_in_admin
+  # it "allows admin users to destroy cohabitants" do
+    # Capybara.current_driver = :selenium
+    # test_sign_in_admin
 
-    click_link 'Cohabitants'
-    click_button 'Delete Cool Factory'
-    page.driver.browser.switch_to.alert.accept
-    page.current_path.must_equal '/cohabitants'
-    page.text.wont_include 'Cool Factory'
+    # click_link 'Cohabitants'
+    # click_button 'Delete Cool Factory'
+    # page.driver.browser.switch_to.alert.accept
+    # page.current_path.must_equal '/cohabitants'
+    # page.text.wont_include 'Cool Factory'
 
-    reset_session!
-    Capybara.current_driver = :rack_test
-  end
+    # reset_session!
+    # Capybara.current_driver = :rack_test
+  # end
 end

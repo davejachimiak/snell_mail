@@ -41,16 +41,6 @@ describe "Cohabitant model" do
       cohabitant.toggle_activated!
       cohabitant.activated.must_equal true
     end
-
-    it "returns flash value" do
-      cohabitant.toggle_activated![:flash].must_equal 'info'
-      cohabitant.toggle_activated![:flash].must_equal 'success'
-    end
-
-    it "returns adjetive" do
-      cohabitant.toggle_activated![:adj].must_equal 'deactivated'
-      cohabitant.toggle_activated![:adj].must_equal 'reactivated'
-    end
   end
 
   describe "::activated" do

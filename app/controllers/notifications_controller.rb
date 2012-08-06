@@ -3,7 +3,7 @@ class NotificationsController < ApplicationController
 
   def index
     @notifications = Notification.order('id DESC').page(params[:page]).
-      per_page(15)
+      per_page(RECORDS_PER_PAGE)
   end
 
   def show
@@ -21,26 +21,28 @@ class NotificationsController < ApplicationController
 
     if @notification.save
       redirect_to notifications_path,
-        flash: { "alert-success" => notification_confirmation }
+        flash: { "alert-success" => confirmation_message }
       send_notification_and_update
     else
-      render_errors
+      render_error
     end
   end
 
   private
 
-    def notification_confirmation
+    def confirmation_message
       departments = @notification.cohabitants_departments
-      confirmer   = SnellMail::NotificationConfirmer.new(departments)
 
-      confirmer.departments_string +
+      message_subjects = SnellMail::MessageSubjects.new(departments)
+      beginning_of_message = message_subjects.construct
+
+      beginning_of_message +
         'just notified that they have mail in their bins today. Thanks.'
     end
 
     def send_notification_and_update
       NotificationMailer.mail_notification(@notification).deliver
-      
+
       unless User.want_update.empty?
         if notifier_wants_update?
           NotificationMailer.update_admins(@notification, notifier_wants_update: 'notifier').deliver
@@ -48,13 +50,13 @@ class NotificationsController < ApplicationController
         NotificationMailer.update_admins(@notification).deliver
       end
     end
-    
+
     def notifier_wants_update?
       email_addresses = User.want_update.map { |user| user.email }
       email_addresses.include?(@notification.user_email)
     end
 
-    def render_errors
+    def render_error
       @cohabitants = Cohabitant.all
       @error = true
       render 'new'

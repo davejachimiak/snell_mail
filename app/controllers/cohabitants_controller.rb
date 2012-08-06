@@ -29,7 +29,10 @@ class CohabitantsController < ApplicationController
   end
 
   def toggle_activated
-    cohabitant_state_info = @cohabitant.toggle_activated!
+    @cohabitant.toggle_activated!
+    cohabitant_state_info = SnellMail::CohabitantActivationState.
+                              new(@cohabitant).info
+
     redirect_to cohabitants_path,
       flash: { "alert-#{cohabitant_state_info[:flash]}" =>
       "#{@cohabitant.department} #{cohabitant_state_info[:adj]}." }

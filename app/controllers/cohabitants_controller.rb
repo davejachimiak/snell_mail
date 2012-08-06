@@ -30,7 +30,7 @@ class CohabitantsController < ApplicationController
 
   def toggle_activated
     @cohabitant.toggle_activated!
-    cohabitant_state_info = SnellMail::CohabitantActivationState.
+    cohabitant_state_info = CohabitantActivationState.
                               new(@cohabitant).info
 
     redirect_to cohabitants_path,

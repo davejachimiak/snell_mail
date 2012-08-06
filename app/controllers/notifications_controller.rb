@@ -33,7 +33,7 @@ class NotificationsController < ApplicationController
     def confirmation_message
       departments = @notification.cohabitants_departments
 
-      message_subjects = SnellMail::MessageSubjects.new(departments)
+      message_subjects = MessageSubjects.new(departments)
       beginning_of_message = message_subjects.construct
 
       beginning_of_message +

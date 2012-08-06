@@ -1,13 +1,13 @@
 require 'spec_helper'
-require_relative '../../lib/snell_mail/cohabitant_activation_state.rb'
+require_relative '../../lib/cohabitant_activation_state.rb'
 
 describe 'CohabitantActivationState' do
   describe '#info' do
     let(:activated_cohabitant) { Factory(:activated_cohabitant) }
     let(:deactivated_cohabitant) { Factory(:deactivated_cohabitant) }
 
-    let(:activated_state_info) { SnellMail::CohabitantActivationState.new(activated_cohabitant).info }
-    let(:deactivated_state_info) { SnellMail::CohabitantActivationState.new(deactivated_cohabitant).info }
+    let(:activated_state_info) { CohabitantActivationState.new(activated_cohabitant).info }
+    let(:deactivated_state_info) { CohabitantActivationState.new(deactivated_cohabitant).info }
 
     it 'sends correct flash info for activated cohabitant' do
       activated_state_info[:flash].must_equal 'success'

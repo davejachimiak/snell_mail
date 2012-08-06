@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  validates :name,     format: { with: SnellMail::Validators.name }
-  validates :email,    format: { with: SnellMail::Validators.email }
+  validates :name,     format: { with: Validators.name }
+  validates :email,    format: { with: Validators.email }
   validates :password, length: { minimum: 7 }, allow_nil: true
 
   has_many :notifications

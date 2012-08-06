@@ -1,7 +1,7 @@
 class Cohabitant < ActiveRecord::Base
   validates_presence_of :department, :location, :contact_name, :contact_email
-  validates :contact_name, format: { with: SnellMail::Validators.name }
-  validates :contact_email, format: { with: SnellMail::Validators.email }
+  validates :contact_name, format: { with: Validators.name }
+  validates :contact_email, format: { with: Validators.email }
 
   attr_accessible :department, :location, :contact_name, :contact_email,
                   :activated

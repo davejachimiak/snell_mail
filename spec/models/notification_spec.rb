@@ -23,7 +23,7 @@ describe "Notification" do
     it { subject.must_respond_to :user_email }
   end
 
-  describe "#cohabitants_departments" do
+  describe "#cohabitants_*" do
     before { @notification = Factory(:notification_with_cohabitant) }
 
     after do
@@ -33,9 +33,15 @@ describe "Notification" do
       end
     end
 
-    describe 'has cohabitants' do
+    describe '#cohabitants_departments' do
       it "returns departments of given cohabitants" do
         @notification.cohabitants_departments.must_include 'Cool Factory'
+      end
+    end
+
+    describe '#cohabitants_contact_emails' do
+      it "returns contact_emails of given cohabitants" do
+        @notification.cohabitants_contact_emails.must_include 'cool.guy@neu.edu'
       end
     end
   end

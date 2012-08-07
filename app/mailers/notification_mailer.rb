@@ -2,43 +2,32 @@ class NotificationMailer < ActionMailer::Base
   def mail_notification(notification)
     @notification                  = notification
     notifier                       = @notification.user
-    notifier_name                  = notifier.name
-    notifier_email                 = notifier.email
-    others_that_want_update_emails = notifier.others_that_want_update_emails
+    notifier_email                 = @notification.user_email
+    others_that_want_update_emails = User.others_that_want_update_emails(notifier)
+    cohabitants_contact_emails     = @notification.cohabitants_contact_emails
     cohabitants_departments        = @notification.cohabitants_departments
+    @departments_string = MessageSubjects.new(cohabitants_departments).construct
 
-    notify_cohabitants(notifier)
-    notify_others_that_want_update(others_that_want_update_emails)
+    notify_cohabitants(cohabitants_contact_emails, notifier_email)
+    notify_admins(others_that_want_update_emails, notifier_email)
+    notify_notifier(notifier_email)
   end
 
-  def update_admins(notification, options={})
-    @notification = notification
-    want_update_addrs = set_to
-    
-    departments = @notification.cohabitants.map { |cohabitant| cohabitant.department }
-    @departments_string = MessageSubjects.new(departments).construct
+  def notify_cohabitants(cohabitants_contact_emails, notifier_email)
+    subject = "You've got mail downstairs!"
 
-    send_update(want_update_addrs, options)
+    mail(to: cohabitants_contact_emails, from: notifier_email, subject: subject, template_name: 'cohabitants')
   end
 
-  private
+  def notify_admins(others_that_want_update_emails, notifier_email)
+    subject = "#{@notification.user_name} has notified cohabitants"
 
-    def set_to
-      User.want_update.select { |user| user.id != @notification.user_id }.map { |user| user.email }
-    end
+    mail(to: others_that_want_update_emails, from: notifier_email, subject: subject, template_name: 'admins')
+  end
 
-    def send_update(want_update_addrs, options)
-      if options[:notifier_wants_update]
-        send_update_to_notifier
-      else
-        mail(to: want_update_addrs, from: @notification.user_email,
-          subject: "#{@notification.user_name} has notified cohabitants")
-      end
-    end
-    
-    def send_update_to_notifier
-      @notifier = true
-      mail(to: @notification.user_email, from: @notification.user_email,
-        subject: "You just notified cohabitants")
-    end
+  def notify_notifier(notifier_email)
+    subject = 'You just notified cohabitants'
+
+    mail(to: notifier_email, from: notifier_email, subject: subject, template_name: 'notifier')
+  end
 end

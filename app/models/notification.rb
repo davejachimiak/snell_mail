@@ -13,4 +13,8 @@ class Notification < ActiveRecord::Base
   def cohabitants_departments
     self.cohabitants.map(&:department)
   end
+
+  def cohabitants_contact_emails
+    self.cohabitants.map(&:contact_email)
+  end
 end

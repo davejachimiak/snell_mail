@@ -13,6 +13,13 @@ FactoryGirl.define do
       admin false
       wants_update false
     end
+    
+    factory :admin_no_update do
+      name 'Grumpy Diaper'
+      email 'g.diaper@pamps.org'
+      admin true
+      wants_update false
+    end
   end
 
   factory :cohabitant do
@@ -56,12 +63,15 @@ FactoryGirl.define do
     factory :notification_by_non_admin do
       association :user, factory: :non_admin
     end
+    
+    factory :notification_by_admin_no_update do
+      association :user, factory: :admin_no_update
+    end
 
     factory :notification_with_cohabitant do
       after_build do |notification|
         notification.cohabitants << Factory(:cohabitant)
       end
     end
-
   end
 end

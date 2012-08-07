@@ -1,9 +1,14 @@
 class NotificationMailer < ActionMailer::Base
   def mail_notification(notification)
-    notifier = notification.user_email
-    cohabitants = notification.cohabitants.map { |cohabitant| cohabitant.contact_email }
+    @notification                  = notification
+    notifier                       = @notification.user
+    notifier_name                  = notifier.name
+    notifier_email                 = notifier.email
+    others_that_want_update_emails = notifier.others_that_want_update_emails
+    cohabitants_departments        = @notification.cohabitants_departments
 
-    mail(to: cohabitants, from: notifier, subject: "You've got mail downstairs!")
+    notify_cohabitants(notifier)
+    notify_others_that_want_update(others_that_want_update_emails)
   end
 
   def update_admins(notification, options={})

@@ -10,7 +10,7 @@ class NotificationMailer < ActionMailer::Base
 
     notify_cohabitants(cohabitants_contact_emails, notifier_email)
     notify_admins(others_that_want_update_emails, notifier_email)
-    notify_notifier(notifier_email)
+    notify_notifier(notifier_email) if notifier.wants_update?
   end
 
   def notify_cohabitants(cohabitants_contact_emails, notifier_email)

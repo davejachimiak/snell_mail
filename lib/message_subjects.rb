@@ -1,23 +1,25 @@
 class MessageSubjects
+  attr_reader :subjects
+
   def initialize(subjects)
     @subjects = subjects
   end
 
   def construct
-    if @subjects.count > 1
+    if subjects.count > 1
       join_many_subjects
     else
-      @subjects[0] + ' was '
+      subjects[0] + ' was '
     end
   end
 
   private
 
     def join_many_subjects
-      @subjects.map do |subject|
-        if subject == @subjects.last
+      subjects.map do |subject|
+        if subject == subjects.last
           last_of_many_subjects
-        elsif @subjects.count == 2
+        elsif subjects.count == 2
           first_of_two_subjects
         else
           subject + ", "
@@ -26,10 +28,10 @@ class MessageSubjects
     end
 
     def last_of_many_subjects
-      "and #{@subjects.last} were "
+      "and #{subjects.last} were "
     end
 
     def first_of_two_subjects
-      "#{@subjects.first} "
+      "#{subjects.first} "
     end
 end

@@ -18,7 +18,7 @@ describe 'all users integration' do
   after do
     %w(User Cohabitant Notification).each do |model_string|
       model = Kernel.const_get(model_string)
-      model.all.each { |m| m.destroy } if model.any?
+      model.destroy_all if model.any?
     end
 
     ActionMailer::Base.deliveries = []
@@ -98,11 +98,11 @@ describe 'all users integration' do
     check 'Cool Factory'
     click_button 'Notify!'
     
-    update_notifier_delivery = ActionMailer::Base.deliveries[-2]
+    update_notifier_delivery = ActionMailer::Base.deliveries.last
     update_notifier_delivery.subject.must_equal 'You just notified cohabitants'
     update_notifier_delivery.encoded.must_include 'Cool Factory was notified by you'
 
-    update_admins_delivery = ActionMailer::Base.deliveries.last
+    update_admins_delivery = ActionMailer::Base.deliveries[-2]
     update_admins_delivery.to.wont_include 'd.jachimiak@neu.edu'
   end
 
@@ -145,19 +145,32 @@ describe 'all users integration' do
       notification_email.encoded.must_include text
     end
     
-    update_email = ActionMailer::Base.deliveries[-2]
+    update_email = ActionMailer::Base.deliveries.last
     ['Cool Factory', 'Jargon House', 'Face Surgery', 'Fun Section', 'you'].each do |text|
       update_email.encoded.must_include text
     end
   end
 
-  it "shouldn't send update admins email is no admins want update" do
-    User.find_by_email('d.jachimiak@neu.edu').update_attributes(wants_update: false)
+  it "shouldn't notify admin if she doesn't want update" do
+    Factory(:admin_no_update)
     test_sign_in_non_admin
     
     check 'Cool Factory'
     click_button 'Notify!'
-    ActionMailer::Base.deliveries.last.to.must_include 'cool.guy@neu.edu'
+    ActionMailer::Base.deliveries.map(&:to).wont_include 'g.diaper@pamps.org'
+  end
+
+  it "shouldn't notify notifier if notifier doesn't want update" do
+    Factory(:admin_no_update)
+      visit '/'
+    fill_in 'session_email', with: 'g.diaper@pamps.org'
+    fill_in 'session_password', with: 'password'
+    click_button 'Sign in'
+    
+    check 'Cool Factory'
+    click_button 'Notify!'
+    ActionMailer::Base.deliveries.last.subject.wont_include 'You just notified cohabitants'
+    ActionMailer::Base.deliveries.last.to.wont_include 'g.diaper@pamps.org'
   end
 
   it "should tell of all cohabitants for a given notification." do

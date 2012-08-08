@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  skip_before_filter :authenticate, :authenticate_admin
+
   def new
     redirect_to controller: 'notifications', action: 'new' if signed_in?
   end

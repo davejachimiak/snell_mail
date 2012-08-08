@@ -1,5 +1,5 @@
 class NotificationsController < ApplicationController
-  before_filter :authenticate
+  skip_before_filter :authenticate_admin
 
   def index
     @notifications = Notification.order('id DESC').page(params[:page]).

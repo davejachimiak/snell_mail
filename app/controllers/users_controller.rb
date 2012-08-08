@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate
-  before_filter :authenticate_admin, except: [:password, :update]
+  skip_before_filter :authenticate_admin, only: [:password, :update]
   before_filter :set_user, except: [:index, :new, :create, :password]
 
   def password

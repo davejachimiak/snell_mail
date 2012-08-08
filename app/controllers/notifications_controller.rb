@@ -23,7 +23,8 @@ class NotificationsController < ApplicationController
       redirect_to notifications_path,
         flash: { "alert-success" => confirmation_message }
     else
-      render_error
+      @cohabitants = Cohabitant.activated
+      render 'new'
     end
   end
 
@@ -37,11 +38,5 @@ class NotificationsController < ApplicationController
 
       beginning_of_message +
         'just notified that they have mail in their bins today. Thanks.'
-    end
-
-    def render_error
-      @cohabitants = Cohabitant.all
-      @error = true
-      render 'new'
     end
 end

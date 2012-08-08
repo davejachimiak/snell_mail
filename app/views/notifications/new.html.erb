@@ -1,4 +1,4 @@
-<%= render 'shared/sub_header', klass: 'notification', error: @error %>
+<%= render 'shared/sub_header', klass: 'notification', error: @notification.errors.any? %>
 <% if @cohabitants.any? %>
   <div class="page-header"><h2>New notification for <%= Time.zone.now.strftime("%A, %B %e, %Y") %></h2></div>
   <br>

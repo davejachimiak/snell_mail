@@ -73,18 +73,18 @@ namespace :test do
 
   Rake::TestTask.new(lib: "db:test:prepare") do |t|
     t.libs << "spec"
-    t.pattern = "spec/snell_mail/**/*.rb"
+    t.pattern = "spec/lib/**/*.rb"
   end
 
   namespace :lib do
     Rake::TestTask.new(message_subjects: "db:test:prepare") do |t|
       t.libs << "spec"
-      t.pattern = "spec/snell_mail/message_subjects_spec.rb"
+      t.pattern = "spec/lib/message_subjects_spec.rb"
     end
 
-    Rake::TestTask.new(cohabitant_activation_state: "db:test:prepare") do |t|
+    Rake::TestTask.new(cohabitant_state: "db:test:prepare") do |t|
       t.libs << "spec"
-      t.pattern = "spec/snell_mail/cohabitant_activation_state_spec.rb"
+      t.pattern = "spec/lib/cohabitant_state_spec.rb"
     end
   end
 

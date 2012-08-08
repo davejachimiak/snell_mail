@@ -1,4 +1,4 @@
-class CohabitantActivationState
+class CohabitantState
   attr_accessor :cohabitant
 
   def initialize(cohabitant)
@@ -16,10 +16,10 @@ class CohabitantActivationState
   private
 
     def active_info
-      { flash: 'success', adj: 'reactivated' }
+      { css: 'success', adj: 'reactivated' }
     end
 
     def inactive_info
-      { flash: 'info', adj: 'deactivated' }
+      { css: 'info', adj: 'deactivated' }
     end
 end

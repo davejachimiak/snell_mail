@@ -29,8 +29,8 @@ class CohabitantsController < ApplicationController
 
   def toggle_activated
     @cohabitant.toggle_activated!
-    cohabitant_state_info = CohabitantActivationState.
-                              new(@cohabitant).info
+    cohabitant_state = CohabitantState.new(@cohabitant)
+    cohabitant_state_info = cohabitant_state.info
 
     redirect_to cohabitants_path,
       flash: { "alert-#{cohabitant_state_info[:flash]}" =>

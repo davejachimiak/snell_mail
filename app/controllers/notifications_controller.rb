@@ -12,7 +12,6 @@ class NotificationsController < ApplicationController
 
   def new
     @notification = Notification.new
-    @user         = current_user
     @cohabitants  = Cohabitant.activated
   end
 

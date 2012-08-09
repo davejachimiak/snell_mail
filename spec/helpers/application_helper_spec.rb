@@ -3,9 +3,7 @@ require 'spec_helper'
 describe ApplicationHelper do
   let(:admin_user)     { User.find_by_email('d.jachimiak@neu.edu') }
   let(:non_admin_user) { User.find_by_email('new.student@neu.edu') }
-  let(:cohabitant)     { Factory(:cohabitant) }
-  let(:cohabitant_4)   { Factory(:cohabitant_4) }
-  let(:notification)   { Factory(:notification, cohabitants: [cohabitant]) }
+  let(:notification)   { Factory(:notification_with_cohabitant) }
 
   after do
     %w(User Cohabitant Notification).each do |model_string|
@@ -25,7 +23,7 @@ describe ApplicationHelper do
   end
 
   it '::notifier returns deleted user text if notifier was deleted' do
-    Factory(:notification_by_non_admin, cohabitants: [cohabitant, cohabitant_4])
+    Factory(:notification_by_non_admin_two_cohabitants)
     User.destroy(non_admin_user.id)
                                   
     it = notifier(Notification.last, admin: false)
@@ -33,7 +31,7 @@ describe ApplicationHelper do
   end
 
   it "::notifier returns 'A deleted user' if current url is notifications#show" do
-    Factory(:notification_by_non_admin, cohabitants: [cohabitant, cohabitant_4])
+    Factory(:notification_by_non_admin_two_cohabitants)
     User.destroy(non_admin_user.id)
 
     it = notifier(Notification.last, admin: false, notifications_show: true)

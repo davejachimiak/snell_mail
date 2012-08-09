@@ -69,6 +69,10 @@ FactoryGirl.define do
       end
     end
 
+    factory :notification_by_non_admin do
+      association :user, factory: :non_admin
+    end
+
     factory :notification_by_admin_no_update do
       association :user, factory: :admin_no_update
     end

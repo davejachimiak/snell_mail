@@ -31,6 +31,7 @@ describe 'admin user cohabitant management integration' do
         test_sign_in_admin
       end
 
+      # needs no factories before
       it "should allow admin users to create and edit cohabitants" do
         click_link 'Cohabitants'
         click_link 'New cohabitant'
@@ -54,6 +55,7 @@ describe 'admin user cohabitant management integration' do
         page.text.must_include 'cool.person@neu.edu'
       end
 
+      # needs first notification with cohabitant and notification by non admin two cohabitants before
       it "shows all notifications for a given cohabitant" do
         click_link 'Cohabitants'
         click_link 'Cool Factory'
@@ -62,6 +64,7 @@ describe 'admin user cohabitant management integration' do
         page.text.must_include "New Student"
       end
 
+      # db preparation doesn't matter
       it "won't save new cohabitant if attributes are invalid" do
         inclusion_strings = ["department can't be blank",
                              "location can't be blank",
@@ -81,6 +84,7 @@ describe 'admin user cohabitant management integration' do
         page.text.must_include 'contact email is invalid'
       end
 
+      # needs first cohabitant factory
       it "allows admin users to deactivate cohabitants" do
         click_link 'Cohabitants'
         click_button 'Deactivate Cool Factory'

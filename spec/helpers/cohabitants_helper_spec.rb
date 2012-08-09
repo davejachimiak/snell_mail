@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe CohabitantsHelper do
-  let(:activated_cohabitant) { Factory(:cohabitant) }
-  let(:deactivated_cohabitant) { Factory(:cohabitant, activated: false) }
+  let(:activated_cohabitant) { Factory(:activated_cohabitant) }
+  let(:deactivated_cohabitant) { Factory(:deactivated_cohabitant) }
 
   after do
     Cohabitant.all.each { |cohabitant| cohabitant.destroy } if Cohabitant.any?

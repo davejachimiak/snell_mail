@@ -123,7 +123,9 @@ describe 'admin user cohabitant management integration' do
 
     # needs a cohabitant with two notifications, one from each user 
     it "shows all notifications for a given cohabitant" do
-      Factory(:cohabitant_with_two_notifications)
+      cohabitant = Factory(:cohabitant)
+      Factory(:notification, cohabitants: [cohabitant])
+      Factory(:notification_by_non_admin, cohabitants: [cohabitant])
       test_sign_in_admin
       click_link 'Cohabitants'
       click_link 'Cool Factory'

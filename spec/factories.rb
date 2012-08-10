@@ -60,17 +60,15 @@ FactoryGirl.define do
   factory :notification do
     user
 
-    factory :notification_by_non_admin_two_cohabitants do
-      association :user, factory: :non_admin
-
-      after_build do |notification|
-        notification.cohabitants << Factory(:cohabitant)
-        notification.cohabitants << Factory(:cohabitant_4)
-      end
-    end
-
     factory :notification_by_non_admin do
       association :user, factory: :non_admin
+
+      factory :notification_by_non_admin_two_cohabitants do
+        after_build do |notification|
+          notification.cohabitants << Factory(:cohabitant)
+          notification.cohabitants << Factory(:cohabitant_4)
+        end
+      end
     end
 
     factory :notification_by_admin_no_update do

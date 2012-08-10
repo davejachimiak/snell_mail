@@ -65,7 +65,7 @@ FactoryGirl.define do
 
       factory :notification_by_non_admin_two_cohabitants do
         after_build do |notification|
-          notification.cohabitants << Factory(:cohabitant)
+          notification.cohabitants << cohabitant
           notification.cohabitants << Factory(:cohabitant_4)
         end
       end
@@ -77,8 +77,12 @@ FactoryGirl.define do
 
     factory :notification_with_cohabitant do
       after_build do |notification|
-        notification.cohabitants << Factory(:cohabitant)
+        notification.cohabitants << cohabitant
       end
     end
   end
+end
+
+def cohabitant
+  Cohabitant.find_by_contact_email('cool.guy@neu.edu') || Factory(:cohabitant)
 end

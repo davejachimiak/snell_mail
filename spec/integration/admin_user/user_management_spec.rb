@@ -13,7 +13,7 @@ describe 'admin user user management integration' do
   after do
     %w(User Cohabitant Notification).each do |model_string|
       model = Kernel.const_get(model_string)
-      model.all.each { |m| m.destroy } if model.any?
+      model.destroy_all if model.any?
     end
   end
 

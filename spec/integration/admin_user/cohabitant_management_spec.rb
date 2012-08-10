@@ -121,11 +121,9 @@ describe 'admin user cohabitant management integration' do
       reset_session!
     end
 
-    # needs a cohabitant with two notifications, one from each user 
     it "shows all notifications for a given cohabitant" do
-      cohabitant = Factory(:cohabitant)
-      Factory(:notification, cohabitants: [cohabitant])
-      Factory(:notification_by_non_admin, cohabitants: [cohabitant])
+      Factory(:notification_with_cohabitant)
+      Factory(:notification_by_non_admin_two_cohabitants)
       test_sign_in_admin
       click_link 'Cohabitants'
       click_link 'Cool Factory'
@@ -134,7 +132,6 @@ describe 'admin user cohabitant management integration' do
       page.text.must_include "New Student"
     end
 
-    # needs deactivated cohabitant
     it "shows a friendly message if there are no active cohabitants " +
         "and are able to be reactivated" do
       Factory(:deactivated_cohabitant)

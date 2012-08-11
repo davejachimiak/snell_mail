@@ -31,7 +31,7 @@ describe "User" do
 
     before do
       Factory(:user)
-      Factory(:user, email: 'dave.jachimiak@gmail.com')
+      Factory(:dave)
       Factory(:non_admin)
     end
 
@@ -44,7 +44,7 @@ describe "User" do
     before do
       notifier = Factory(:user)
       Factory(:admin_no_update)
-      Factory(:user, email: 'dave.jachimiak@gmail.com')
+      Factory(:dave)
 
       @it = User.others_that_want_update_emails(notifier)
     end

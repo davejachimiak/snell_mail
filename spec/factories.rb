@@ -7,6 +7,10 @@ FactoryGirl.define do
     admin true
     wants_update true
 
+    factory :dave do
+      email 'dave.jachimiak@gmail.com'
+    end
+
     factory :non_admin do
       name 'New Student'
       email 'new.student@neu.edu'

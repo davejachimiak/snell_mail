@@ -1,19 +1,8 @@
 require 'spec_helper'
 
 describe 'all users integration' do
-  let(:admin) { User.find_by_email('d.jachimiak@neu.edu') }
+  let(:admin)     { User.find_by_email('d.jachimiak@neu.edu') }
   let(:non_admin) { User.find_by_email('new.student@neu.edu') }
-
-  before do
-    create_test_users
-    cohabitant      = Factory(:cohabitant)
-    cohabitant_4    = Factory(:cohabitant_4)
-    @notification_1 = Factory(:notification, user: admin, 
-                      cohabitants: [cohabitant])
-    @notification_2 = Factory(:notification_by_non_admin,
-                      user: non_admin,
-                      cohabitants: [cohabitant, cohabitant_4])
-  end
 
   after do
     %w(User Cohabitant Notification).each do |model_string|
@@ -27,6 +16,9 @@ describe 'all users integration' do
 
   describe 'with no db prep and non_admin sign in' do
     before do
+      create_test_users
+      Factory(:cohabitant)
+      Factory(:cohabitant_4)
       test_sign_in_non_admin
     end
 
@@ -93,20 +85,64 @@ describe 'all users integration' do
     end
   end
 
-  it "should talk in the second person to admin in update if they notify" do
-    test_sign_in_admin
-    check 'Cool Factory'
-    click_button 'Notify!'
-    
-    update_notifier_delivery = ActionMailer::Base.deliveries.last
-    update_notifier_delivery.subject.must_equal 'You just notified cohabitants'
-    update_notifier_delivery.encoded.must_include 'Cool Factory was notified by you'
+  describe 'need cohabitant and admin' do
+    before do
+      Factory(:cohabitant)
+      Factory(:user)
+    end
 
-    update_admins_delivery = ActionMailer::Base.deliveries[-2]
-    update_admins_delivery.to.wont_include 'd.jachimiak@neu.edu'
+    it "should talk in the second person to admin in update if they notify" do
+      test_sign_in_admin
+      check 'Cool Factory'
+      click_button 'Notify!'
+      
+      update_notifier_delivery = ActionMailer::Base.deliveries.last
+      update_notifier_delivery.subject.must_equal 'You just notified cohabitants'
+      update_notifier_delivery.encoded.must_include 'Cool Factory was notified by you'
+
+      update_admins_delivery = ActionMailer::Base.deliveries[-2]
+      update_admins_delivery.to.wont_include 'd.jachimiak@neu.edu'
+    end
+
+    it "should notify cohabitants that they have mail " +
+       "and redirect to notifications after notification" do
+      Factory(:cohabitant_2)
+      Factory(:cohabitant_3)
+      Factory(:cohabitant_4)
+      time = Time.zone.now
+      test_sign_in_admin
+
+      page.text.must_include "New notification " +
+                             "for #{time.strftime("%A, %B %e, %Y")}"
+      page.text.must_include "Check each cohabitant " +
+                             "that has mail in their bin."
+      check 'Cool Factory'
+      check 'Jargon House'
+      check 'Face Surgery'
+      check 'Fun Section'
+      click_button 'Notify!'
+      page.current_path.must_equal '/notifications'
+      page.text.must_include 'Cool Factory, Jargon House, Face Surgery, and Fun Section ' +
+                             'were just notified ' +
+                             'that they have mail ' +
+                             'in their bins today. Thanks.'
+
+      notification_email = ActionMailer::Base.deliveries[-3]
+      ['d.jachimiak@neu.edu', 'waiting for you', 'cool.guy@neu.edu'].each do |text|
+        notification_email.encoded.must_include text
+      end
+      
+      update_email = ActionMailer::Base.deliveries.last
+      ['Cool Factory', 'Jargon House', 'Face Surgery', 'Fun Section', 'you'].each do |text|
+        update_email.encoded.must_include text
+      end
+    end
   end
 
+  # needs admin user and notification by non admin two cohabitants
   it "should indicate that a deleted user made a notification" do
+    Factory(:user)
+    Factory(:notification_by_non_admin_two_cohabitants)
     User.destroy(non_admin.id)
     test_sign_in_admin
 
@@ -118,72 +154,49 @@ describe 'all users integration' do
     page.text.must_include 'deleted user'
   end
 
-  it "should notify cohabitants that they have mail " +
-     "and redirect to notifications after notification" do
-    Factory(:cohabitant_2)
-    Factory(:cohabitant_3)
-    time = Time.zone.now
-    test_sign_in_admin
+  # needs user and all cohabitants
 
-    page.text.must_include "New notification " +
-                           "for #{time.strftime("%A, %B %e, %Y")}"
-    page.text.must_include "Check each cohabitant " +
-                           "that has mail in their bin."
-    check 'Cool Factory'
-    check 'Jargon House'
-    check 'Face Surgery'
-    check 'Fun Section'
-    click_button 'Notify!'
-    page.current_path.must_equal '/notifications'
-    page.text.must_include 'Cool Factory, Fun Section, Jargon House, ' +
-                           'and Face Surgery were just notified ' +
-                           'that they have mail ' +
-                           'in their bins today. Thanks.'
-
-    notification_email = ActionMailer::Base.deliveries[-3]
-    ['d.jachimiak@neu.edu', 'waiting for you', 'cool.guy@neu.edu'].each do |text|
-      notification_email.encoded.must_include text
+  describe 'admin that does not want update' do
+    before do
+      Factory(:cohabitant)
+      Factory(:admin_no_update)
     end
-    
-    update_email = ActionMailer::Base.deliveries.last
-    ['Cool Factory', 'Jargon House', 'Face Surgery', 'Fun Section', 'you'].each do |text|
-      update_email.encoded.must_include text
+
+    it "shouldn't notify admin if she doesn't want update" do
+      create_test_users
+      test_sign_in_non_admin
+      
+      check 'Cool Factory'
+      click_button 'Notify!'
+      ActionMailer::Base.deliveries.map(&:to).wont_include 'g.diaper@pamps.org'
     end
-  end
 
-  it "shouldn't notify admin if she doesn't want update" do
-    Factory(:admin_no_update)
-    test_sign_in_non_admin
-    
-    check 'Cool Factory'
-    click_button 'Notify!'
-    ActionMailer::Base.deliveries.map(&:to).wont_include 'g.diaper@pamps.org'
-  end
-
-  it "shouldn't notify notifier if notifier doesn't want update" do
-    Factory(:admin_no_update)
+    it "shouldn't notify notifier if notifier doesn't want update" do
       visit '/'
-    fill_in 'session_email', with: 'g.diaper@pamps.org'
-    fill_in 'session_password', with: 'password'
-    click_button 'Sign in'
-    
-    check 'Cool Factory'
-    click_button 'Notify!'
-    ActionMailer::Base.deliveries.last.subject.wont_include 'You just notified cohabitants'
-    ActionMailer::Base.deliveries.last.to.wont_include 'g.diaper@pamps.org'
+      fill_in 'session_email', with: 'g.diaper@pamps.org'
+      fill_in 'session_password', with: 'password'
+      click_button 'Sign in'
+      
+      check 'Cool Factory'
+      click_button 'Notify!'
+      ActionMailer::Base.deliveries.last.subject.wont_include 'You just notified cohabitants'
+      ActionMailer::Base.deliveries.last.to.wont_include 'g.diaper@pamps.org'
+    end
   end
 
   it "should tell of all cohabitants for a given notification." do
-    ns_notification_link = @notification_2.created_at.
+    notification_1 = Factory(:notification_with_cohabitant)
+    notification_2 = Factory(:notification_by_non_admin_two_cohabitants)
+    ns_notification_link = notification_2.created_at.
                              strftime('%m.%d.%Y (%A) at %I:%M%P')
 
     test_sign_in_non_admin
     click_link 'Notifications'
-    page.text.must_include @notification_1.created_at.
+    page.text.must_include notification_1.created_at.
       strftime('%m.%d.%Y (%A) at %I:%M%P')
     page.text.must_include ns_notification_link
     click_link ns_notification_link
-    @notification_2.cohabitants.each do |c| 
+    notification_2.cohabitants.each do |c| 
       page.text.must_include c.department
     end
   end

@@ -79,6 +79,12 @@ FactoryGirl.define do
       after_build do |notification|
         notification.cohabitants << cohabitant
       end
+
+      factory :notification_with_two_cohabitants do
+        after_build do |notification|
+          notification.cohabitants << cohabitant
+        end
+      end
     end
   end
 end

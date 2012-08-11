@@ -2,9 +2,8 @@ require 'spec_helper'
 require_relative '../../app/mailers/notification_mailer.rb'
 
 describe 'Notification Mailer' do
-  let(:cohabitants)     { [Factory(:cohabitant), Factory(:cohabitant_4)] }
-  let(:notification)    { Factory(:notification_by_non_admin, cohabitants: cohabitants) }
-  let(:notification_2)  { Factory(:notification, cohabitants: cohabitants) }
+  let(:notification)    { Factory(:notification_by_non_admin_two_cohabitants) }
+  let(:notification_2)  { Factory(:notification_with_two_cohabitants) }
 
   after do
     %w(User Cohabitant Notification).each do |model_string|

@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.1'
 gem 'sqlite3'
-gem 'will_paginate', '~> 3.0.0'
+gem 'will_paginate', '~> 3.0.5'
 group :test, :development do
   gem 'minitest'
   gem 'shoulda-matchers'
